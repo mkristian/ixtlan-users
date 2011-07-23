@@ -61,6 +61,6 @@ end
 # end
 
 group :production do
-  gem 'pg', :platforms => :mri
+  gem 'pg', :platforms => :ruby
 end
 
