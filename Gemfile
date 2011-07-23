@@ -6,7 +6,7 @@ gem 'rails', '3.0.9'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 platforms :ruby do
-  gem 'sqlite3'
+  gem 'sqlite3', :groups => [:development, :test]
 end
 
 platforms :jruby do
