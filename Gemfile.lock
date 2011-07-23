@@ -74,5 +74,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbc-adapter
   jdbc-sqlite3
+  pg
   rails (= 3.0.9)
   sqlite3

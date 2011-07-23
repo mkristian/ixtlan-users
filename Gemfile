@@ -59,3 +59,8 @@ end
 # group :development, :test do
 #   gem 'webrat'
 # end
+
+group :production do
+  gem 'pg', :platforms => :mri
+end
+
