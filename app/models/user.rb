@@ -24,3 +24,5 @@ class User
     end
   end
 end
+#User.include_root_in_json = false
+#User

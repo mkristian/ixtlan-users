@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user>
+  <login>root</login>
+  <name>Root</name>
+  <groups type="array">
+    <group>
+      <name>root</name>
+    </group>
+  </groups>
+</user>

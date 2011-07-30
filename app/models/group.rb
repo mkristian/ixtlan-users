@@ -4,11 +4,11 @@ class Group
 
   attr_accessor :name
 
-  def attributes
-    {'name' => name}
-  end
-
   def initialize(attributes = {})
     @name = attributes['name']
+  end
+
+  def attributes
+    { 'name' => name }
   end
 end

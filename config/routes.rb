@@ -1,5 +1,7 @@
 Users::Application.routes.draw do
 
+  resource :session
+
   resources :authentications
 
   # The priority is based upon order of creation:

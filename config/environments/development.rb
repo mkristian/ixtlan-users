@@ -22,5 +22,8 @@ Users::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
-end
 
+  if ENV['SSO'] == 'true' || ENV['SSO'] == ''
+    config.remote_sso_url = "http://localhost:3000"
+  end
+end

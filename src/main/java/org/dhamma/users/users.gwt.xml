@@ -1,0 +1,17 @@
+<module rename-to='users'>
+
+  <inherits name='com.google.gwt.user.User' />
+  <inherits name="com.google.gwt.activity.Activity"/>
+  <inherits name="com.google.gwt.place.Place"/>
+
+  <inherits name="com.google.gwt.inject.Inject"/>
+
+  <inherits name="org.fusesource.restygwt.RestyGWT" />
+
+  <inherits name="de.mkristian.gwt.RailsGWT" />
+
+  <entry-point class='org.dhamma.users.client.UsersEntryPoint' />
+
+  <stylesheet src='../stylesheets/users.css' />
+
+</module>
