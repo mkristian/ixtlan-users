@@ -1,0 +1,30 @@
+<%= form_for(@configuration, :url => configuration_path, :html => { :method => :put, :class => "edit_configuration", :id => "edit_configuration"}) do |f| %>
+  <% if @configuration.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@configuration.errors.count, "error") %> prohibited this configuration from being saved:</h2>
+
+      <ul>
+      <% @configuration.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field"><!-- begin - idle_session_timeout -->
+    <%= f.label :idle_session_timeout %><br />
+    <%= f.text_field :idle_session_timeout %>
+  </div><!-- end - idle_session_timeout -->
+  <div class="field"><!-- begin - password_from_email -->
+    <%= f.label :password_from_email %><br />
+    <%= f.text_field :password_from_email %>
+  </div><!-- end - password_from_email -->
+  <div class="field"><!-- begin - login_url -->
+    <%= f.label :login_url %><br />
+    <%= f.text_field :login_url %>
+  </div><!-- end - login_url -->
+  <div class="actions">
+    <%= f.hidden_field :updated_at %>
+    <%= f.submit %>
+  </div>
+<% end %>

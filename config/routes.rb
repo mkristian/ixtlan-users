@@ -1,5 +1,9 @@
 Users::Application.routes.draw do
 
+  resource :configuration
+
+  resources :users
+
   resource :session
 
   resources :authentications

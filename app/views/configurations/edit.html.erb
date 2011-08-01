@@ -1,0 +1,7 @@
+<h1>Editing configuration</h1>
+
+<%= render 'form' %>
+
+<% if allowed?(:configurations, :show) %>
+<%= link_to 'Show', configuration_path %>
+<% end %>

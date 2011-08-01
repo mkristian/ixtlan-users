@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Idle session timeout:</b>
+  <%= @configuration.idle_session_timeout %>
+</p>
+
+<p>
+  <b>Password from email:</b>
+  <%= @configuration.password_from_email %>
+</p>
+
+<p>
+  <b>Login url:</b>
+  <%= @configuration.login_url %>
+</p>
+
+
+<% if allowed?(:configurations, :update) %>
+<%= link_to 'Edit', edit_configuration_path %>
+<% end %>
