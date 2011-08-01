@@ -8,16 +8,25 @@ class SessionsController < ApplicationController
   
   def open_id_authentication(openid_url)
     authenticate_with_open_id(openid_url, 
-                              :required => [:nickname, 'http://axschema.org/contact/email']) do |result, identity_url, registration|
+                              :required => ['http://axschema.org/namePerson/first', 
+                                            'http://axschema.org/namePerson/last', 
+                                            'http://axschema.org/contact/email']) do |result, identity_url, registration, ax|
       if result.successful?
-p registration
-p registration.methods.sort
-
-p registration['email']
-p identity_url
-        #TODO set email from openid
+        #TODO set identity_url from openid
         user = User.first#User.find_by_identity_url(identity_url)
         if user
+          dirty = false
+          if email = ax["http://axschema.org/contact/email"]
+            dirty = (user.email != email.to_s)
+            user.email = email.to_s
+          end
+          if !(first = ax["http://axschema.org/namePerson/first"]).nil? &&
+              !(last = ax["http://axschema.org/namePerson/last"]).nil?
+            name = "#{first} #{last}".strip
+            dirty = dirty || (user.name != name)
+            user.name = name
+          end
+          user.save if dirty
           session = Session.new
           session.user = user
           session
@@ -43,8 +52,6 @@ p identity_url
                else
                  Session.create(params[:authentication])
                end
-puts "asddddd"
-p @session
     case @session
     when Session
       current_user(@session.user)
