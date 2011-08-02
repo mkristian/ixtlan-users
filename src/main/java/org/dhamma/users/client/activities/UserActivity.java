@@ -68,6 +68,7 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
             public void onFailure(Method method, Throwable exception) {
                 notice.setText("error loading User: "
                         + exception.getMessage());
+                view.reset(place.action);
             }
 
             public void onSuccess(Method method, User response) {

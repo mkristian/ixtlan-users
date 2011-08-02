@@ -3,8 +3,18 @@ require 'bcrypt'
 class User < ActiveRecord::Base
   include BCrypt
 
+  def self.reset_password(login)
+    u = User.find_by_login(login) || User.find_by_email(login)
+    if u
+      pwd = u.reset_password
+      u.save
+      [u, pwd]
+    end
+  end
+
   def self.authenticate(login, password)
-    u = User.find_by_login(login)
+    return "no password for login: #{login}" if password.blank?
+    u = User.find_by_login(login) || User.find_by_email(login)
     if u
       if Password.new(u.hashed) == password
         # clear reset password if any
@@ -15,7 +25,7 @@ class User < ActiveRecord::Base
         u
       else
         # try reset password
-        if Password.new(u.hashed2) == password
+        if !u.hashed2.blank? && Password.new(u.hashed2) == password
           # discard old password and promote reset password to be the password
           u.hashed = u.hashed2
           u.hashed2 = nil
@@ -49,7 +59,8 @@ class User < ActiveRecord::Base
     alias :old_as_json :as_json
     def as_json(options = {})
       options ||= {}
-      options.merge!({ :methods => [:groups], :except => [:hashed]})
+      options[:methods] = [:groups] unless options[:methods]
+      options[:except] = [:hashed, :hashed2] unless options[:except]
       old_as_json(options)
     end
   end

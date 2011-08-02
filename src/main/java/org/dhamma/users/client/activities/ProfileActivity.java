@@ -1,10 +1,10 @@
 package org.dhamma.users.client.activities;
 
 
-import org.dhamma.users.client.models.Configuration;
-import org.dhamma.users.client.places.ConfigurationPlace;
-import org.dhamma.users.client.restservices.ConfigurationsRestService;
-import org.dhamma.users.client.views.ConfigurationView;
+import org.dhamma.users.client.models.Profile;
+import org.dhamma.users.client.places.ProfilePlace;
+import org.dhamma.users.client.restservices.ProfilesRestService;
+import org.dhamma.users.client.views.ProfileView;
 
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.RestfulActionEnum;
@@ -20,17 +20,17 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
-public class ConfigurationActivity extends AbstractActivity implements ConfigurationView.Presenter{
+public class ProfileActivity extends AbstractActivity implements ProfileView.Presenter{
 
-    private final ConfigurationPlace place;
-    private final ConfigurationsRestService service;
+    private final ProfilePlace place;
+    private final ProfilesRestService service;
     private final Notice notice;
     private final PlaceController placeController;
-    private final ConfigurationView view;
+    private final ProfileView view;
     
     @Inject
-    public ConfigurationActivity(@Assisted ConfigurationPlace place, Notice notice, ConfigurationView view,
-            ConfigurationsRestService service, PlaceController placeController) {
+    public ProfileActivity(@Assisted ProfilePlace place, Notice notice, ProfileView view,
+            ProfilesRestService service, PlaceController placeController) {
 	this.place = place;
         this.notice = notice;
         this.view = view;
@@ -51,38 +51,38 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
 
     public void load() {
         view.setEnabled(false);
-        service.show(new MethodCallback<Configuration>() {
+        service.show(new MethodCallback<Profile>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error loading Configuration: "
+                notice.setText("error loading Profile: "
                         + exception.getMessage());
                 view.reset(place.action);
             }
 
-            public void onSuccess(Method method, Configuration response) {
+            public void onSuccess(Method method, Profile response) {
                 view.reset(response);
                 notice.setText(null);
                 view.reset(place.action);
             }
         });
         if(!notice.isVisible()){
-            notice.setText("loading Configuration . . .");
+            notice.setText("loading Profile . . .");
         }
     }
     public void save() {
-        Configuration model = view.retrieveConfiguration();
+        Profile model = view.retrieveProfile();
         view.setEnabled(false);
-        service.update(model, new MethodCallback<Configuration>() {
+        service.update(model, new MethodCallback<Profile>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error loading Configuration: "
+                notice.setText("error loading Profile: "
                         + exception.getMessage());
             }
 
-            public void onSuccess(Method method, Configuration response) {
-                goTo(new ConfigurationPlace(RestfulActionEnum.EDIT));
+            public void onSuccess(Method method, Profile response) {
+                goTo(new ProfilePlace(RestfulActionEnum.EDIT));
             }
         });
-        notice.setText("saving Configuration . . .");        
+        notice.setText("saving Profile . . .");        
     }
 }

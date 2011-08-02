@@ -6,6 +6,9 @@ class ConfigurationsController < ApplicationController
   def show
     @configuration = Configuration.instance
 
+    # needed to create valid json/xml i.e. with timestamps
+    @configuration.save if @configuration.new_record?
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @configuration }

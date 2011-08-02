@@ -5,7 +5,7 @@ class Session
   attr_accessor :permissions, :user
 
   def self.create(params = {})
-    user = User.authenticate(params[:login], params[:password]) if params
+    user = User.authenticate(params[:login]||params[:email], params[:password]) if params
     case user
     when String
       user # error message

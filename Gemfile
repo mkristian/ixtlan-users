@@ -72,5 +72,8 @@ gem "ixtlan-guard", :path => '../../ixtlan/ixtlan-guard'
 gem "jruby-openssl", "~> 0.7.4", :platforms => :jruby
 
 gem 'bcrypt-ruby'
-gem 'ruby-openid'
-gem 'rack-openid'#, :lib => 'rack/openid'
+gem 'open_id_authentication'
+#gem 'rack-openid'#, :lib => 'rack/openid'
+
+gem 'slf4r'
+gem 'ixtlan-core'

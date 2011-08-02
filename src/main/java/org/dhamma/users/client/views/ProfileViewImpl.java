@@ -1,8 +1,8 @@
 package org.dhamma.users.client.views;
 
 
-import org.dhamma.users.client.models.Configuration;
-import org.dhamma.users.client.places.ConfigurationPlace;
+import org.dhamma.users.client.models.Profile;
+import org.dhamma.users.client.places.ProfilePlace;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -20,15 +20,14 @@ import de.mkristian.gwt.rails.RestfulActionEnum;
 import de.mkristian.gwt.rails.TimestampedView;
 
 @Singleton
-public class ConfigurationViewImpl extends TimestampedView
-        implements ConfigurationView {
+public class ProfileViewImpl extends TimestampedView
+        implements ProfileView {
 
-    @UiTemplate("ConfigurationView.ui.xml")
-    interface ConfigurationViewUiBinder extends UiBinder<Widget, ConfigurationViewImpl> {}
+    @UiTemplate("ProfileView.ui.xml")
+    interface ProfileViewUiBinder extends UiBinder<Widget, ProfileViewImpl> {}
     
-    private static ConfigurationViewUiBinder uiBinder = GWT.create(ConfigurationViewUiBinder.class);
+    private static ProfileViewUiBinder uiBinder = GWT.create(ProfileViewUiBinder.class);
 
-    
     @UiField
     Button editButton;
 
@@ -36,23 +35,27 @@ public class ConfigurationViewImpl extends TimestampedView
     Button saveButton;
 
     @UiField
-    TextBox idleSessionTimeout;
+    TextBox email;
 
     @UiField
-    TextBox passwordFromEmail;
+    TextBox name;
 
     @UiField
-    TextBox loginUrl;
+    TextBox openidIdentifier;
+
+    @UiField
+    TextBox password;
 
 
     private Presenter presenter;
 
-    public ConfigurationViewImpl() {
+
+    public ProfileViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
     }
     @UiHandler("editButton")
     void onClickEdit(ClickEvent e) {
-        presenter.goTo(new ConfigurationPlace(RestfulActionEnum.EDIT));
+        presenter.goTo(new ProfilePlace(RestfulActionEnum.EDIT));
     }
 
     @UiHandler("saveButton")
@@ -63,38 +66,42 @@ public class ConfigurationViewImpl extends TimestampedView
         this.presenter = presenter;
     }
 
-    public void reset(Configuration model) {
+    public void reset(Profile model) {
         resetSignature(model.createdAt, model.updatedAt);
-        idleSessionTimeout.setText(model.idleSessionTimeout + "");
-        passwordFromEmail.setText(model.passwordFromEmail);
-        loginUrl.setText(model.loginUrl);
+        email.setText(model.email);
+        name.setText(model.name);
+        openidIdentifier.setText(model.openidIdentifier);
+        password.setText(model.password);
     }
 
     public void reset(RestfulAction action) {
-        GWT.log(action.name() + " Configuration");
+        GWT.log(action.name() + " Profile");
         editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()));
         saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         setEnabled(!action.viewOnly());
     }
 
-    public Configuration retrieveConfiguration() {
-        Configuration model = new Configuration();
+    public Profile retrieveProfile() {
+        Profile model = new Profile();
 
         model.createdAt = createdAtCache;
         model.updatedAt = updatedAtCache;
 
-        model.idleSessionTimeout = Integer.parseInt(idleSessionTimeout.getText());
+        model.email = email.getText();
 
-        model.passwordFromEmail = passwordFromEmail.getText();
+        model.name = name.getText();
 
-        model.loginUrl = loginUrl.getText();
+        model.openidIdentifier = openidIdentifier.getText();
+
+        model.password = password.getText();
 
         return model;
     }
 
     public void setEnabled(boolean enabled) {
-         idleSessionTimeout.setEnabled(enabled);
-         passwordFromEmail.setEnabled(enabled);
-         loginUrl.setEnabled(enabled);
+         email.setEnabled(enabled);
+         name.setEnabled(enabled);
+         openidIdentifier.setEnabled(enabled);
+         password.setEnabled(enabled);
     }
 }

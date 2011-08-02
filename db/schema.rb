@@ -10,13 +10,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110730122442) do
+ActiveRecord::Schema.define(:version => 20110730184649) do
+
+  create_table "configurations", :force => true do |t|
+    t.integer  "idle_session_timeout"
+    t.string   "password_from_email"
+    t.string   "login_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login"
     t.string   "email"
     t.string   "name"
     t.string   "hashed"
+    t.string   "hashed2"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

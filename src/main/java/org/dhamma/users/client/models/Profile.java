@@ -7,13 +7,17 @@ import org.fusesource.restygwt.client.Json;
 import org.fusesource.restygwt.client.Json.Style;
 
 @Json(style = Style.RAILS)
-public class User {
+public class Profile {
 
-  public int id;
 
-  public String login;
-  public String name;
   public String email;
+
+  public String name;
+
+  @Json(name = "openid_identifier")
+  public String openidIdentifier;
+
+  public String password;
 
   @Json(name = "created_at")
   public Date createdAt;

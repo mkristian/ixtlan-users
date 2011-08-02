@@ -1,28 +1,26 @@
 package org.dhamma.users.client.views;
 
 
-import java.util.Date;
-
-import de.mkristian.gwt.rails.RestfulAction;
-import de.mkristian.gwt.rails.RestfulActionEnum;
-
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.UserPlace;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
+import de.mkristian.gwt.rails.IdentifyableTimestampedView;
+import de.mkristian.gwt.rails.RestfulAction;
+import de.mkristian.gwt.rails.RestfulActionEnum;
+
 @Singleton
-public class UserViewImpl extends Composite
+public class UserViewImpl extends IdentifyableTimestampedView
         implements UserView {
 
     @UiTemplate("UserView.ui.xml")
@@ -41,18 +39,9 @@ public class UserViewImpl extends Composite
 
     @UiField
     Button saveButton;
+    
     @UiField
     Button deleteButton;
-
-    @UiField
-    Label id;
-
-
-    @UiField
-    Label createdAt;
-
-    @UiField
-    Label updatedAt;
 
     @UiField
     TextBox login;
@@ -65,12 +54,6 @@ public class UserViewImpl extends Composite
 
 
     private Presenter presenter;
-
-    private int idCache;
-
-
-    private Date createdAtCache;
-    private Date updatedAtCache;
 
     public UserViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -102,24 +85,7 @@ public class UserViewImpl extends Composite
     }
 
     public void reset(User model) {
-        if(model.id > 0){
-            id.setText("id: " + model.id);
-
-            createdAt.setText("created at: "
-                    + DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM).format(model.created_at));
-            updatedAt.setText("updated at: "
-                    + DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM).format(model.updated_at));
-        }
-        else {
-            id.setText(null);
-
-            createdAt.setText(null);
-            updatedAt.setText(null);
-        }
-        this.idCache = model.id;
-
-        this.createdAtCache = model.created_at;
-        this.updatedAtCache = model.updated_at;
+        resetSignature(model.id, model.createdAt, model.updatedAt);
         login.setText(model.login);
         email.setText(model.email);
         name.setText(model.name);
@@ -139,8 +105,8 @@ public class UserViewImpl extends Composite
         User model = new User();
         model.id = idCache;
 
-        model.created_at = createdAtCache;
-        model.updated_at = updatedAtCache;
+        model.createdAt = createdAtCache;
+        model.updatedAt = updatedAtCache;
 
         model.login = login.getText();
 

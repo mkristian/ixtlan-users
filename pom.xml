@@ -183,6 +183,31 @@
       <type>gem</type>
     </dependency>
     <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>open_id_authentication</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>rack-openid</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ruby-openid</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>slf4r</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-core</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
       <groupId>org.fusesource.restygwt</groupId>
       <artifactId>restygwt</artifactId>
       <version>1.2-SNAPSHOT</version>
@@ -213,7 +238,7 @@
     <dependency>
       <groupId>de.mkristian.rails-gwt</groupId>
       <artifactId>rails-gwt</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <version>0.2.0-SNAPSHOT</version>
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
@@ -253,7 +278,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>resty-generators</artifactId>
-        <version>0.3.3</version>
+        <version>0.4.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -414,6 +439,24 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
+        <artifactId>open_id_authentication</artifactId>
+        <version>1.0.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>rack-openid</artifactId>
+        <version>1.3.1</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ruby-openid</artifactId>
+        <version>2.1.8</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
         <artifactId>rails</artifactId>
         <version>3.0.9</version>
         <type>gem</type>
@@ -439,7 +482,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rdoc</artifactId>
-        <version>3.8</version>
+        <version>3.9</version>
         <type>gem</type>
       </dependency>
       <dependency>

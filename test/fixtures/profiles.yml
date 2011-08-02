@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  email: MyString
+  name: MyString
+  openid_identifier: MyString
+  password: MyString
+  new_password: MyString
+
+two:
+  email: MyString
+  name: MyString
+  openid_identifier: MyString
+  password: MyString
+  new_password: MyString

@@ -1,10 +1,16 @@
 Users::Application.routes.draw do
 
+  resource :profile
+
   resource :configuration
 
   resources :users
 
-  resource :session
+  resource :session do
+    member do
+      post 'reset_password'
+    end
+  end
 
   resources :authentications
 

@@ -44,7 +44,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        UserMailer.send_password_email(@user, pwd)
+        UserMailer.send_password(@user, pwd).deliver
         format.html { redirect_to(@user, :notice => 'User was successfully created.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
         format.json  { render :json => @user, :status => :created, :location => @user }

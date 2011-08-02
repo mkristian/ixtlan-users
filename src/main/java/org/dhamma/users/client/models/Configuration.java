@@ -23,6 +23,6 @@ public class Configuration {
   @Json(name = "created_at")
   public Date createdAt;
 
-  @Json(name = "upated_at")
+  @Json(name = "updated_at")
   public Date updatedAt;
 }

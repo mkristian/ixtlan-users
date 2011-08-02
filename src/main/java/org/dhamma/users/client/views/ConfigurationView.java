@@ -1,7 +1,5 @@
 package org.dhamma.users.client.views;
 
-import java.util.List;
-
 import org.dhamma.users.client.models.Configuration;
 
 import com.google.gwt.place.shared.Place;

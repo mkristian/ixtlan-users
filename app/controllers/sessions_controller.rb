@@ -78,11 +78,18 @@ class SessionsController < ApplicationController
   end
 
   def reset_password
-    @session = Session.find(params[:id])
+    authentication = params[:authentication] || []
+    user, pwd = User.reset_password(authentication[:email] || authentication[:login])
 
-    pwd = @session.user.reset_password
-    UserMailer.send_password_email(@session.user, pwd)
-
-    head :ok
+    if user
+      UserMailer.send_password(user, pwd).deliver
+      
+      # for the log
+      @session = user
+      
+      head :ok
+    else
+      head :not_found
+    end
   end
 end

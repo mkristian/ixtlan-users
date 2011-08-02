@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.LoginPlace;
 import org.dhamma.users.client.restservices.SessionRestService;
-
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
@@ -15,6 +14,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.session.Authentication;
 import de.mkristian.gwt.rails.session.LoginView;
 import de.mkristian.gwt.rails.session.Session;
@@ -25,15 +25,17 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     private final SessionRestService service;
     private final LoginView view;
     private final SessionManager<User> sessionManager;
+    private final Notice notice;
 
     @Inject
     public LoginActivity(@Assisted LoginPlace place,
             LoginView view,
             SessionRestService service,
-            SessionManager<User> sessionManager) {
+            SessionManager<User> sessionManager, Notice notice) {
         this.view = view;
         this.service = service;
         this.sessionManager = sessionManager;
+        this.notice = notice;
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
@@ -53,6 +55,20 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
             public void onFailure(Method method, Throwable exception) {
                 GWT.log("login failed: " + exception.getMessage(), exception);
                 sessionManager.accessDenied();
+            }
+        });
+    }
+    
+    public void resetPassword(final String login) {
+        Authentication authentication = new Authentication(login);
+        service.resetPassword(authentication, new MethodCallback<Void>() {
+
+            public void onSuccess(Method method, Void result) {
+                notice.setText("new password was sent to your email address");
+            }
+
+            public void onFailure(Method method, Throwable exception) {
+                notice.setText("could not reset password - username/email unknown");
             }
         });
     }

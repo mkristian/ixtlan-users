@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Email:</b>
+  <%= @profile.email %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @profile.name %>
+</p>
+
+<p>
+  <b>Openid identifier:</b>
+  <%= @profile.openid_identifier %>
+</p>
+
+<p>
+  <b>Password:</b>
+  <%= @profile.password %>
+</p>
+
+<p>
+  <b>New password:</b>
+  <%= @profile.new_password %>
+</p>
+
+
+<% if allowed?(:profiles, :update) %>
+<%= link_to 'Edit', edit_profile_path %>
+<% end %>

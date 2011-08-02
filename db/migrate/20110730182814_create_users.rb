@@ -6,6 +6,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :name
       t.string :hashed
       t.string :hashed2
+      t.string :openid_identifier
 
       t.timestamps
     end
