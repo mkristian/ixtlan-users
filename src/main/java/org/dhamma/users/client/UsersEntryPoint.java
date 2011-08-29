@@ -18,7 +18,7 @@ import com.google.inject.Inject;
 
 import de.mkristian.gwt.rails.Application;
 import de.mkristian.gwt.rails.Notice;
-import de.mkristian.gwt.rails.DefaultDispatcherSingleton;
+import de.mkristian.gwt.rails.dispatchers.DefaultDispatcherSingleton;
 
 import org.fusesource.restygwt.client.Defaults;
 
@@ -62,7 +62,7 @@ public class UsersEntryPoint implements EntryPoint {
      * This is the entry point method.
      */
     public void onModuleLoad() {
-        Defaults.setServiceRoot(GWT.getModuleBaseURL().replaceFirst("[a-z]+/$", ""));
+        Defaults.setServiceRoot(GWT.getModuleBaseURL().replaceFirst("[A-Za-z0-9_]+/$", ""));
         Defaults.setDispatcher(DefaultDispatcherSingleton.INSTANCE);
         GWT.log("base url for restservices: " + Defaults.getServiceRoot());
 

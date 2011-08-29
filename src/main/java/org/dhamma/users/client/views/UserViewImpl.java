@@ -15,9 +15,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
-import de.mkristian.gwt.rails.IdentifyableTimestampedView;
-import de.mkristian.gwt.rails.RestfulAction;
-import de.mkristian.gwt.rails.RestfulActionEnum;
+import de.mkristian.gwt.rails.places.RestfulAction;
+import de.mkristian.gwt.rails.places.RestfulActionEnum;
+import de.mkristian.gwt.rails.views.IdentifyableTimestampedView;
 
 @Singleton
 public class UserViewImpl extends IdentifyableTimestampedView
@@ -69,7 +69,7 @@ public class UserViewImpl extends IdentifyableTimestampedView
     }
     @UiHandler("editButton")
     void onClickEdit(ClickEvent e) {
-        presenter.goTo(new UserPlace(idCache, RestfulActionEnum.EDIT));
+        presenter.goTo(new UserPlace(id.getValue(), RestfulActionEnum.EDIT));
     }
 
     @UiHandler("saveButton")
@@ -92,7 +92,7 @@ public class UserViewImpl extends IdentifyableTimestampedView
     }
 
     public void reset(RestfulAction action) {
-        GWT.log(action.name() + " User" + (idCache > 0 ? "(" + id + ")" : ""));
+        GWT.log(action.name() + " User" + (id.getValue() > 0 ? "(" + id + ")" : ""));
         newButton.setVisible(!action.name().equals(RestfulActionEnum.NEW.name()));
         createButton.setVisible(action.name().equals(RestfulActionEnum.NEW.name()));
         editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()));
@@ -103,10 +103,10 @@ public class UserViewImpl extends IdentifyableTimestampedView
 
     public User retrieveUser() {
         User model = new User();
-        model.id = idCache;
+        model.id = id.getValue();
 
-        model.createdAt = createdAtCache;
-        model.updatedAt = updatedAtCache;
+        model.createdAt = createdAt.getValue();
+        model.updatedAt = updatedAt.getValue();
 
         model.login = login.getText();
 

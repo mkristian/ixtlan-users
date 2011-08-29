@@ -16,7 +16,7 @@ plugin('org.codehaus.mojo:gwt-maven-plugin', GWT_VERSION) do |gwt|
              :style => "DETAILED",
              :treeLogger => true,
              :extraJvmArgs => "-Xmx512m",
-             :runTarget => "users.html",
+             :runTarget => "Users.html",
              :includes => "**/UsersGWTTestSuite.java"
            })
   gwt.executions.goals << ["clean", "compile", "test"]

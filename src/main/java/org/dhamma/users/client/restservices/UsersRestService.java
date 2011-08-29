@@ -1,6 +1,7 @@
 package org.dhamma.users.client.restservices;
 
-import de.mkristian.gwt.rails.RestfulDispatcherSingleton;
+import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
+
 import java.util.List;
 
 import javax.ws.rs.*;

@@ -7,7 +7,7 @@ import org.dhamma.users.client.restservices.UsersRestService;
 import org.dhamma.users.client.views.UserView;
 
 import de.mkristian.gwt.rails.Notice;
-import de.mkristian.gwt.rails.RestfulActionEnum;
+import de.mkristian.gwt.rails.places.RestfulActionEnum;
 
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;

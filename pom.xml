@@ -514,7 +514,7 @@
           <includes>**/UsersGWTTestSuite.java</includes>
           <inplace>true</inplace>
           <logLevel>INFO</logLevel>
-          <runTarget>users.html</runTarget>
+          <runTarget>Users.html</runTarget>
           <style>DETAILED</style>
           <treeLogger>true</treeLogger>
           <warSourceDirectory>${basedir}/public</warSourceDirectory>

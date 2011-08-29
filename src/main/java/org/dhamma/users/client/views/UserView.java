@@ -6,7 +6,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.ImplementedBy;
 
-import de.mkristian.gwt.rails.RestfulAction;
+import de.mkristian.gwt.rails.places.RestfulAction;
 
 @ImplementedBy(UserViewImpl.class)
 public interface UserView extends IsWidget {

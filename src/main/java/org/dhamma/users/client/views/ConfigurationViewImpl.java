@@ -15,9 +15,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
-import de.mkristian.gwt.rails.RestfulAction;
-import de.mkristian.gwt.rails.RestfulActionEnum;
-import de.mkristian.gwt.rails.TimestampedView;
+import de.mkristian.gwt.rails.places.RestfulAction;
+import de.mkristian.gwt.rails.places.RestfulActionEnum;
+import de.mkristian.gwt.rails.views.TimestampedView;
 
 @Singleton
 public class ConfigurationViewImpl extends TimestampedView
@@ -80,8 +80,8 @@ public class ConfigurationViewImpl extends TimestampedView
     public Configuration retrieveConfiguration() {
         Configuration model = new Configuration();
 
-        model.createdAt = createdAtCache;
-        model.updatedAt = updatedAtCache;
+        model.createdAt = createdAt.getValue();
+        model.updatedAt = updatedAt.getValue();
 
         model.idleSessionTimeout = Integer.parseInt(idleSessionTimeout.getText());
 

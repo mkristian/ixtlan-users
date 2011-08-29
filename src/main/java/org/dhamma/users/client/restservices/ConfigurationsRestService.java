@@ -9,7 +9,7 @@ import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 
-import de.mkristian.gwt.rails.RestfulDispatcherSingleton;
+import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
 
 @Path("/configuration")
 @Options(dispatcher = RestfulDispatcherSingleton.class)

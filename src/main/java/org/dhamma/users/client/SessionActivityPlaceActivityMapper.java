@@ -10,7 +10,7 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.place.shared.Place;
 
 import de.mkristian.gwt.rails.Notice;
-import de.mkristian.gwt.rails.RestfulPlace;
+import de.mkristian.gwt.rails.places.RestfulPlace;
 import de.mkristian.gwt.rails.session.NeedsAuthorization;
 import de.mkristian.gwt.rails.session.NoAuthorization;
 import de.mkristian.gwt.rails.session.SessionManager;
@@ -35,8 +35,8 @@ public class SessionActivityPlaceActivityMapper extends ActivityPlaceActivityMap
      */
     protected Activity pessimisticGetActivity(Place place) {
         if (!(place instanceof NoAuthorization)) {
-            if(manager.isActive()){
-                if(!manager.isAllowed((RestfulPlace)place)){
+            if(manager.hasSession()){
+                if(!manager.isAllowed((RestfulPlace<?>)place)){
                     notice.setText("nothing to see");
                     return null;
                 }
@@ -56,8 +56,8 @@ public class SessionActivityPlaceActivityMapper extends ActivityPlaceActivityMap
      */
     protected Activity optimisticGetActivity(Place place) {
         if (place instanceof NeedsAuthorization) {
-            if(manager.isActive()){
-                if(!manager.isAllowed((RestfulPlace)place)){
+            if(manager.hasSession()){
+                if(!manager.isAllowed((RestfulPlace<?>)place)){
                     notice.setText("nothing to see");
                     return null;
                 }
