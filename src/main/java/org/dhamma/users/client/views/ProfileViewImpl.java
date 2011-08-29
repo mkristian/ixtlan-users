@@ -1,6 +1,5 @@
 package org.dhamma.users.client.views;
 
-
 import org.dhamma.users.client.models.Profile;
 import org.dhamma.users.client.places.ProfilePlace;
 
@@ -11,6 +10,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
@@ -28,12 +29,12 @@ public class ProfileViewImpl extends TimestampedView
     
     private static ProfileViewUiBinder uiBinder = GWT.create(ProfileViewUiBinder.class);
 
+    
     @UiField
     Button editButton;
 
     @UiField
     Button saveButton;
-
     @UiField
     TextBox email;
 
@@ -44,15 +45,17 @@ public class ProfileViewImpl extends TimestampedView
     TextBox openidIdentifier;
 
     @UiField
-    TextBox password;
+    PasswordTextBox password;
 
+    @UiField
+    Panel form;
 
     private Presenter presenter;
-
 
     public ProfileViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
     }
+
     @UiHandler("editButton")
     void onClickEdit(ClickEvent e) {
         presenter.goTo(new ProfilePlace(RestfulActionEnum.EDIT));
@@ -62,6 +65,7 @@ public class ProfileViewImpl extends TimestampedView
     void onClickSave(ClickEvent e) {
         presenter.save();
     }
+
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
@@ -71,12 +75,12 @@ public class ProfileViewImpl extends TimestampedView
         email.setText(model.email);
         name.setText(model.name);
         openidIdentifier.setText(model.openidIdentifier);
-        password.setText(model.password);
+        password.setText(null);
     }
 
     public void reset(RestfulAction action) {
-        GWT.log(action.name() + " Profile");
-        editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()));
+        editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()) || 
+                action.name().equals(RestfulActionEnum.INDEX.name()));
         saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         setEnabled(!action.viewOnly());
     }

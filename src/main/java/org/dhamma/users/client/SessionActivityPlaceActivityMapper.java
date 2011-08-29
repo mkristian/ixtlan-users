@@ -7,6 +7,7 @@ import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.LoginPlace;
 
 import com.google.gwt.activity.shared.Activity;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.Place;
 
 import de.mkristian.gwt.rails.Notice;
@@ -26,6 +27,7 @@ public class SessionActivityPlaceActivityMapper extends ActivityPlaceActivityMap
     }
 
     public Activity getActivity(Place place) {
+        GWT.log(place.toString());
         return pessimisticGetActivity(place);
     }
 

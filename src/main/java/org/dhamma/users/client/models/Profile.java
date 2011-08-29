@@ -19,6 +19,7 @@ public class Profile {
 
   public String password;
 
+
   @Json(name = "created_at")
   public Date createdAt;
 

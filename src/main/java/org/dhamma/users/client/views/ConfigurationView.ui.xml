@@ -5,34 +5,40 @@
 
   <ui:style>
      .buttons {}
-     .signatur { float: left; }
-     .signatur * { display: inline; margin-right: 1em; font-size: 0.8em;}
+     .signature { float: left; }
+     .signature * { display: inline; margin-right: 1em; font-size: 0.8em;}
      .fields { clear: both;}
      .field { }
   </ui:style>
 
-  <g:FlowPanel>
+  <g:FlowPanel styleName="display">
     <g:FlowPanel styleName="{style.buttons}">
       <g:Button ui:field="editButton">Edit</g:Button>
-      <g:Button ui:field="saveButton">Save</g:Button>
     </g:FlowPanel>
-    <g:FlowPanel styleName="{style.signatur}">
+    <g:FlowPanel ui:field="form" styleName="form">
+      <g:FlowPanel styleName="{style.signature}" ui:field="signature">
 
-      <g:Label ui:field="createdAt" />
-      <g:Label ui:field="updatedAt" />
-    </g:FlowPanel>
-    <g:FlowPanel styleName="{style.fields}">
-      <g:FlowPanel styleName="{style.field}">
-        <g:HTML><label name="idleSessionTimeout">Idle session timeout</label></g:HTML>
-        <g:TextBox ui:field="idleSessionTimeout" name="idleSessionTimeout"/>
+        <g:Label>created at: </g:Label>
+	<g:DateLabel ui:field="createdAt" predefinedFormat="DATE_TIME_MEDIUM"/>
+	<g:Label>updated at: </g:Label>
+	<g:DateLabel ui:field="updatedAt" predefinedFormat="DATE_TIME_MEDIUM" />
       </g:FlowPanel>
-      <g:FlowPanel styleName="{style.field}">
-        <g:HTML><label name="passwordFromEmail">Password from email</label></g:HTML>
-        <g:TextBox ui:field="passwordFromEmail" name="passwordFromEmail"/>
+      <g:FlowPanel styleName="{style.fields}">
+        <g:FlowPanel styleName="{style.field}">
+          <g:HTML><label name="idleSessionTimeout">Idle session timeout</label></g:HTML>
+	  <g:TextBox ui:field="idleSessionTimeout" name="idleSessionTimeout"/>
+	</g:FlowPanel>
+        <g:FlowPanel styleName="{style.field}">
+          <g:HTML><label name="passwordFromEmail">Password from email</label></g:HTML>
+	  <g:TextBox ui:field="passwordFromEmail" name="passwordFromEmail"/>
+	</g:FlowPanel>
+        <g:FlowPanel styleName="{style.field}">
+          <g:HTML><label name="loginUrl">Login url</label></g:HTML>
+	  <g:TextBox ui:field="loginUrl" name="loginUrl"/>
+	</g:FlowPanel>
       </g:FlowPanel>
-      <g:FlowPanel styleName="{style.field}">
-        <g:HTML><label name="loginUrl">Login url</label></g:HTML>
-        <g:TextBox ui:field="loginUrl" name="loginUrl"/>
+      <g:FlowPanel styleName="{style.buttons}">
+        <g:Button ui:field="saveButton">Save</g:Button>
       </g:FlowPanel>
     </g:FlowPanel>
   </g:FlowPanel>

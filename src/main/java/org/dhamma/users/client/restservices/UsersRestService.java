@@ -1,13 +1,12 @@
 package org.dhamma.users.client.restservices;
 
 import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
-
+import de.mkristian.gwt.rails.dispatchers.DefaultDispatcherSingleton;
 import java.util.List;
 
 import javax.ws.rs.*;
 
 import org.fusesource.restygwt.client.*;
-import org.fusesource.restygwt.client.dispatcher.DefaultDispatcher;
 
 import org.dhamma.users.client.models.*;
 
@@ -16,7 +15,7 @@ import org.dhamma.users.client.models.*;
 public interface UsersRestService extends RestService {
 
   @GET @Path("/users")
-  @Options(dispatcher = DefaultDispatcher.class)
+  @Options(dispatcher = DefaultDispatcherSingleton.class)
   void index(MethodCallback<List<User>> callback);
 
 //  @GET @Path("/users")

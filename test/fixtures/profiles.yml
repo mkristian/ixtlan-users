@@ -5,11 +5,9 @@ one:
   name: MyString
   openid_identifier: MyString
   password: MyString
-  new_password: MyString
 
 two:
   email: MyString
   name: MyString
   openid_identifier: MyString
   password: MyString
-  new_password: MyString

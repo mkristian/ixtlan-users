@@ -1,12 +1,12 @@
 package org.dhamma.users.client.places;
 
-import org.dhamma.users.client.ActivityPlace;
+import de.mkristian.gwt.rails.places.RestfulAction;
+
 import org.dhamma.users.client.managed.ActivityFactory;
 import org.dhamma.users.client.models.Profile;
+import org.dhamma.users.client.ActivityPlace;
 
 import com.google.gwt.activity.shared.Activity;
-
-import de.mkristian.gwt.rails.places.RestfulAction;
 
 public class ProfilePlace extends ActivityPlace<Profile> {
     
@@ -14,12 +14,12 @@ public class ProfilePlace extends ActivityPlace<Profile> {
         return factory.create(this);
     }
     
-    public ProfilePlace(Profile profile, RestfulAction restfulAction) {
-        super(profile, restfulAction, "profiles");
-    }
-
     public ProfilePlace(RestfulAction restfulAction) {
         super(restfulAction, "profiles");
+    }
+
+    public ProfilePlace(Profile model, RestfulAction restfulAction) {
+        super(model, restfulAction, "profiles");
     }
 
     public ProfilePlace(int id, RestfulAction restfulAction) {

@@ -11,7 +11,6 @@ import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -28,13 +27,13 @@ public class BreadCrumbsPanel extends FlowPanel {
     @Inject
     public BreadCrumbsPanel(final SessionManager<User> sessionManager, final SessionRestService service,
             final Notice notice){
+        setStyleName("rails-breadcrumbs");
         setVisible(false);
         sessionManager.addSessionHandler(new SessionHandler<User>() {
 
             public void timeout() {
                 notice.setText("timeout");
-                setName(null);
-                History.fireCurrentHistoryState();
+                logout();
             }
 
             public void logout() {
@@ -45,12 +44,10 @@ public class BreadCrumbsPanel extends FlowPanel {
                     }
                 });
                 setName(null);
-                History.fireCurrentHistoryState();
             }
 
             public void login(User user) {
                 setName(user.name);
-                History.fireCurrentHistoryState();
             }
 
             public void accessDenied() {

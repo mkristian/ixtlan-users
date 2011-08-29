@@ -76,4 +76,6 @@ gem 'open_id_authentication'
 #gem 'rack-openid'#, :lib => 'rack/openid'
 
 gem 'slf4r'
+gem 'ixtlan-generators'
 gem 'ixtlan-core'
+gem "ixtlan-core"

@@ -39,9 +39,8 @@ class ProfilesController < ApplicationController
     profile.delete(:updated_at)
 #    profile.delete(:openid_identifier)
 #    new_password = 
-profile.delete(:new_password)
+#profile.delete(:new_password)
     user = User.authenticate(@profile.login, profile.delete(:password))
-  
     if user == @profile
  #     profile[:password] = new_password if new_password
       respond_to do |format|
@@ -55,6 +54,8 @@ profile.delete(:new_password)
           format.json  { render :json => @profile.errors, :status => :unprocessable_entity }
         end
       end
+    else
+      head :unauthorized
     end
   end
 end

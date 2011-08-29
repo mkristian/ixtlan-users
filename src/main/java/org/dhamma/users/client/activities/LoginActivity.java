@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.LoginPlace;
 import org.dhamma.users.client.restservices.SessionRestService;
+
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
@@ -31,7 +32,8 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     public LoginActivity(@Assisted LoginPlace place,
             LoginView view,
             SessionRestService service,
-            SessionManager<User> sessionManager, Notice notice) {
+            SessionManager<User> sessionManager,
+            Notice notice) {
         this.view = view;
         this.service = service;
         this.sessionManager = sessionManager;
@@ -58,7 +60,7 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
             }
         });
     }
-    
+
     public void resetPassword(final String login) {
         Authentication authentication = new Authentication(login);
         service.resetPassword(authentication, new MethodCallback<Void>() {

@@ -20,11 +20,6 @@
   <%= @profile.password %>
 </p>
 
-<p>
-  <b>New password:</b>
-  <%= @profile.new_password %>
-</p>
-
 
 <% if allowed?(:profiles, :update) %>
 <%= link_to 'Edit', edit_profile_path %>

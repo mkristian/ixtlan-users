@@ -1,21 +1,21 @@
 package org.dhamma.users.client.managed;
 
-import org.dhamma.users.client.UsersEntryPoint.UsersApplication;
 import org.dhamma.users.client.SessionActivityPlaceActivityMapper;
+import org.dhamma.users.client.UsersEntryPoint.UsersApplication;
 import org.dhamma.users.client.activities.LoginActivity;
-import de.mkristian.gwt.rails.Application;
-import de.mkristian.gwt.rails.BaseModule;
+import org.dhamma.users.client.views.LoginViewImpl;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.inject.client.assistedinject.GinFactoryModuleBuilder;
+import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 
-import org.dhamma.users.client.views.LoginViewImpl;
-
+import de.mkristian.gwt.rails.Application;
+import de.mkristian.gwt.rails.BaseModule;
 import de.mkristian.gwt.rails.session.LoginView;
 public class UsersModule extends BaseModule {
 
@@ -25,7 +25,8 @@ public class UsersModule extends BaseModule {
         bind(org.dhamma.users.client.restservices.ProfilesRestService.class).toProvider(ProfilesRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.ConfigurationsRestService.class).toProvider(ConfigurationsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.UsersRestService.class).toProvider(UsersRestServiceProvider.class);
-        bind(Application.class).to(UsersApplication.class);
+        bind(Application.class).to(UsersApplication.class);     
+        bind(PlaceHistoryMapper.class).to(UsersPlaceHistoryMapper.class).in(Singleton.class);
         bind(ActivityMapper.class).to(SessionActivityPlaceActivityMapper.class).in(Singleton.class);
         bind(LoginView.class).to(LoginViewImpl.class);
         install(new GinFactoryModuleBuilder()

@@ -6,16 +6,16 @@
   <ui:style>
   </ui:style>
 
-    <g:FlowPanel>
-      <g:HTML><label name="username">Username or Email</label></g:HTML>
-      <g:TextBox ui:field="username" name="username"/>
-      <g:HTML><label name="password">Password</label></g:HTML>
-      <g:PasswordTextBox ui:field="password" name="password"/>
-      <g:HTML></g:HTML>
-      <g:Button ui:field="loginButton">login</g:Button>
-      <g:HTML><label name="username_email">Username or Email</label></g:HTML>
-      <g:TextBox ui:field="usernameOrEmail" name="username_email"/>
-      <g:HTML></g:HTML>
-      <g:Button ui:field="resetPasswordButton">password reset</g:Button>
-    </g:FlowPanel>
+  <g:FlowPanel styleName="display">
+    <g:HTML><label name="login">Username or Email</label></g:HTML>
+    <g:TextBox ui:field="login" name="login"/>
+    <g:HTML><label name="password">Password</label></g:HTML>
+    <g:PasswordTextBox ui:field="password" name="password"/>
+    <g:HTML></g:HTML>
+    <g:Button ui:field="loginButton">login</g:Button>
+    <g:HTML><label name="username">Username or Email</label></g:HTML>
+    <g:TextBox ui:field="username" name="username"/>
+    <g:HTML></g:HTML>
+    <g:Button ui:field="resetPasswordButton">password reset</g:Button>
+  </g:FlowPanel>
 </ui:UiBinder>

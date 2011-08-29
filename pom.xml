@@ -204,6 +204,11 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
+      <artifactId>ixtlan-generators</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
       <artifactId>ixtlan-core</artifactId>
       <type>gem</type>
     </dependency>
@@ -260,13 +265,13 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>ixtlan-guard</artifactId>
-        <version>0.4.1</version>
+        <version>0.6.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>ixtlan-core</artifactId>
-        <version>0.4.1</version>
+        <version>0.6.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -279,6 +284,12 @@
         <groupId>rubygems</groupId>
         <artifactId>resty-generators</artifactId>
         <version>0.4.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-generators</artifactId>
+        <version>0.1.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -404,7 +415,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>bcrypt-ruby</artifactId>
-        <version>2.1.4</version>
+        <version>3.0.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -482,7 +493,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rdoc</artifactId>
-        <version>3.9</version>
+        <version>3.9.4</version>
         <type>gem</type>
       </dependency>
       <dependency>

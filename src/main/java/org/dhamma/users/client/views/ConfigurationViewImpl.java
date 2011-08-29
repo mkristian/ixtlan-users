@@ -1,5 +1,8 @@
 package org.dhamma.users.client.views;
 
+import de.mkristian.gwt.rails.views.TimestampedView;
+import de.mkristian.gwt.rails.places.RestfulAction;
+import de.mkristian.gwt.rails.places.RestfulActionEnum;
 
 import org.dhamma.users.client.models.Configuration;
 import org.dhamma.users.client.places.ConfigurationPlace;
@@ -10,14 +13,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Singleton;
-
-import de.mkristian.gwt.rails.places.RestfulAction;
-import de.mkristian.gwt.rails.places.RestfulActionEnum;
-import de.mkristian.gwt.rails.views.TimestampedView;
 
 @Singleton
 public class ConfigurationViewImpl extends TimestampedView
@@ -34,7 +31,6 @@ public class ConfigurationViewImpl extends TimestampedView
 
     @UiField
     Button saveButton;
-
     @UiField
     TextBox idleSessionTimeout;
 
@@ -50,6 +46,7 @@ public class ConfigurationViewImpl extends TimestampedView
     public ConfigurationViewImpl() {
         initWidget(uiBinder.createAndBindUi(this));
     }
+
     @UiHandler("editButton")
     void onClickEdit(ClickEvent e) {
         presenter.goTo(new ConfigurationPlace(RestfulActionEnum.EDIT));
@@ -59,6 +56,7 @@ public class ConfigurationViewImpl extends TimestampedView
     void onClickSave(ClickEvent e) {
         presenter.save();
     }
+
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
@@ -71,8 +69,8 @@ public class ConfigurationViewImpl extends TimestampedView
     }
 
     public void reset(RestfulAction action) {
-        GWT.log(action.name() + " Configuration");
-        editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()));
+        editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()) || 
+                action.name().equals(RestfulActionEnum.INDEX.name()));
         saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         setEnabled(!action.viewOnly());
     }
