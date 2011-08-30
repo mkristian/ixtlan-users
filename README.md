@@ -2,7 +2,7 @@
 
 reqirements are
 
-* java> 1.4.2
+* java > 1.4.2
 
 * sqlite3
 
