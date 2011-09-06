@@ -54,6 +54,7 @@ class SessionsController < ApplicationController
                  Session.create(auth[:login] || auth[:email], 
                                 auth[:password])
                end
+p @session
     case @session
     when Session
       current_user(@session.user)
