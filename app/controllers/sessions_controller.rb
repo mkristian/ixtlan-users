@@ -47,6 +47,7 @@ class SessionsController < ApplicationController
   end
 
   def create
+p params
     @session = if using_open_id?
                  open_id_authentication(params[:openid_url])
                else
