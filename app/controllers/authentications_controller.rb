@@ -13,8 +13,8 @@ class AuthenticationsController < ApplicationController
 
     if @user
       respond_to do |format|
-        format.xml  { render :xml => @user.to_xml(:include => :groups) }
-        format.json  { render :json => @user.to_json(:include => :groups) }
+        format.xml  { render :xml => @user.to_xml }
+        format.json  { render :json => @user.to_json }
       end
     else
       head :not_found
