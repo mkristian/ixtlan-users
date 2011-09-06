@@ -26,6 +26,8 @@ class ConfigurationsController < ApplicationController
   # PUT /configurations.json
   def update
     @configuration = Configuration.instance
+    (params[:configuration] || []).delete(:created_at)
+    (params[:configuration] || []).delete(:updated_at)
 
     respond_to do |format|
       if @configuration.update_attributes(params[:configuration])
