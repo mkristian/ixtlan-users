@@ -4,6 +4,11 @@ class SessionsController < ApplicationController
 
   prepend_after_filter :reset_session, :only => :destroy
 
+  # TODO do not know why skip_before_filter does not work with heroku
+  def authorization
+    true
+  end
+
   protected
   
   def open_id_authentication(openid_url)
@@ -47,7 +52,6 @@ class SessionsController < ApplicationController
   end
 
   def create
-p params
     @session = if using_open_id?
                  open_id_authentication(params[:openid_url])
                else
@@ -55,7 +59,6 @@ p params
                  Session.create(auth[:login] || auth[:email], 
                                 auth[:password])
                end
-p @session
     case @session
     when Session
       current_user(@session.user)
