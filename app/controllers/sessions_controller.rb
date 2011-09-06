@@ -50,12 +50,15 @@ class SessionsController < ApplicationController
     @session = if using_open_id?
                  open_id_authentication(params[:openid_url])
                else
-                 Session.create(params[:authentication])
+                 auth = params[:authentication] || []
+                 Session.create(auth[:login] || auth[:email], 
+                                auth[:password])
                end
     case @session
     when Session
       current_user(@session.user)
-      @session.permissions = guard.permissions(self)
+      groups = @session.user.groups.collect { |g| g.name.to_s }
+      @session.permissions = guard.permissions(groups)
 
       # TODO make html login
       respond_to do |format|
