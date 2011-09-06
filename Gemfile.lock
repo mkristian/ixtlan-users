@@ -34,6 +34,7 @@ GEM
     bcrypt-ruby (3.0.0-java)
     bouncy-castle-java (1.5.0146.1)
     builder (2.1.2)
+    enforce-ssl (0.2.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
@@ -98,6 +99,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbc-adapter
   bcrypt-ruby
+  enforce-ssl
   ixtlan-core
   ixtlan-generators
   ixtlan-guard
