@@ -159,12 +159,37 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
+      <artifactId>resty-generators</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-generators</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
       <artifactId>enforce-ssl</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>ixtlan-session-timeout</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-guard</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-core</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>slf4r</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
@@ -198,21 +223,6 @@
       <type>gem</type>
     </dependency>
     <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>slf4r</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>ixtlan-generators</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>ixtlan-core</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
       <groupId>org.fusesource.restygwt</groupId>
       <artifactId>restygwt</artifactId>
       <version>1.2-SNAPSHOT</version>
@@ -229,7 +239,7 @@
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
-      <version>2.2.0</version>
+      <version>2.3.0</version>
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
@@ -262,36 +272,6 @@
   </dependencies>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-guard</artifactId>
-        <version>0.6.0</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-core</artifactId>
-        <version>0.6.0</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>slf4r</artifactId>
-        <version>0.4.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>resty-generators</artifactId>
-        <version>0.4.0</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-generators</artifactId>
-        <version>0.1.0</version>
-        <type>gem</type>
-      </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>abstract</artifactId>
@@ -432,6 +412,30 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
+        <artifactId>ixtlan-core</artifactId>
+        <version>0.6.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>slf4r</artifactId>
+        <version>0.4.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-generators</artifactId>
+        <version>0.1.1</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-guard</artifactId>
+        <version>0.6.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
         <artifactId>ixtlan-session-timeout</artifactId>
         <version>0.4.0</version>
         <type>gem</type>
@@ -502,6 +506,12 @@
         <version>0.14.6</version>
         <type>gem</type>
       </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>resty-generators</artifactId>
+        <version>0.5.0</version>
+        <type>gem</type>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <properties>
@@ -518,7 +528,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
         <configuration>
           <extraJvmArgs>-Xmx512m</extraJvmArgs>
           <hostedWebapp>${basedir}/public</hostedWebapp>

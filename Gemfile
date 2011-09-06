@@ -64,11 +64,11 @@ group :production do
   gem 'pg', :platforms => :ruby
 end
 
-gem 'resty-generators', :path => '../../rails-resty-gwt/resty-generators'
+gem 'resty-generators'#, :path => '../../rails-resty-gwt/resty-generators'
 
 gem 'enforce-ssl'
 gem "ixtlan-session-timeout"
-gem "ixtlan-guard", :path => '../../ixtlan/ixtlan-guard'
+gem "ixtlan-guard"#, :path => '../../ixtlan/ixtlan-guard'
 gem "jruby-openssl", "~> 0.7.4", :platforms => :jruby
 
 gem 'bcrypt-ruby'
@@ -76,6 +76,5 @@ gem 'open_id_authentication'
 #gem 'rack-openid'#, :lib => 'rack/openid'
 
 gem 'slf4r'
-gem 'ixtlan-generators'
-gem 'ixtlan-core'
-gem "ixtlan-core"
+gem 'ixtlan-generators'#, :path => '../../ixtlan/ixtlan-generators'
+gem 'ixtlan-core'#, :path => '../../ixtlan/ixtlan-core'
