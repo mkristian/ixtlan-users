@@ -1,5 +1,12 @@
 class AuthenticationsController < ApplicationController
 
+  skip_before_filter :authorization
+
+  # TODO do not know why skip_before_filter does not work with heroku
+  def authorization
+    true
+  end
+
   def create
     @user = User.authenticate(params[:authentication][:login],
                               params[:authentication][:password] )
