@@ -38,15 +38,5 @@ module Users
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-require 'open_id_authentication'
-
-require 'rack/openid'
-
-config.middleware.use OpenIdAuthentication
-
-config.after_initialize do
-  OpenID::Util.logger = Rails.logger
-  ActionController::Base.send :include, OpenIdAuthentication
-end
   end
 end

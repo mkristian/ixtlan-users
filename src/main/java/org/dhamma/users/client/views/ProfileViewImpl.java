@@ -42,9 +42,6 @@ public class ProfileViewImpl extends TimestampedView
     TextBox name;
 
     @UiField
-    TextBox openidIdentifier;
-
-    @UiField
     PasswordTextBox password;
 
     @UiField
@@ -74,7 +71,6 @@ public class ProfileViewImpl extends TimestampedView
         resetSignature(model.createdAt, model.updatedAt);
         email.setText(model.email);
         name.setText(model.name);
-        openidIdentifier.setText(model.openidIdentifier);
         password.setText(null);
     }
 
@@ -95,8 +91,6 @@ public class ProfileViewImpl extends TimestampedView
 
         model.name = name.getText();
 
-        model.openidIdentifier = openidIdentifier.getText();
-
         model.password = password.getText();
 
         return model;
@@ -105,7 +99,6 @@ public class ProfileViewImpl extends TimestampedView
     public void setEnabled(boolean enabled) {
          email.setEnabled(enabled);
          name.setEnabled(enabled);
-         openidIdentifier.setEnabled(enabled);
          password.setEnabled(enabled);
     }
 }

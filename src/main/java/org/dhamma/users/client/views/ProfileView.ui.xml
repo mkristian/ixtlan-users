@@ -33,10 +33,6 @@
 	  <g:TextBox ui:field="name" name="name"/>
 	</g:FlowPanel>
         <g:FlowPanel styleName="{style.field}">
-          <g:HTML><label name="openidIdentifier">Openid identifier</label></g:HTML>
-	  <g:TextBox ui:field="openidIdentifier" name="openidIdentifier"/>
-	</g:FlowPanel>
-        <g:FlowPanel styleName="{style.field}">
           <g:HTML><label name="password">Password</label></g:HTML>
 	  <g:PasswordTextBox ui:field="password" name="password"/>
 	</g:FlowPanel>

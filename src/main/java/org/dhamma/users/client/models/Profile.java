@@ -14,9 +14,6 @@ public class Profile {
 
   public String name;
 
-  @Json(name = "openid_identifier")
-  public String openidIdentifier;
-
   public String password;
 
 
