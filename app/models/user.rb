@@ -16,7 +16,9 @@ class User < ActiveRecord::Base
     return "no password for login: #{login}" if password.blank?
     if login == 'root'
       if password == 'behappy'
-        return User.new(:login => 'root', :name => "Root")
+        u = User.new(:login => 'root', :name => "Root")
+        u.groups << Group.new(:name => 'root')
+        return u
       else
         return "wrong password for login: #{login}"
       end
@@ -59,7 +61,7 @@ class User < ActiveRecord::Base
   end
 
   def groups
-    @groups ||= [Group.new('name' => :root)]
+    @groups ||= [Group.new('name' => 'root')]
   end
 
   unless respond_to? :old_as_json
@@ -69,6 +71,16 @@ class User < ActiveRecord::Base
       options[:methods] = [:groups] unless options[:methods]
       options[:except] = [:hashed, :hashed2] unless options[:except]
       old_as_json(options)
+    end
+  end
+
+  unless respond_to? :old_to_xml
+    alias :old_to_xml :to_xml
+    def to_xml(options = {})
+      options ||= {}
+      options[:methods] = [:groups] unless options[:methods]
+      options[:except] = [:hashed, :hashed2] unless options[:except]
+      old_to_xml(options)
     end
   end
 
