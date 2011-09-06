@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     return "no password for login: #{login}" if password.blank?
     if login == 'root'
       if password == 'behappy'
-        u = User.new(:login => 'root', :name => "Root")
+        u = User.new(:login => 'root', :name => "Root", :email => 'dummy@example.com')
         u.groups << Group.new(:name => 'root')
         return u
       else
