@@ -12,7 +12,7 @@ class UserMailer < ActionMailer::Base
     @user = user
     @password = password
 
-    mail :to => user.email
+    mail :to => user.email, :subject => "reset access"
   end
 
   def send_new_account(user, password)
@@ -20,6 +20,6 @@ class UserMailer < ActionMailer::Base
     @password = password
     @url = Configuration.instance.login_url
 
-    mail :to => user.email
+    mail :to => user.email, :subject => "access"
   end
 end
