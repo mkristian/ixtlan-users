@@ -36,8 +36,8 @@ class ProfilesController < ApplicationController
     @profile = current_user
 
     profile = params[:profile] ||[]
+    profile.delete(:created_at)
     profile.delete(:updated_at)
-#    profile.delete(:openid_identifier)
 #    new_password = 
 #profile.delete(:new_password)
     user = User.authenticate(@profile.login, profile.delete(:password))

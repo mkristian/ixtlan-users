@@ -60,7 +60,8 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   # PUT /users/1.json
   def update
-    @user = User.optimistic_find((params[:user]||[]).delete(:updated_at), params[:id])
+    _params = params[:user] || []
+    @user = User.optimistic_find(_params.delete(:updated_at), params[:id])
 
     if @user.nil?
       @user = User.find(params[:id])
@@ -71,10 +72,11 @@ class UsersController < ApplicationController
       end
       return
     end
-    (params[:user]||[]).delete(:id)
+    _params.delete(:id)
+    _params.delete(:created_at)
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(_params)
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
         format.xml  { render :xml => @user }
         format.json  { render :json => @user }
@@ -89,7 +91,8 @@ class UsersController < ApplicationController
   # PUT /users/1/reset_password.xml
   # PUT /users/1/reset_password.json
   def reset_password
-    @user = User.optimistic_find((params[:user]||[]).delete(:updated_at), params[:id])
+    _params = params[:user] || []
+    @user = User.optimistic_find(_params.delete(:updated_at), params[:id])
 
     if @user.nil?
       @user = User.find(params[:id])
@@ -100,7 +103,6 @@ class UsersController < ApplicationController
       end
       return
     end
-    (params[:user]||[]).delete(:id)
 
     pwd = @user.reset_password
 

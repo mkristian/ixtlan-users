@@ -72,7 +72,6 @@ gem "ixtlan-guard"
 gem "jruby-openssl", "~> 0.7.4", :platforms => :jruby
 
 gem 'bcrypt-ruby'
-gem 'open_id_authentication'
 
 gem 'ixtlan-generators'
 gem 'ixtlan-core'
