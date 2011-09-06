@@ -18,17 +18,6 @@ class ProfilesController < ApplicationController
     @profile = current_user
   end
 
-  # PUT /profiles/reset_password
-  # PUT /profiles/reset_password.xml
-  # PUT /profiles/reset_password.json
-  def reset_password
-    @profile = current_user
-    pwd = @profile.reset_password
-    UserMailer.send_password_email(@profile, pwd)
-
-    head :ok
-  end
-
   # PUT /profiles
   # PUT /profiles.xml
   # PUT /profiles.json
@@ -38,13 +27,16 @@ class ProfilesController < ApplicationController
     profile = params[:profile] ||[]
     profile.delete(:created_at)
     profile.delete(:updated_at)
+    profile.delete(:login)
+    profile.delete(:id)
+
 #    new_password = 
 #profile.delete(:new_password)
     user = User.authenticate(@profile.login, profile.delete(:password))
     if user == @profile
  #     profile[:password] = new_password if new_password
       respond_to do |format|
-        if @profile.update_attributes(params[:profile])
+        if @profile.update_attributes(profile)
           format.html { redirect_to(profile_path, :notice => 'Profile was successfully updated.') }
           format.xml  { render :xml => @profile }
           format.json  { render :json => @profile.to_json(:root => :profile, :methods => []) }
