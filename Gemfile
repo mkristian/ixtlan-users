@@ -69,9 +69,5 @@ gem 'resty-generators'
 gem 'enforce-ssl'
 gem "ixtlan-session-timeout"
 gem "ixtlan-guard"
-gem "jruby-openssl", "~> 0.7.4", :platforms => :jruby
 
 gem 'bcrypt-ruby'
-
-gem 'ixtlan-generators'
-gem 'ixtlan-core'

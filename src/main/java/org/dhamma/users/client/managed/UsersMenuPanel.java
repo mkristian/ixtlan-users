@@ -19,6 +19,11 @@ public class UsersMenuPanel extends MenuPanel<User> {
     @Inject
     UsersMenuPanel(final PlaceController placeController, SessionManager<User> sessionManager){
         super(sessionManager);
+        addButton("Groups").addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                placeController.goTo(new org.dhamma.users.client.places.GroupPlace(RestfulActionEnum.INDEX));
+            }
+        });
         addButton("Configuration").addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 placeController.goTo(new org.dhamma.users.client.places.ConfigurationPlace(RestfulActionEnum.SHOW));

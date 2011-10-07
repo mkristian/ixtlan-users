@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @group.name %>
+</p>
+
+
+<% if allowed?(:groups, :update) %>
+<%= link_to 'Edit', edit_group_path(@group) %>
+<% end %>
+<% if allowed?(:groups, :index) %>
+ | <%= link_to 'Back', groups_path %>
+<% end %>

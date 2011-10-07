@@ -4,7 +4,9 @@ jar('org.fusesource.restygwt:restygwt', '1.2-SNAPSHOT').scope :provided
 jar('javax.ws.rs:jsr311-api', '1.1').scope :provided
 jar('com.google.gwt:gwt-user', GWT_VERSION).scope :provided
 jar('com.google.gwt.inject:gin', '1.5.0').scope :provided
-jar('de.mkristian.rails-gwt:rails-gwt', '0.2.0-SNAPSHOT').scope :provided
+jar('de.mkristian.rails-gwt:rails-gwt', '0.3.0-SNAPSHOT').scope :provided
+jar('javax.validation:validation-api', '1.0.0.GA').scope :provided
+jar('javax.validation:validation-api', '1.0.0.GA', 'sources').scope :provided
 
 plugin('org.codehaus.mojo:gwt-maven-plugin', GWT_VERSION) do |gwt|
   gwt.with({ :warSourceDirectory => "${basedir}/public",
@@ -30,4 +32,6 @@ profile("mac") do |mac|
 end
 
 repository(:snapshots).url "http://mojo.saumya.de"
+properties['jruby.plugins.version'] ='0.28.5-SNAPSHOT'
+
 # vim: syntax=Ruby

@@ -10,12 +10,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110730184649) do
+ActiveRecord::Schema.define(:version => 20110907124601) do
 
   create_table "configurations", :force => true do |t|
     t.integer  "idle_session_timeout", :default => 15
     t.string   "password_from_email"
     t.string   "login_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

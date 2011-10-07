@@ -1,14 +1,4 @@
-class Group
-  include ActiveModel::Serializers::JSON
-  include ActiveModel::Serializers::Xml
-
-  attr_accessor :name
-
-  def initialize(attributes = {})
-    @name = attributes['name']
-  end
-
-  def attributes
-    { 'name' => name }
-  end
+class Group < ActiveRecord::Base
+  belongs_to :modified_by, :class_name => "User"
+  validates :modified_by_id, :presence => true
 end

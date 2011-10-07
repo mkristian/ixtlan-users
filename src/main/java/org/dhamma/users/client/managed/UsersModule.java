@@ -22,6 +22,7 @@ public class UsersModule extends BaseModule {
     @Override
     protected void configure() {
         super.configure();
+        bind(org.dhamma.users.client.restservices.GroupsRestService.class).toProvider(GroupsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.ProfilesRestService.class).toProvider(ProfilesRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.ConfigurationsRestService.class).toProvider(ConfigurationsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.UsersRestService.class).toProvider(UsersRestServiceProvider.class);
@@ -30,10 +31,11 @@ public class UsersModule extends BaseModule {
         bind(ActivityMapper.class).to(SessionActivityPlaceActivityMapper.class).in(Singleton.class);
         bind(LoginView.class).to(LoginViewImpl.class);
         install(new GinFactoryModuleBuilder()
+            .implement(Activity.class, Names.named("groups"), org.dhamma.users.client.activities.GroupActivity.class)
             .implement(Activity.class, Names.named("profiles"), org.dhamma.users.client.activities.ProfileActivity.class)
             .implement(Activity.class, Names.named("configurations"), org.dhamma.users.client.activities.ConfigurationActivity.class)
             .implement(Activity.class, Names.named("users"), org.dhamma.users.client.activities.UserActivity.class)
-		.implement(Activity.class, Names.named("login"), LoginActivity.class)
+            .implement(Activity.class, Names.named("login"), LoginActivity.class)
             .build(ActivityFactory.class));
     }
 
@@ -60,6 +62,16 @@ public class UsersModule extends BaseModule {
             return service;
         }
     }
+
+    @Singleton
+    public static class GroupsRestServiceProvider implements Provider<org.dhamma.users.client.restservices.GroupsRestService> {
+        private final org.dhamma.users.client.restservices.GroupsRestService service = GWT.create(org.dhamma.users.client.restservices.GroupsRestService.class);
+        public org.dhamma.users.client.restservices.GroupsRestService get() {
+            return service;
+        }
+    }
 }
+
+
 
 

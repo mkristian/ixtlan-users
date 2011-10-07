@@ -1,0 +1,32 @@
+<h1>Listing groups</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @groups.each do |group| %>
+  <tr>
+    <td><%= group.name %></td>
+<% if allowed?(:groups, :show) %>
+    <td><%= link_to 'Show', group %></td>
+<% end %>
+<% if allowed?(:groups, :update) %>
+    <td><%= link_to 'Edit', edit_group_path(group) %></td>
+<% end %>
+<% if allowed?(:groups, :destroy) %>
+    <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %>
+</td>
+<% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% if allowed?(:groups, :create) %>
+<%= link_to 'New Group', new_group_path %>
+<% end %>

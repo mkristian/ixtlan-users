@@ -1,9 +1,12 @@
 class UsersController < ApplicationController
+
+  skip_before_filter :authorization
+
   # GET /users
   # GET /users.xml
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.all(:conditions => ["updated_at > ?", params[:updated_at]])
 
     respond_to do |format|
       format.html # index.html.erb 
