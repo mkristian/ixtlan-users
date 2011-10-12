@@ -4,6 +4,8 @@ class CreateGroups < ActiveRecord::Migration
       t.string :name
 
       t.timestamps
+
+      t.references :modified_by
     end
   end
 

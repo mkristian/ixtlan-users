@@ -1,0 +1,33 @@
+<h1>Listing remote_permissions</h1>
+
+<table>
+  <tr>
+    <th>Ip</th>
+    <th>Token</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @remote_permissions.each do |remote_permission| %>
+  <tr>
+    <td><%= remote_permission.ip %></td>
+    <td><%= remote_permission.token %></td>
+<% if allowed?(:remote_permissions, :show) %>
+    <td><%= link_to 'Show', remote_permission %></td>
+<% end %>
+<% if allowed?(:remote_permissions, :update) %>
+    <td><%= link_to 'Edit', edit_remote_permission_path(remote_permission) %></td>
+<% end %>
+<% if allowed?(:remote_permissions, :destroy) %>
+    <td><%= link_to 'Destroy', remote_permission_path(remote_permission) + "?remote_permission[updated_at]=#{remote_permission.updated_at.utc.strftime('%Y-%m-%d %H:%M:%S') + ("%06d" % remote_permission.updated_at.utc)}", :confirm => 'Are you sure?', :method => :delete %></td>
+<% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% if allowed?(:remote_permissions, :create) %>
+<%= link_to 'New Remote permission', new_remote_permission_path %>
+<% end %>

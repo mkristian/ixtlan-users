@@ -47,7 +47,7 @@ public class BreadCrumbsPanel extends FlowPanel {
             }
 
             public void login(User user) {
-                setName(user.name);
+                setName(user.getName());
             }
 
             public void accessDenied() {

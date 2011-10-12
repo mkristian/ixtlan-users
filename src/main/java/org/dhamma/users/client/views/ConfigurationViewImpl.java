@@ -1,50 +1,56 @@
 package org.dhamma.users.client.views;
 
-import de.mkristian.gwt.rails.views.TimestampedView;
-import de.mkristian.gwt.rails.places.RestfulAction;
-import de.mkristian.gwt.rails.places.RestfulActionEnum;
-
+import org.dhamma.users.client.editors.ConfigurationEditor;
 import org.dhamma.users.client.models.Configuration;
 import org.dhamma.users.client.places.ConfigurationPlace;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
+import de.mkristian.gwt.rails.places.RestfulAction;
+import de.mkristian.gwt.rails.places.RestfulActionEnum;
+
 @Singleton
-public class ConfigurationViewImpl extends TimestampedView
-        implements ConfigurationView {
+public class ConfigurationViewImpl extends Composite implements ConfigurationView {
 
     @UiTemplate("ConfigurationView.ui.xml")
-    interface ConfigurationViewUiBinder extends UiBinder<Widget, ConfigurationViewImpl> {}
+    interface Binder extends UiBinder<Widget, ConfigurationViewImpl> {}
     
-    private static ConfigurationViewUiBinder uiBinder = GWT.create(ConfigurationViewUiBinder.class);
+    private static Binder BINDER = GWT.create(Binder.class);
 
-    
-    @UiField
-    Button editButton;
+    interface EditorDriver extends SimpleBeanEditorDriver<Configuration, ConfigurationEditor> {}
 
-    @UiField
-    Button saveButton;
-    @UiField
-    TextBox idleSessionTimeout;
+    private final EditorDriver editorDriver = GWT.create(EditorDriver.class);
 
-    @UiField
-    TextBox passwordFromEmail;
+    @UiField Button editButton;
+    @UiField Button showButton;
 
-    @UiField
-    TextBox loginUrl;
+    @UiField Button saveButton;
 
+    @UiField Panel model;
+
+    @UiField ConfigurationEditor editor;
 
     private Presenter presenter;
 
     public ConfigurationViewImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
+        initWidget(BINDER.createAndBindUi(this));
+        editorDriver.initialize(editor);
+    }
+
+    @UiHandler("showButton")
+    void onClickShow(ClickEvent e) {
+        presenter.goTo(new ConfigurationPlace(RestfulActionEnum.SHOW));
     }
 
     @UiHandler("editButton")
@@ -56,16 +62,20 @@ public class ConfigurationViewImpl extends TimestampedView
     void onClickSave(ClickEvent e) {
         presenter.save();
     }
-
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
-    public void reset(Configuration model) {
-        resetSignature(model.createdAt, model.updatedAt);
-        idleSessionTimeout.setText(model.idleSessionTimeout + "");
-        passwordFromEmail.setText(model.passwordFromEmail);
-        loginUrl.setText(model.loginUrl);
+    public void edit(Configuration model) {
+        this.editorDriver.edit(model);
+    }
+
+    public Configuration flush() {
+        return editorDriver.flush();
+    }
+
+    public void setEnabled(boolean enabled) {
+        editor.setEnabled(enabled);
     }
 
     public void reset(RestfulAction action) {
@@ -73,26 +83,5 @@ public class ConfigurationViewImpl extends TimestampedView
                 action.name().equals(RestfulActionEnum.INDEX.name()));
         saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         setEnabled(!action.viewOnly());
-    }
-
-    public Configuration retrieveConfiguration() {
-        Configuration model = new Configuration();
-
-        model.createdAt = createdAt.getValue();
-        model.updatedAt = updatedAt.getValue();
-
-        model.idleSessionTimeout = Integer.parseInt(idleSessionTimeout.getText());
-
-        model.passwordFromEmail = passwordFromEmail.getText();
-
-        model.loginUrl = loginUrl.getText();
-
-        return model;
-    }
-
-    public void setEnabled(boolean enabled) {
-         idleSessionTimeout.setEnabled(enabled);
-         passwordFromEmail.setEnabled(enabled);
-         loginUrl.setEnabled(enabled);
     }
 }

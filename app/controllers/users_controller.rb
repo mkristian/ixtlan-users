@@ -1,17 +1,66 @@
 class UsersController < ApplicationController
 
-  skip_before_filter :authorization
+  before_filter :cleanup_params
+  before_filter :ip_restriction, :only => :last_changes
+  skip_before_filter :authorization,  :only => :last_changes
+
+  private
+
+  def cleanup_params
+    # compensate the shortcoming of the incoming json/xml
+    model = params[:user] || []
+    model.delete :id
+    model.delete :created_at
+    params[:updated_at] ||= model.delete :updated_at
+  end
+
+  def stale?
+    if @user.nil?
+      @user = User.find(params[:id])
+      respond_to do |format|
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => nil, :status => :conflict }
+        format.json  { render :json => nil, :status => :conflict }
+      end
+      true
+    end
+  end
+
+  public
+
+  # GET /users/last_changes.xml
+  # GET /users/last_changes.json
+  def last_changes
+    update = params[:updated_at]
+    @users = 
+      unless update.blank?
+        User.all(:conditions => ["updated_at > ?", update])
+      else
+        User.all
+      end
+
+    respond_to do |format|
+      format.xml  { render :xml => @users.to_xml(User.update_options) }
+      format.json  { render :json => @users.to_json(User.update_options) }
+    end
+  end
 
   # GET /users
   # GET /users.xml
   # GET /users.json
   def index
-    @users = User.all(:conditions => ["updated_at > ?", params[:updated_at]])
+    update = params[:updated_at]
+    @users = 
+      unless update.blank?
+        User.all(:conditions => ["updated_at > ?", update])
+      else
+        User.all
+      end
 
     respond_to do |format|
       format.html # index.html.erb 
-      format.xml  { render :xml => @users }
-      format.json  { render :json => @users }
+      format.xml  { render :xml => @users.to_xml(update.nil? ? User.options : User.update_options) }
+      format.json  { render :json => @users.to_json(update.nil? ? User.options : User.update_options) }
     end
   end
 
@@ -23,8 +72,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @user }
-      format.json  { render :json => @user }
+      format.xml  { render :xml => @user.to_xml(User.single_options) }
+      format.json  { render :json => @user.to_json(User.single_options) }
     end
   end
 
@@ -42,15 +91,17 @@ class UsersController < ApplicationController
   # POST /users.xml
   # POST /users.json
   def create
+    (params[:user] || []).delete(:groups)
     @user = User.new(params[:user])
-    pwd = @user.reset_password
+    @user.reset_password
+    @user.modified_by = current_user
 
     respond_to do |format|
       if @user.save
-        UserMailer.send_new_account(@user, pwd).deliver
+        UserMailer.send_new_user(@user).deliver
         format.html { redirect_to(@user, :notice => 'User was successfully created.') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
-        format.json  { render :json => @user, :status => :created, :location => @user }
+        format.xml  { render :xml => @user.to_xml(User.single_options), :status => :created, :location => @user }
+        format.json  { render :json => @user.to_json(User.single_options), :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
@@ -63,26 +114,20 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   # PUT /users/1.json
   def update
-    _params = params[:user] || []
-    @user = User.optimistic_find(_params.delete(:updated_at), params[:id])
+    @user = User.optimistic_find(params[:updated_at], params[:id])
 
-    if @user.nil?
-      @user = User.find(params[:id])
-      respond_to do |format|
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => nil, :status => :conflict }
-        format.json  { render :json => nil, :status => :conflict }
-      end
-      return
-    end
-    _params.delete(:id)
-    _params.delete(:created_at)
+    return if stale?
+
+    params[:user] ||= {}
+    params[:user][:modified_by] = current_user
+    
+    params[:user].delete(:groups)
 
     respond_to do |format|
-      if @user.update_attributes(_params)
+      if @user.update_attributes(params[:user])
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
-        format.xml  { render :xml => @user }
-        format.json  { render :json => @user }
+        format.xml  { render :xml => @user.to_xml(User.single_options) }
+        format.json  { render :json => @user.to_json(User.single_options) }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
@@ -94,23 +139,14 @@ class UsersController < ApplicationController
   # PUT /users/1/reset_password.xml
   # PUT /users/1/reset_password.json
   def reset_password
-    _params = params[:user] || []
-    @user = User.optimistic_find(_params.delete(:updated_at), params[:id])
+    @user = User.optimistic_find(params[:updated_at], params[:id])
 
-    if @user.nil?
-      @user = User.find(params[:id])
-      respond_to do |format|
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => nil, :status => :conflict }
-        format.json  { render :json => nil, :status => :conflict }
-      end
-      return
-    end
+    return if stale?
 
-    pwd = @user.reset_password
+    @user.reset_password
 
     if @user.save
-      UserMailer.send_password_email(@user, pwd)
+      UserMailer.send_password(@user)
       respond_to do |format|
         format.html { redirect_to(@user, :notice => 'Password reset was successful.') }
         format.xml  { head :ok }
@@ -129,17 +165,9 @@ class UsersController < ApplicationController
   # DELETE /users/1.xml
   # DELETE /users/1.json
   def destroy
-    @user = User.optimistic_find((params[:user]||[]).delete(:updated_at), params[:id])
+    @user = User.optimistic_find(params[:updated_at], params[:id])
 
-    if @user.nil?
-      @user = User.find(params[:id])
-      respond_to do |format|
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => nil, :status => :conflict }
-        format.json  { render :json => nil, :status => :conflict }
-      end
-      return
-    end
+    return if stale?
 
     @user.destroy
 

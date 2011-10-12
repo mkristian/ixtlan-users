@@ -6,6 +6,8 @@ class CreateConfigurations < ActiveRecord::Migration
       t.string :login_url
 
       t.timestamps
+
+      t.references :modified_by
     end
   end
 

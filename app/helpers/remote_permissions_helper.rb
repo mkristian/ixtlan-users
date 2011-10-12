@@ -1,0 +1,2 @@
+module RemotePermissionsHelper
+end

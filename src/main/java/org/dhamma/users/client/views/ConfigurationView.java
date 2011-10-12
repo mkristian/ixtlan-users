@@ -18,11 +18,11 @@ public interface ConfigurationView extends IsWidget {
     }
     void setPresenter(Presenter presenter);
 
-    void reset(Configuration model);
+    void edit(Configuration model);
+
+    Configuration flush();
 
     void reset(RestfulAction action);
     
     void setEnabled(boolean enabled);
-
-    Configuration retrieveConfiguration();
 }

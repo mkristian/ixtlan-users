@@ -9,7 +9,19 @@ class GroupsController < ApplicationController
     model = params[:group] || []
     model.delete :id
     model.delete :created_at
-    model.delete :updated_at
+    params[:updated_at] = model.delete :updated_at
+  end
+
+  def stale?
+    if @group.nil?
+      @group = Group.find(params[:id])
+      respond_to do |format|
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => nil, :status => :conflict }
+        format.json  { render :json => nil, :status => :conflict }
+      end
+      true
+    end
   end
 
   public
@@ -22,8 +34,8 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb 
-      format.xml  { render :xml => @groups }
-      format.json  { render :json => @groups }
+      format.xml  { render :xml => @groups.to_xml(Group.options) }
+      format.json  { render :json => @groups.to_json(Group.options) }
     end
   end
 
@@ -35,8 +47,8 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @group }
-      format.json  { render :json => @group }
+      format.xml  { render :xml => @group.to_xml(Group.single_options) }
+      format.json  { render :json => @group.to_json(Group.single_options) }
     end
   end
 
@@ -60,8 +72,8 @@ class GroupsController < ApplicationController
     respond_to do |format|
       if @group.save
         format.html { redirect_to(@group, :notice => 'Group was successfully created.') }
-        format.xml  { render :xml => @group, :status => :created, :location => @group }
-        format.json  { render :json => @group, :status => :created, :location => @group }
+        format.xml  { render :xml => @group.to_xml(Group.single_options), :status => :created, :location => @group }
+        format.json  { render :json => @group.to_json(Group.single_options), :status => :created, :location => @group }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
@@ -74,15 +86,18 @@ class GroupsController < ApplicationController
   # PUT /groups/1.xml
   # PUT /groups/1.json
   def update
-    @group = Group.find(params[:id])
+    @group = Group.optimistic_find(params[:updated_at], params[:id])
+
+    return if stale?
+
     params[:group] ||= {}
     params[:group][:modified_by] = current_user
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
         format.html { redirect_to(@group, :notice => 'Group was successfully updated.') }
-        format.xml  { render :xml => @group }
-        format.json  { render :json => @group }
+        format.xml  { render :xml => @group.to_xml(Group.single_options) }
+        format.json  { render :json => @group.to_json(Group.single_options) }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @group.errors, :status => :unprocessable_entity }
@@ -95,7 +110,9 @@ class GroupsController < ApplicationController
   # DELETE /groups/1.xml
   # DELETE /groups/1.json
   def destroy
-    @group = Group.find(params[:id])
+    @group = Group.optimistic_find(params[:updated_at], params[:id])
+
+    return if stale?
 
     @group.destroy
 

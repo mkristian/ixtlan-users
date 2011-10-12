@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110907124601) do
+ActiveRecord::Schema.define(:version => 20111011134343) do
 
   create_table "configurations", :force => true do |t|
     t.integer  "idle_session_timeout", :default => 15
@@ -18,12 +18,27 @@ ActiveRecord::Schema.define(:version => 20110907124601) do
     t.string   "login_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "modified_by_id"
   end
 
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "modified_by_id"
+  end
+
+  create_table "groups_users", :id => false, :force => true do |t|
+    t.integer "group_id"
+    t.integer "user_id"
+  end
+
+  create_table "remote_permissions", :force => true do |t|
+    t.string   "ip"
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "modified_by_id"
   end
 
   create_table "users", :force => true do |t|
@@ -32,9 +47,9 @@ ActiveRecord::Schema.define(:version => 20110907124601) do
     t.string   "name"
     t.string   "hashed"
     t.string   "hashed2"
-    t.string   "openid_identifier"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "modified_by_id"
   end
 
 end

@@ -1,5 +1,6 @@
 package org.dhamma.users.client.activities;
 
+import org.dhamma.users.client.events.ConfigurationEvent;
 import org.dhamma.users.client.models.Configuration;
 import org.dhamma.users.client.places.ConfigurationPlace;
 import org.dhamma.users.client.restservices.ConfigurationsRestService;
@@ -17,6 +18,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import de.mkristian.gwt.rails.Notice;
+import de.mkristian.gwt.rails.events.ModelEvent.Action;
 
 public class ConfigurationActivity extends AbstractActivity implements ConfigurationView.Presenter{
 
@@ -25,9 +27,10 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
     private final Notice notice;
     private final PlaceController placeController;
     private final ConfigurationView view;
+    private EventBus eventBus;
     
     @Inject
-    public ConfigurationActivity(@Assisted ConfigurationPlace place, Notice notice, ConfigurationView view,
+    public ConfigurationActivity(@Assisted ConfigurationPlace place, final Notice notice, final ConfigurationView view,
             ConfigurationsRestService service, PlaceController placeController) {
         this.place = place;
         this.notice = notice;
@@ -37,6 +40,7 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
+        this.eventBus = eventBus;
         display.setWidget(view.asWidget());
         view.setPresenter(this);
         load();
@@ -58,8 +62,9 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
             }
 
             public void onSuccess(Method method, Configuration response) {
+                eventBus.fireEvent(new ConfigurationEvent(response, Action.LOAD));
                 notice.setText(null);
-                view.reset(response);
+                view.edit(response);
                 view.reset(place.action);
             }
         });
@@ -69,7 +74,7 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
     }
 
     public void save() {
-        Configuration model = view.retrieveConfiguration();
+        Configuration model = view.flush();
         view.setEnabled(false);
         service.update(model, new MethodCallback<Configuration>() {
 
@@ -80,8 +85,9 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
             }
 
             public void onSuccess(Method method, Configuration response) {
+                eventBus.fireEvent(new ConfigurationEvent(response, Action.UPDATE));
                 notice.setText(null);
-                view.reset(response);
+                view.edit(response);
                 view.reset(place.action);
             }
         });

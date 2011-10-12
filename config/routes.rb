@@ -1,5 +1,7 @@
 Users::Application.routes.draw do
 
+  resources :remote_permissions
+
   resources :roles
 
   resources :groups
@@ -7,6 +9,7 @@ Users::Application.routes.draw do
   resource :session do
     member do
       post :reset_password
+      get :current_groups
     end
   end
 
@@ -14,8 +17,16 @@ Users::Application.routes.draw do
 
   resource :configuration
 
-  resources :users
+  resources :users do
+    collection do
+      get :last_changes
+    end
+  end
 
-  resources :authentications
+  resource :authentications do
+    collection do
+      post :reset_password
+    end
+  end
 
 end

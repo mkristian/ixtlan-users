@@ -5,8 +5,6 @@
     <th>Login</th>
     <th>Email</th>
     <th>Name</th>
-    <th>Hashed</th>
-    <th>Hashed2</th>
     <th></th>
     <th></th>
     <th></th>
@@ -17,8 +15,6 @@
     <td><%= user.login %></td>
     <td><%= user.email %></td>
     <td><%= user.name %></td>
-    <td><%= user.hashed %></td>
-    <td><%= user.hashed2 %></td>
 <% if allowed?(:users, :show) %>
     <td><%= link_to 'Show', user %></td>
 <% end %>

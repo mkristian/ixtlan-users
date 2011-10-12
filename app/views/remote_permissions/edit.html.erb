@@ -1,0 +1,10 @@
+<h1>Editing remote_permission</h1>
+
+<%= render 'form' %>
+
+<% if allowed?(:remote_permissions, :show) %>
+<%= link_to 'Show', @remote_permission %>
+<% end %>
+<% if allowed?(:remote_permissions, :index) %>
+| <%= link_to 'Back', remote_permissions_path %>
+<% end %>

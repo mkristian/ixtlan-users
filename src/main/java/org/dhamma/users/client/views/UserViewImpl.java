@@ -2,66 +2,60 @@ package org.dhamma.users.client.views;
 
 import java.util.List;
 
-import de.mkristian.gwt.rails.views.IdentifyableTimestampedView;
-import de.mkristian.gwt.rails.views.ModelButton;
-import de.mkristian.gwt.rails.places.RestfulAction;
-import de.mkristian.gwt.rails.places.RestfulActionEnum;
-
+import org.dhamma.users.client.editors.UserEditor;
+import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.UserPlace;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
+import de.mkristian.gwt.rails.places.RestfulAction;
+import de.mkristian.gwt.rails.places.RestfulActionEnum;
+import de.mkristian.gwt.rails.views.ModelButton;
+
 @Singleton
-public class UserViewImpl extends IdentifyableTimestampedView
-        implements UserView {
+public class UserViewImpl extends Composite implements UserView {
 
     @UiTemplate("UserView.ui.xml")
-    interface UserViewUiBinder extends UiBinder<Widget, UserViewImpl> {}
+    interface Binder extends UiBinder<Widget, UserViewImpl> {}
     
-    private static UserViewUiBinder uiBinder = GWT.create(UserViewUiBinder.class);
+    private static Binder BINDER = GWT.create(Binder.class);
 
-    @UiField
-    Button newButton;
-    
-    @UiField
-    Button createButton;
-    
-    @UiField
-    Button editButton;
+    interface EditorDriver extends SimpleBeanEditorDriver<User, UserEditor> {}
 
-    @UiField
-    Button saveButton;
-    @UiField
-    Button deleteButton;
+    private final EditorDriver editorDriver = GWT.create(EditorDriver.class);
 
-    @UiField
-    TextBox login;
+    @UiField Button newButton;
+    @UiField Button editButton;
+    @UiField Button showButton;
 
-    @UiField
-    TextBox email;
+    @UiField Button createButton;
+    @UiField Button saveButton;
+    @UiField Button deleteButton;
 
-    @UiField
-    TextBox name;
+    @UiField Panel model;
+    @UiField FlexTable list;
 
-    @UiField
-    Panel form;
-    
-    @UiField
-    FlexTable list;
+    @UiField UserEditor editor;
 
     private Presenter presenter;
 
     public UserViewImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
+        initWidget(BINDER.createAndBindUi(this));
+        editorDriver.initialize(editor);
     }
 
     @UiHandler("newButton")
@@ -69,14 +63,19 @@ public class UserViewImpl extends IdentifyableTimestampedView
         presenter.goTo(new UserPlace(RestfulActionEnum.NEW));
     }
 
-    @UiHandler("createButton")
-    void onClickCreate(ClickEvent e) {
-        presenter.create();
+    @UiHandler("showButton")
+    void onClickShow(ClickEvent e) {
+        presenter.goTo(new UserPlace(editor.id.getValue(), RestfulActionEnum.SHOW));
     }
 
     @UiHandler("editButton")
     void onClickEdit(ClickEvent e) {
-        presenter.goTo(new UserPlace(id.getValue(), RestfulActionEnum.EDIT));
+        presenter.goTo(new UserPlace(editor.id.getValue(), RestfulActionEnum.EDIT));
+    }
+
+    @UiHandler("createButton")
+    void onClickCreate(ClickEvent e) {
+        presenter.create();
     }
 
     @UiHandler("saveButton")
@@ -86,59 +85,43 @@ public class UserViewImpl extends IdentifyableTimestampedView
 
     @UiHandler("deleteButton")
     void onClickDelete(ClickEvent e) {
-        presenter.delete(retrieveUser());
+        presenter.delete(flush());
     }
 
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
-    public void reset(User model) {
+    public void edit(User model) {
+        this.editorDriver.edit(model);
+    }
 
-        resetSignature(model.id, model.createdAt, model.updatedAt);
-        login.setText(model.login);
-        email.setText(model.email);
-        name.setText(model.name);
+    public User flush() {
+        return editorDriver.flush();
+    }
+
+    public void setEnabled(boolean enabled) {
+        editor.setEnabled(enabled);
     }
 
     public void reset(RestfulAction action) {
         newButton.setVisible(!action.name().equals(RestfulActionEnum.NEW.name()));
         if(action.name().equals(RestfulActionEnum.INDEX.name())){
             editButton.setVisible(false);
+            showButton.setVisible(false);
             list.setVisible(true);
-            form.setVisible(false);
+            model.setVisible(false);
         }
         else {
             createButton.setVisible(action.name().equals(RestfulActionEnum.NEW.name()));
             editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()));
+            showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
             saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
             deleteButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
             setEnabled(!action.viewOnly());
             list.setVisible(false);
-            form.setVisible(true);
+            model.setVisible(true);
         }
-    }
-
-    public User retrieveUser() {
-        User model = new User();
-        model.id = id.getValue() == null ? 0 : id.getValue();
-
-        model.createdAt = createdAt.getValue();
-        model.updatedAt = updatedAt.getValue();
-
-        model.login = login.getText();
-
-        model.email = email.getText();
-
-        model.name = name.getText();
-
-        return model;
-    }
-
-    public void setEnabled(boolean enabled) {
-         login.setEnabled(enabled);
-         email.setEnabled(enabled);
-         name.setEnabled(enabled);
     }
 
     private final ClickHandler clickHandler = new ClickHandler() {
@@ -177,12 +160,12 @@ public class UserViewImpl extends IdentifyableTimestampedView
     }
 
     private void setRow(int row, User model) {
-        list.setText(row, 0, model.id + "");
-        list.setText(row, 1, model.login + "");
+        list.setText(row, 0, model.getId() + "");
+        list.setText(row, 1, model.getLogin() + "");
 
-        list.setText(row, 2, model.email + "");
+        list.setText(row, 2, model.getEmail() + "");
 
-        list.setText(row, 3, model.name + "");
+        list.setText(row, 3, model.getName() + "");
 
         list.setWidget(row, 4, newButton(RestfulActionEnum.SHOW, model));
         list.setWidget(row, 5, newButton(RestfulActionEnum.EDIT, model));
@@ -190,7 +173,7 @@ public class UserViewImpl extends IdentifyableTimestampedView
     }
 
     public void updateInList(User model) {
-        String id = model.id + "";
+        String id = model.getId() + "";
         for(int i = 0; i < list.getRowCount(); i++){
             if(list.getText(i, 0).equals(id)){
                 setRow(i, model);
@@ -200,7 +183,7 @@ public class UserViewImpl extends IdentifyableTimestampedView
     }
 
     public void removeFromList(User model) {
-        String id = model.id + "";
+        String id = model.getId() + "";
         for(int i = 0; i < list.getRowCount(); i++){
             if(list.getText(i, 0).equals(id)){
                 list.removeRow(i);
@@ -211,5 +194,9 @@ public class UserViewImpl extends IdentifyableTimestampedView
 
     public void addToList(User model) {
         setRow(list.getRowCount(), model);
+    }
+
+    public void resetGroups(List<Group> groups) {
+        this.editor.resetGroups(groups);
     }
 }

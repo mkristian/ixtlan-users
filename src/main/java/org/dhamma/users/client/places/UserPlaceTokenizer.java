@@ -10,7 +10,7 @@ public class UserPlaceTokenizer extends RestfulPlaceTokenizer<UserPlace> {
             return new UserPlace(t.action);
         }
         else {
-            return new UserPlace(t.identifier, t.action);
+            return new UserPlace(t.id, t.action);
         }
     }
 }

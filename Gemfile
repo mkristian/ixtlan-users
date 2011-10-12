@@ -64,10 +64,12 @@ group :production do
   gem 'pg', :platforms => :ruby
 end
 
-gem 'resty-generators'
+#gem 'resty-generators', :path => '../../rails-resty-gwt/resty-generators'
+#gem 'ixtlan-generators', :path => '../../ixtlan/ixtlan-generators'
 
 gem 'enforce-ssl'
 gem "ixtlan-session-timeout"
 gem "ixtlan-guard"
+gem "ixtlan-core"
 
 gem 'bcrypt-ruby'

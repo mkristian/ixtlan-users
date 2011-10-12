@@ -1,2 +1,9 @@
 users:
-  defaults: []
+  defaults: [] 
+#  index: []
+#  show: []
+#  new: []
+#  create: []
+#  edit: []
+#  update: []
+#  destroy: []

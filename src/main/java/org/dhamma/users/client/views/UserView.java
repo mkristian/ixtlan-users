@@ -2,6 +2,7 @@ package org.dhamma.users.client.views;
 
 import java.util.List;
 
+import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.User;
 
 import com.google.gwt.place.shared.Place;
@@ -22,7 +23,9 @@ public interface UserView extends IsWidget {
     }
     void setPresenter(Presenter presenter);
 
-    void reset(User model);
+    void edit(User model);
+
+    User flush();
 
     void reset(List<User> models);
 
@@ -30,11 +33,11 @@ public interface UserView extends IsWidget {
     
     void setEnabled(boolean enabled);
 
-    User retrieveUser();
-
     void updateInList(User model);
 
     void removeFromList(User model);
 
     void addToList(User model);
+
+    void resetGroups(List<Group> groups);
 }

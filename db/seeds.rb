@@ -5,5 +5,16 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
+puts "you can use ENV['login'] and ENV['email'] to set a proper user for production"
+u = User.new(:name => "Root", :login => ENV['login'] || "root", :email => ENV['email'] || "root@example.com")
+u.id = 1
+u.save
+u.modified_by = u
+u.save
 
-User.create(:name => "Root", :login => "root", :email => "root@example.com")
+g = Group.create(:name => "root", :modified_by => u)
+
+u.groups << g
+u.save
+
+RemotePermission.create(:ip => 'localhost', :token => 'be happy', :modified_by => u)

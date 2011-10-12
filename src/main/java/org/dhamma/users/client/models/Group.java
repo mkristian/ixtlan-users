@@ -22,19 +22,24 @@ public class Group implements HasToDisplay, Identifyable {
   @Json(name = "updated_at")
   private final Date updatedAt;
 
+  @Json(name = "modified_by")
+  private final User modifiedBy;
+
   private String name;
 
   public Group(){
-    this(0, null, null);
+    this(0, null, null, null);
   }
   
   @JsonCreator
   public Group(@JsonProperty("id") int id, 
           @JsonProperty("createdAt") Date createdAt, 
-          @JsonProperty("updatedAt") Date updatedAt){
+          @JsonProperty("updatedAt") Date updatedAt,
+          @JsonProperty("modifiedBy") User modifiedBy){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.modifiedBy = modifiedBy;
   }
 
   public int getId(){
@@ -47,6 +52,10 @@ public class Group implements HasToDisplay, Identifyable {
 
   public Date getUpdatedAt(){
     return updatedAt;
+  }
+
+  public User getModifiedBy(){
+    return modifiedBy;
   }
 
   public String getName(){

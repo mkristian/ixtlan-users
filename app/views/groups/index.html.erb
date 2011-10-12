@@ -18,8 +18,7 @@
     <td><%= link_to 'Edit', edit_group_path(group) %></td>
 <% end %>
 <% if allowed?(:groups, :destroy) %>
-    <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %>
-</td>
+    <td><%= link_to 'Destroy', group_path(group) + "?group[updated_at]=#{group.updated_at.utc.strftime('%Y-%m-%d %H:%M:%S') + ("%06d" % group.updated_at.utc)}", :confirm => 'Are you sure?', :method => :delete %></td>
 <% end %>
   </tr>
 <% end %>

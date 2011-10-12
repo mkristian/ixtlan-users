@@ -22,6 +22,7 @@ public class UsersModule extends BaseModule {
     @Override
     protected void configure() {
         super.configure();
+        bind(org.dhamma.users.client.restservices.RemotePermissionsRestService.class).toProvider(RemotePermissionsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.GroupsRestService.class).toProvider(GroupsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.ProfilesRestService.class).toProvider(ProfilesRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.ConfigurationsRestService.class).toProvider(ConfigurationsRestServiceProvider.class);
@@ -31,6 +32,7 @@ public class UsersModule extends BaseModule {
         bind(ActivityMapper.class).to(SessionActivityPlaceActivityMapper.class).in(Singleton.class);
         bind(LoginView.class).to(LoginViewImpl.class);
         install(new GinFactoryModuleBuilder()
+            .implement(Activity.class, Names.named("remote_permissions"), org.dhamma.users.client.activities.RemotePermissionActivity.class)
             .implement(Activity.class, Names.named("groups"), org.dhamma.users.client.activities.GroupActivity.class)
             .implement(Activity.class, Names.named("profiles"), org.dhamma.users.client.activities.ProfileActivity.class)
             .implement(Activity.class, Names.named("configurations"), org.dhamma.users.client.activities.ConfigurationActivity.class)
@@ -70,7 +72,16 @@ public class UsersModule extends BaseModule {
             return service;
         }
     }
+
+    @Singleton
+    public static class RemotePermissionsRestServiceProvider implements Provider<org.dhamma.users.client.restservices.RemotePermissionsRestService> {
+        private final org.dhamma.users.client.restservices.RemotePermissionsRestService service = GWT.create(org.dhamma.users.client.restservices.RemotePermissionsRestService.class);
+        public org.dhamma.users.client.restservices.RemotePermissionsRestService get() {
+            return service;
+        }
+    }
 }
+
 
 
 

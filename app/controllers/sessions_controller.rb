@@ -2,6 +2,8 @@ class SessionsController < ApplicationController
 
   skip_before_filter :authorization
 
+  skip_before_filter :check_session, :only => :destroy
+
   prepend_after_filter :reset_session, :only => :destroy
 
   protected
@@ -14,30 +16,49 @@ class SessionsController < ApplicationController
   public
 
   def create
-    auth = params[:authentication] || []
+    auth = params[:authentication] || params
     @session = Session.create(auth[:login] || auth[:email], 
-                              auth[:password])
-    case @session
-    when Session
-      current_user(@session.user)
-      groups = @session.user.groups.collect { |g| g.name.to_s }
-      @session.permissions = guard.permissions(groups)
+                              auth[:password]) do |user|
+      current_user(user)
+      group_names = groups_for_current_user
+#user.groups.collect { |g| g.name.to_s }
+      guard.permissions(group_names)
+    end
+    @session.idle_session_timeout = Rails.application.config.idle_session_timeout
 
+    if @session.valid?
       # TODO make html login
       respond_to do |format|
-        format.html { render :text => "authorized" }
+        format.html { render :inlinetext => "authorized" }
         format.xml  { render :xml => @session.to_xml }
         format.json  { render :json => @session.to_json }
       end
     else
-      def @session.to_log
-        self
-      end
       head :unauthorized
     end
   end
 
+  def current_groups
+    groups = current_user.groups
+
+    if groups.detect {|g| g.name == 'root'}
+      groups = Group.all
+    end
+
+    # for the log
+    @session = groups
+
+    respond_to do |format|
+      format.html { render :inlinetext => "not implemented" }
+      format.xml  { render :xml => groups.to_xml(Group.options) }
+      format.json  { render :json => groups.to_json(Group.options) }
+    end
+  end
+
   def destroy
+    # for the log
+    @session = user
+
     # reset session happens in the after filter which allows for 
     # audit log with username which happens in another after filter
     head :ok
@@ -45,11 +66,10 @@ class SessionsController < ApplicationController
 
   def reset_password
     authentication = params[:authentication] || []
-    user, pwd = User.reset_password(authentication[:email] || authentication[:login])
+    user = User.reset_password(authentication[:email] || authentication[:login])
 
     if user
-      UserMailer.send_password(user, pwd).deliver
-      
+
       # for the log
       @session = user
       

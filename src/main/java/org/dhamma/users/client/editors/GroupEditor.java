@@ -1,6 +1,7 @@
 package org.dhamma.users.client.editors;
 
 import org.dhamma.users.client.models.Group;
+import org.dhamma.users.client.models.User;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
@@ -14,6 +15,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
+import de.mkristian.gwt.rails.editors.UserLabel;
 import de.mkristian.gwt.rails.editors.DoubleBox;
 import de.mkristian.gwt.rails.editors.IntegerBox;
 import de.mkristian.gwt.rails.editors.LongBox;
@@ -30,6 +32,7 @@ public class GroupEditor extends Composite implements Editor<Group>{
     @UiField public NumberLabel<Integer> id;
     @UiField DateLabel createdAt;
     @UiField DateLabel updatedAt;
+    @UiField UserLabel<User> modifiedBy;
 
     @UiField TextBox name;
 

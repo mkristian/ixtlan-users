@@ -8,6 +8,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :hashed2
 
       t.timestamps
+
+      t.references :modified_by
     end
   end
 

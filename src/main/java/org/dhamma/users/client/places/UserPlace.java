@@ -19,7 +19,7 @@ public class UserPlace extends ActivityPlace<User> {
     }
 
     public UserPlace(User model, RestfulAction restfulAction) {
-        super(model, restfulAction, "users");
+        super(model.getId(), model, restfulAction, "users");
     }
 
     public UserPlace(int id, RestfulAction restfulAction) {

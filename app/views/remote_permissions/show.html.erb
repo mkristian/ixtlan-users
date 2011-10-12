@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Ip:</b>
+  <%= @remote_permission.ip %>
+</p>
+
+<p>
+  <b>Token:</b>
+  <%= @remote_permission.token %>
+</p>
+
+
+<% if allowed?(:remote_permissions, :update) %>
+<%= link_to 'Edit', edit_remote_permission_path(@remote_permission) %>
+<% end %>
+<% if allowed?(:remote_permissions, :index) %>
+ | <%= link_to 'Back', remote_permissions_path %>
+<% end %>

@@ -169,16 +169,6 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
-      <artifactId>resty-generators</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>ixtlan-generators</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
       <artifactId>enforce-ssl</artifactId>
       <type>gem</type>
     </dependency>
@@ -418,12 +408,6 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>ixtlan-generators</artifactId>
-        <version>0.1.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
         <artifactId>ixtlan-guard</artifactId>
         <version>0.6.0</version>
         <type>gem</type>
@@ -474,12 +458,6 @@
         <groupId>rubygems</groupId>
         <artifactId>thor</artifactId>
         <version>0.14.6</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>resty-generators</artifactId>
-        <version>0.6.0</version>
         <type>gem</type>
       </dependency>
     </dependencies>

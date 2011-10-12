@@ -15,16 +15,6 @@
   <%= @user.name %>
 </p>
 
-<p>
-  <b>Hashed:</b>
-  <%= @user.hashed %>
-</p>
-
-<p>
-  <b>Hashed2:</b>
-  <%= @user.hashed2 %>
-</p>
-
 
 <% if allowed?(:users, :update) %>
 <%= link_to 'Edit', edit_user_path(@user) %>

@@ -14,6 +14,8 @@
       <g:DateLabel ui:field="createdAt" predefinedFormat="DATE_TIME_MEDIUM"/>
       <g:Label>updated at: </g:Label>
       <g:DateLabel ui:field="updatedAt" predefinedFormat="DATE_TIME_MEDIUM" />
+      <g:Label>modified by: </g:Label>
+      <r:UserLabel ui:field="modifiedBy" />
     </g:FlowPanel>
 
     <g:FlowPanel styleName="gwt-rails-model-fields">

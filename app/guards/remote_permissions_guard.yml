@@ -1,0 +1,9 @@
+remote_permissions:
+  defaults: [] 
+#  index: []
+#  show: []
+#  new: []
+#  create: []
+#  edit: []
+#  update: []
+#  destroy: []
