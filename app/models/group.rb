@@ -1,10 +1,16 @@
 class Group < ActiveRecord::Base
+  belongs_to :application
   belongs_to :modified_by, :class_name => "User"
   validates :modified_by_id, :presence => true
 
   def self.options
     {
-      :except => [:created_at, :updated_at, :modified_by_id]
+      :except => [:created_at, :updated_at, :modified_by_id],
+      :include => {
+        :application => {
+          :only => [:id, :name]
+        }
+      }
     }
   end
 
@@ -13,7 +19,10 @@ class Group < ActiveRecord::Base
       :except => [:modified_by_id],
       :include => {
         :modified_by => {
-          :only => [:id, :name]
+          :only => [:id, :login, :name]
+        },
+        :application => {
+          :except => [:created_at, :updated_at, :modified_by_id]
         }
       }
     }

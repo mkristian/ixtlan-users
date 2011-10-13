@@ -22,12 +22,12 @@
         <r:IntegerBox ui:field="idleSessionTimeout"/>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="passwordFromEmail">Password from email</label>
-        <g:TextBox ui:field="passwordFromEmail"/>
+        <label name="fromEmail">From email</label>
+        <g:TextBox ui:field="fromEmail"/>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="loginUrl">Login url</label>
-        <g:TextBox ui:field="loginUrl"/>
+        <label name="application">Application</label>
+        <r:IdentifyableListBox ui:field="application"/>
       </g:HTMLPanel>
     </g:FlowPanel>
 

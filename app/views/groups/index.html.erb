@@ -3,6 +3,8 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>Description</th>
+    <th>Application</th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,6 +13,8 @@
 <% @groups.each do |group| %>
   <tr>
     <td><%= group.name %></td>
+    <td><%= group.description %></td>
+    <td><%= group.application %></td>
 <% if allowed?(:groups, :show) %>
     <td><%= link_to 'Show', group %></td>
 <% end %>

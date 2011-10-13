@@ -48,7 +48,7 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
         if(groups == null){
             sessionRestService.currentGroups(new MethodCallback<List<Group>>() {
             
-                public void onSuccess(Method method, List<Group> response) {
+                public void onSuccess(Method method, final List<Group> response) {
                     view.resetGroups(response);
                     cache.put("groups", response);
                 }
@@ -110,27 +110,22 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
     public void create() {
         User model = view.flush();
         view.setEnabled(false);
-        try{
-            model.hideNested();
-            service.create(model, new MethodCallback<User>() {
+        service.create(model.minimalClone(), new MethodCallback<User>() {
 
-                public void onFailure(Method method, Throwable exception) {
-                    notice.setText("error creating User: "
-                            + exception.getMessage());
-                    view.reset(place.action);
-                }
+            public void onFailure(Method method, Throwable exception) {
+                notice
+                        .setText("error creating User: "
+                                + exception.getMessage());
+                view.reset(place.action);
+            }
 
-                public void onSuccess(Method method, User response) {
-                    eventBus.fireEvent(new UserEvent(response, Action.CREATE));
-                    notice.setText(null);
-                    view.addToList(response);
-                    goTo(new UserPlace(response.getId(), RestfulActionEnum.EDIT));
-                }
-            });
-        }
-        finally {
-            model.unhideNested();   
-        }
+            public void onSuccess(Method method, User response) {
+                eventBus.fireEvent(new UserEvent(response, Action.CREATE));
+                notice.setText(null);
+                view.addToList(response);
+                goTo(new UserPlace(response.getId(), RestfulActionEnum.EDIT));
+            }
+        });
         notice.setText("creating User . . .");
     }
 
@@ -159,28 +154,21 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
     public void save() {
         User model = view.flush();
         view.setEnabled(false);
-        try {
-            model.hideNested();
-            service.update(model, new MethodCallback<User>() {
+        service.update(model.minimalClone(), new MethodCallback<User>() {
 
-                public void onFailure(Method method, Throwable exception) {
-                    notice.setText("error saving User: "
-                            + exception.getMessage());
-                    view.reset(place.action);
-                }
+            public void onFailure(Method method, Throwable exception) {
+                notice.setText("error saving User: " + exception.getMessage());
+                view.reset(place.action);
+            }
 
-                public void onSuccess(Method method, User response) {
-                    eventBus.fireEvent(new UserEvent(response, Action.UPDATE));
-                    notice.setText(null);
-                    view.updateInList(response);
-                    view.edit(response);
-                    view.reset(place.action);
-                }
-            });
-        }
-        finally {
-            model.unhideNested();   
-        }
+            public void onSuccess(Method method, User response) {
+                eventBus.fireEvent(new UserEvent(response, Action.UPDATE));
+                notice.setText(null);
+                view.updateInList(response);
+                view.edit(response);
+                view.reset(place.action);
+            }
+        });
         notice.setText("saving User . . .");
     }
 

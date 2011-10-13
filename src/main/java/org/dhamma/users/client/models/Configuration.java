@@ -26,23 +26,26 @@ public class Configuration implements HasToDisplay {
   @Json(name = "idle_session_timeout")
   private int idleSessionTimeout;
 
-  @Json(name = "password_from_email")
-  private String passwordFromEmail;
+  @Json(name = "from_email")
+  private String fromEmail;
 
-  @Json(name = "login_url")
-  private String loginUrl;
+  @Json(name = "application_id")
+  private int applicationId;
+  private Application application;
 
   public Configuration(){
-    this(null, null, null);
+    this(null, null, null, 0);
   }
   
   @JsonCreator
   public Configuration(@JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
-          @JsonProperty("modifiedBy") User modifiedBy){
+          @JsonProperty("modifiedBy") User modifiedBy,
+          @JsonProperty("applicationId") int applicationId){
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
+    this.applicationId = applicationId;
   }
 
   public Date getCreatedAt(){
@@ -65,23 +68,35 @@ public class Configuration implements HasToDisplay {
     idleSessionTimeout = value;
   }
 
-  public String getPasswordFromEmail(){
-    return passwordFromEmail;
+  public String getFromEmail(){
+    return fromEmail;
   }
 
-  public void setPasswordFromEmail(String value){
-    passwordFromEmail = value;
+  public void setFromEmail(String value){
+    fromEmail = value;
   }
 
-  public String getLoginUrl(){
-    return loginUrl;
+  public Application getApplication(){
+    return application;
   }
 
-  public void setLoginUrl(String value){
-    loginUrl = value;
+  public void setApplication(Application value){
+    application = value;
+    applicationId = value == null ? 0 : value.getId();
+  }
+
+  public int getApplicationId(){
+    return applicationId;
+  }
+
+  public Configuration minimalClone() {
+      Configuration clone = new Configuration(null, updatedAt, null, applicationId);
+      clone.setIdleSessionTimeout(this.idleSessionTimeout);
+      clone.setFromEmail(this.fromEmail);
+      return clone;
   }
 
   public String toDisplay() {
-    return "configuration";
+    return idleSessionTimeout + "";
   }
 }

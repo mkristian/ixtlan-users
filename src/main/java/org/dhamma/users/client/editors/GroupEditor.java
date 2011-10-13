@@ -1,5 +1,10 @@
 package org.dhamma.users.client.editors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.User;
 
@@ -36,12 +41,36 @@ public class GroupEditor extends Composite implements Editor<Group>{
 
     @UiField TextBox name;
 
+    @UiField TextArea description;
+
+    @UiField IdentifyableListBox<Application> application;
+
     public GroupEditor() {
         initWidget(BINDER.createAndBindUi(this));
+    }
+
+    public void resetApplications(List<Application> models){
+        if(models == null){
+            Application model = new Application() {
+                public String toDisplay() { return "loading..."; }
+            };
+            application.setAcceptableValues(Arrays.asList(model));
+        }
+        else{
+            Application model = new Application() {
+                public String toDisplay() { return "please select..."; }
+            };
+            List<Application> list = new ArrayList<Application>();
+            list.add(model);
+            list.addAll(models);
+            application.setAcceptableValues(list);
+        }
     }
 
     public void setEnabled(boolean enabled) {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
         this.name.setEnabled(enabled);
+        this.description.setEnabled(enabled);
+        this.application.setEnabled(enabled);
     }
 }

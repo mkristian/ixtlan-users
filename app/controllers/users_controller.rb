@@ -31,13 +31,7 @@ class UsersController < ApplicationController
   # GET /users/last_changes.xml
   # GET /users/last_changes.json
   def last_changes
-    update = params[:updated_at]
-    @users = 
-      unless update.blank?
-        User.all(:conditions => ["updated_at > ?", update])
-      else
-        User.all
-      end
+    @users = User.all_changed_after(params[:updated_at])
 
     respond_to do |format|
       format.xml  { render :xml => @users.to_xml(User.update_options) }
@@ -49,18 +43,12 @@ class UsersController < ApplicationController
   # GET /users.xml
   # GET /users.json
   def index
-    update = params[:updated_at]
-    @users = 
-      unless update.blank?
-        User.all(:conditions => ["updated_at > ?", update])
-      else
-        User.all
-      end
+    @users = User.all
 
     respond_to do |format|
       format.html # index.html.erb 
-      format.xml  { render :xml => @users.to_xml(update.nil? ? User.options : User.update_options) }
-      format.json  { render :json => @users.to_json(update.nil? ? User.options : User.update_options) }
+      format.xml  { render :xml => @users.to_xml(User.options) }
+      format.json  { render :json => @users.to_json(User.options) }
     end
   end
 
@@ -91,14 +79,14 @@ class UsersController < ApplicationController
   # POST /users.xml
   # POST /users.json
   def create
+    # delete groups but keep group_ids
     (params[:user] || []).delete(:groups)
+
     @user = User.new(params[:user])
-    @user.reset_password
     @user.modified_by = current_user
 
     respond_to do |format|
-      if @user.save
-        UserMailer.send_new_user(@user).deliver
+      if @user.reset_password_and_save
         format.html { redirect_to(@user, :notice => 'User was successfully created.') }
         format.xml  { render :xml => @user.to_xml(User.single_options), :status => :created, :location => @user }
         format.json  { render :json => @user.to_json(User.single_options), :status => :created, :location => @user }
@@ -121,6 +109,7 @@ class UsersController < ApplicationController
     params[:user] ||= {}
     params[:user][:modified_by] = current_user
     
+    # delete groups but keep group_ids
     params[:user].delete(:groups)
 
     respond_to do |format|
@@ -143,10 +132,10 @@ class UsersController < ApplicationController
 
     return if stale?
 
-    @user.reset_password
+    # @user.reset_password
 
-    if @user.save
-      UserMailer.send_password(@user)
+    if @user.reset_password_and_save
+      #UserMailer.send_password(@user)
       respond_to do |format|
         format.html { redirect_to(@user, :notice => 'Password reset was successful.') }
         format.xml  { head :ok }

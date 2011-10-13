@@ -23,6 +23,14 @@
         <label name="name">Name</label>
         <g:TextBox ui:field="name"/>
       </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="description">Description</label>
+        <g:TextArea ui:field="description"/>
+      </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="application">Application</label>
+        <r:IdentifyableListBox ui:field="application"/>
+      </g:HTMLPanel>
     </g:FlowPanel>
 
   </g:FlowPanel>

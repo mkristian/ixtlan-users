@@ -6,14 +6,21 @@ class UserMailer < ActionMailer::Base
     @user = user
     @password = user.password
 
-    mail :to => user.email, :subject => "reset access", :from => Configuration.instance.password_from_email
+    mail :to => user.email, :subject => "reset access", :from => Configuration.instance.from_email
   end
 
   def send_new_user(user)
     @user = user
     @password = user.password
-    @url = Configuration.instance.login_url
+    @urls = user.application_urls
 
-    mail :to => user.email, :subject => "access", :from => Configuration.instance.password_from_email
+    mail :to => user.email, :subject => "access", :from => Configuration.instance.from_email
+  end
+
+  def send_new_urls(user)
+    @user = user
+    @urls = user.application_urls
+
+    mail :to => user.email, :subject => "access urls", :from => Configuration.instance.from_email
   end
 end

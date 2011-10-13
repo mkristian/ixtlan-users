@@ -14,6 +14,15 @@ class ApplicationController < ActionController::Base
     raise "ip #{request.remote_ip} wrong authentication" unless (request.headers['X-SERVICE-TOKEN'] == perm.token)
   end
 
+  def groups_for_current_users
+    app_id = Configuration.instance.application.nil? ? 0 :Configuration.instance.application.id
+    current_user.groups.select do |g|
+      g.application.id != app_id
+    end.collect do |g|
+      g.name
+    end
+  end
+
   private
 
   after_filter :csrf

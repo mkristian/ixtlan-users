@@ -2,6 +2,7 @@ package org.dhamma.users.client.views;
 
 import java.util.List;
 
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
 
 import com.google.gwt.place.shared.Place;
@@ -37,4 +38,6 @@ public interface GroupView extends IsWidget {
     void removeFromList(Group model);
 
     void addToList(Group model);
+
+    void resetApplications(List<Application> list);
 }

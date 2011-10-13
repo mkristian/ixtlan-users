@@ -2,6 +2,7 @@ package org.dhamma.users.client.views;
 
 import java.util.List;
 
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.RemotePermission;
 
 import com.google.gwt.place.shared.Place;
@@ -37,4 +38,6 @@ public interface RemotePermissionView extends IsWidget {
     void removeFromList(RemotePermission model);
 
     void addToList(RemotePermission model);
+
+    void resetApplications(List<Application> list);
 }

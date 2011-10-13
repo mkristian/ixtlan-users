@@ -27,19 +27,27 @@ public class Group implements HasToDisplay, Identifyable {
 
   private String name;
 
+  private String description;
+
+  @Json(name = "application_id")
+  private int applicationId;
+  private Application application;
+
   public Group(){
-    this(0, null, null, null);
+    this(0, null, null, null, 0);
   }
   
   @JsonCreator
   public Group(@JsonProperty("id") int id, 
           @JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
-          @JsonProperty("modifiedBy") User modifiedBy){
+          @JsonProperty("modifiedBy") User modifiedBy,
+          @JsonProperty("applicationId") int applicationId){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
+    this.applicationId = applicationId;
   }
 
   public int getId(){
@@ -66,6 +74,34 @@ public class Group implements HasToDisplay, Identifyable {
     name = value;
   }
 
+  public String getDescription(){
+    return description == null ? "" : description;
+  }
+
+  public void setDescription(String value){
+    description = value;
+  }
+
+  public Application getApplication(){
+    return application;
+  }
+
+  public void setApplication(Application value){
+    application = value;
+    applicationId = value == null ? 0 : value.getId();
+  }
+
+  public int getApplicationId(){
+    return applicationId;
+  }
+
+  public Group minimalClone() {
+      Group clone = new Group(id, null, updatedAt, null, applicationId);
+      clone.setName(this.name);
+      clone.setDescription(this.description);
+      return clone;
+  }
+
   public int hashCode(){
     return id;
   }
@@ -76,6 +112,6 @@ public class Group implements HasToDisplay, Identifyable {
   }
 
   public String toDisplay() {
-    return name;
+    return name + (application == null ? "" : "@" + application.getName());
   }
 }

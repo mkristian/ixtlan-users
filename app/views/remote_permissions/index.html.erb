@@ -4,6 +4,7 @@
   <tr>
     <th>Ip</th>
     <th>Token</th>
+    <th>Application</th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,6 +14,7 @@
   <tr>
     <td><%= remote_permission.ip %></td>
     <td><%= remote_permission.token %></td>
+    <td><%= remote_permission.application %></td>
 <% if allowed?(:remote_permissions, :show) %>
     <td><%= link_to 'Show', remote_permission %></td>
 <% end %>

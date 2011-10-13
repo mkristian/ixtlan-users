@@ -1,0 +1,7 @@
+<h1>New application</h1>
+
+<%= render 'form' %>
+
+<% if allowed?(:applications, :index) %>
+<%= link_to 'Back', applications_path %>
+<% end %>

@@ -1,5 +1,10 @@
 package org.dhamma.users.client.editors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.RemotePermission;
 import org.dhamma.users.client.models.User;
 
@@ -38,13 +43,34 @@ public class RemotePermissionEditor extends Composite implements Editor<RemotePe
 
     @UiField TextBox token;
 
+    @UiField IdentifyableListBox<Application> application;
+
     public RemotePermissionEditor() {
         initWidget(BINDER.createAndBindUi(this));
+    }
+
+    public void resetApplications(List<Application> models){
+        if(models == null){
+            Application model = new Application() {
+                public String toDisplay() { return "loading..."; }
+            };
+            application.setAcceptableValues(Arrays.asList(model));
+        }
+        else{
+            Application model = new Application() {
+                public String toDisplay() { return "please select..."; }
+            };
+            List<Application> list = new ArrayList<Application>();
+            list.add(model);
+            list.addAll(models);
+            application.setAcceptableValues(list);
+        }
     }
 
     public void setEnabled(boolean enabled) {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
         this.ip.setEnabled(enabled);
         this.token.setEnabled(enabled);
+        this.application.setEnabled(enabled);
     }
 }

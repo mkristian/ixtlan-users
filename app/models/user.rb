@@ -13,22 +13,20 @@ class User < ActiveRecord::Base
   def self.reset_password(login)
     u = User.find_by_login(login) || User.find_by_email(login)
     if u
-      pwd = u.reset_password
-      if u.save
-        UserMailer.send_password(u).deliver
-        pwd
-      end
+      u.reset_password_and_save
     end
   end
-
-  def self.authenticate(login, password)
+  
+  def self.authenticate(login, password, remote_ip = nil)
     result = User.new
     if password.blank?
       result.log = "no password given with login: #{login}"
+    elsif login.blank?
+      result.log = "no login given"
     else
       u = User.find_by_login(login) || User.find_by_email(login)
-      if u.hashed.nil?
-        result.log = "user has not password: #{login}"
+      if u && u.hashed.nil?
+        result.log = "user has no password: #{login}"
       elsif u
         if Password.new(u.hashed) == password
           # clear reset password if any
@@ -53,9 +51,21 @@ class User < ActiveRecord::Base
         result.log = "login not found: #{login}"
       end
     end
+    result.filter_groups(remote_ip) if result.valid?
     result
   end
   
+  def filter_groups(remote_ip)
+    if remote_ip
+      perm = RemotePermission.find_by_ip(remote_ip)
+      app_id = (perm && perm.application) ? perm.application.id : 0
+      
+      groups.delete_if do |g|
+        g.application.id != app_id
+      end
+    end
+  end
+
   def log=(msg)
     @log = msg
   end
@@ -68,6 +78,35 @@ class User < ActiveRecord::Base
     end
   end
 
+  def application_urls
+    groups.collect do |g|
+      g.application.url || "application #{g.application.name} has no configure url"
+    end.uniq
+  end
+
+  def reset_password_and_save
+    pwd = reset_password
+    is_new = new_record?
+    if save
+      if is_new
+        UserMailer.send_new_user(self).deliver
+      else
+        UserMailer.send_password(self).deliver
+      end
+      pwd
+    end
+  end
+
+  def self.all_changed_after(from)
+    unless from.blank?
+      User.all(:conditions => ["updated_at > ?", from])
+    else
+      User.all
+    end
+  end
+
+  private
+
   def reset_password
     # only alpha pwd
     @password = generate_password
@@ -78,6 +117,8 @@ class User < ActiveRecord::Base
     end
     @password
   end
+
+  public
 
   def password
     pwd = @password
@@ -105,13 +146,18 @@ class User < ActiveRecord::Base
           :only => [:id, :login, :name],
         },
         :groups => {
-          :only => [:id, :name]
+          :only => [:id, :name, :application_id],
+          :include => {
+            :application => {
+              :only => [:id, :name]
+            }
+          }
         }
       }
     }
   end
 
-  def self.nested_options
+  def self.remote_options
     {
       :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id], 
       :include => {
@@ -125,7 +171,7 @@ class User < ActiveRecord::Base
   unless respond_to? :old_as_json
     alias :old_as_json :as_json
     def as_json(options = nil)
-      options = self.class.nested_options unless options
+      options = self.class.options unless options
       old_as_json(options)
     end
   end

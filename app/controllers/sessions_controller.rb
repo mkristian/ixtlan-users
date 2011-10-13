@@ -18,18 +18,16 @@ class SessionsController < ApplicationController
   def create
     auth = params[:authentication] || params
     @session = Session.create(auth[:login] || auth[:email], 
-                              auth[:password]) do |user|
-      current_user(user)
-      group_names = groups_for_current_user
-#user.groups.collect { |g| g.name.to_s }
-      guard.permissions(group_names)
-    end
-    @session.idle_session_timeout = Rails.application.config.idle_session_timeout
+                              auth[:password])
 
     if @session.valid?
+      current_user(@session.user)
+      @session.idle_session_timeout = Rails.application.config.idle_session_timeout
+      @session.permissions = guard.permissions(groups_for_current_users)
+
       # TODO make html login
       respond_to do |format|
-        format.html { render :inlinetext => "authorized" }
+        format.html { render :inline => "authorized" }
         format.xml  { render :xml => @session.to_xml }
         format.json  { render :json => @session.to_json }
       end
@@ -57,7 +55,7 @@ class SessionsController < ApplicationController
 
   def destroy
     # for the log
-    @session = user
+    @session = current_user
 
     # reset session happens in the after filter which allows for 
     # audit log with username which happens in another after filter

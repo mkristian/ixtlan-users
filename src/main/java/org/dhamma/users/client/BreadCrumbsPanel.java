@@ -27,7 +27,7 @@ public class BreadCrumbsPanel extends FlowPanel {
     @Inject
     public BreadCrumbsPanel(final SessionManager<User> sessionManager, final SessionRestService service,
             final Notice notice){
-        setStyleName("rails-breadcrumbs");
+        setStyleName("gwt-rails-breadcrumbs");
         setVisible(false);
         sessionManager.addSessionHandler(new SessionHandler<User>() {
 
@@ -66,8 +66,8 @@ public class BreadCrumbsPanel extends FlowPanel {
     private void setName(String name){
         clear();
         if(name != null){
-            add(new Label("Welcome " + name));
             add(logout);
+            add(new Label("Welcome " + name));
             setVisible(true);
         }
         else {

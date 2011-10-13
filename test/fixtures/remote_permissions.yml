@@ -3,7 +3,9 @@
 one:
   ip: MyString
   token: MyString
+  application: 
 
 two:
   ip: MyString
   token: MyString
+  application: 

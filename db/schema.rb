@@ -10,12 +10,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111011134343) do
+ActiveRecord::Schema.define(:version => 20111013144631) do
+
+  create_table "applications", :force => true do |t|
+    t.string   "name"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "modified_by_id"
+  end
 
   create_table "configurations", :force => true do |t|
     t.integer  "idle_session_timeout", :default => 15
-    t.string   "password_from_email"
-    t.string   "login_url"
+    t.string   "from_email"
+    t.integer  "application_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "modified_by_id"
@@ -23,6 +31,8 @@ ActiveRecord::Schema.define(:version => 20111011134343) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
+    t.text     "description"
+    t.integer  "application_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "modified_by_id"
@@ -36,10 +46,21 @@ ActiveRecord::Schema.define(:version => 20111011134343) do
   create_table "remote_permissions", :force => true do |t|
     t.string   "ip"
     t.string   "token"
+    t.integer  "application_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "modified_by_id"
   end
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "users", :force => true do |t|
     t.string   "login"

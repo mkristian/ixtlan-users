@@ -37,10 +37,6 @@ public class User implements HasToDisplay, Identifyable, IsUser {
   @Json(name = "group_ids")
   private final List<Integer> groupIds;
   private List<Group> groups;
-
-  private transient List<Group> hiddenGroups;
-
-  private transient User hiddenModifiedBy;
   
   public User(){
     this(0, null, null, null, null);
@@ -119,21 +115,14 @@ public class User implements HasToDisplay, Identifyable, IsUser {
     }
   }
 
-  public void hideNested(){
-      this.hiddenModifiedBy = this.modifiedBy;
-      this.modifiedBy = null;
-      this.hiddenGroups = this.groups;
-      this.groups = null;
-      updateGroupIds(this.hiddenGroups);
-   }
-  
-  public void unhideNested(){
-      this.modifiedBy = this.hiddenModifiedBy;
-      this.hiddenModifiedBy = null;
-      this.groups = this.hiddenGroups;
-      this.hiddenGroups = null;
+  public User minimalClone() {
+      User clone = new User(id, null, updatedAt, null, groupIds);
+      clone.setName(name);
+      clone.setLogin(login);
+      clone.setEmail(email);
+      return clone;
   }
-  
+
   public int hashCode(){
     return id;
   }

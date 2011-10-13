@@ -3,6 +3,7 @@ package org.dhamma.users.client.views;
 import java.util.List;
 
 import org.dhamma.users.client.editors.GroupEditor;
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.places.GroupPlace;
 
@@ -148,6 +149,8 @@ public class GroupViewImpl extends Composite implements GroupView {
         list.removeAllRows();
         list.setText(0, 0, "Id");
         list.setText(0, 1, "Name");
+        list.setText(0, 2, "Description");
+        list.setText(0, 3, "Application");
         list.getRowFormatter().addStyleName(0, "model-list-header");
         int row = 1;
         for(Group model: models){
@@ -160,9 +163,13 @@ public class GroupViewImpl extends Composite implements GroupView {
         list.setText(row, 0, model.getId() + "");
         list.setText(row, 1, model.getName() + "");
 
-        list.setWidget(row, 2, newButton(RestfulActionEnum.SHOW, model));
-        list.setWidget(row, 3, newButton(RestfulActionEnum.EDIT, model));
-        list.setWidget(row, 4, newButton(RestfulActionEnum.DESTROY, model));
+        list.setText(row, 2, model.getDescription() + "");
+
+        list.setText(row, 3, model.getApplication() == null ? "-" : model.getApplication().toDisplay());
+
+        list.setWidget(row, 4, newButton(RestfulActionEnum.SHOW, model));
+        list.setWidget(row, 5, newButton(RestfulActionEnum.EDIT, model));
+        list.setWidget(row, 6, newButton(RestfulActionEnum.DESTROY, model));
     }
 
     public void updateInList(Group model) {
@@ -187,5 +194,9 @@ public class GroupViewImpl extends Composite implements GroupView {
 
     public void addToList(Group model) {
         setRow(list.getRowCount(), model);
+    }
+
+    public void resetApplications(List<Application> list){
+        editor.resetApplications(list);
     }
 }

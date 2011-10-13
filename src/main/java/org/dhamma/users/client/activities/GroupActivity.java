@@ -3,11 +3,13 @@ package org.dhamma.users.client.activities;
 import java.util.List;
 
 import org.dhamma.users.client.events.GroupEvent;
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
+import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.GroupPlace;
+import org.dhamma.users.client.restservices.ApplicationsRestService;
 import org.dhamma.users.client.restservices.GroupsRestService;
 import org.dhamma.users.client.views.GroupView;
-
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
@@ -34,12 +36,33 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
     
     @Inject
     public GroupActivity(@Assisted GroupPlace place, final Notice notice, final GroupView view,
-            GroupsRestService service, PlaceController placeController) {
+            GroupsRestService service, PlaceController placeController, 
+            ApplicationsRestService applicationRestService,
+            final SimpleCache<User> cache) {
         this.place = place;
         this.notice = notice;
         this.view = view;
         this.service = service;
+        
         this.placeController = placeController;
+        
+        List<Application> applications = cache.get("applications");
+        view.resetApplications(applications);
+        if (applications == null){
+        
+            applicationRestService.index(new MethodCallback<List<Application>>() {
+
+                public void onSuccess(Method method,
+                        List<Application> response) {
+                    view.resetApplications(response);
+                    cache.put("applications", response);
+                }
+
+                public void onFailure(Method method, Throwable exception) {
+                    notice.setText("failed to load applications");
+                }
+            });
+        }
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
@@ -92,7 +115,7 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
     public void create() {
         Group model = view.flush();
         view.setEnabled(false);
-        service.create(model, new MethodCallback<Group>() {
+        service.create(model.minimalClone(), new MethodCallback<Group>() {
 
             public void onFailure(Method method, Throwable exception) {
                 notice.setText("error creating Group: "
@@ -135,7 +158,7 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
     public void save() {
         Group model = view.flush();
         view.setEnabled(false);
-        service.update(model, new MethodCallback<Group>() {
+        service.update(model.minimalClone(), new MethodCallback<Group>() {
 
             public void onFailure(Method method, Throwable exception) {
                 notice.setText("error saving Group: "

@@ -19,6 +19,11 @@ public class UsersMenuPanel extends MenuPanel<User> {
     @Inject
     UsersMenuPanel(final PlaceController placeController, SessionManager<User> sessionManager){
         super(sessionManager);
+        addButton("Applications").addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                placeController.goTo(new org.dhamma.users.client.places.ApplicationPlace(RestfulActionEnum.INDEX));
+            }
+        });
         addButton("Remote permissions").addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 placeController.goTo(new org.dhamma.users.client.places.RemotePermissionPlace(RestfulActionEnum.INDEX));

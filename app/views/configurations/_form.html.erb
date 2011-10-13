@@ -15,14 +15,14 @@
     <%= f.label :idle_session_timeout %><br />
     <%= f.text_field :idle_session_timeout %>
   </div><!-- end - idle_session_timeout -->
-  <div class="field"><!-- begin - password_from_email -->
-    <%= f.label :password_from_email %><br />
-    <%= f.text_field :password_from_email %>
-  </div><!-- end - password_from_email -->
-  <div class="field"><!-- begin - login_url -->
-    <%= f.label :login_url %><br />
-    <%= f.text_field :login_url %>
-  </div><!-- end - login_url -->
+  <div class="field"><!-- begin - from_email -->
+    <%= f.label :from_email %><br />
+    <%= f.text_field :from_email %>
+  </div><!-- end - from_email -->
+  <div class="field"><!-- begin - application -->
+    <%= f.label :application %><br />
+    <%= f.text_field :application %>
+  </div><!-- end - application -->
   <div class="actions">
     <%= f.hidden_field :updated_at %>
     <%= f.submit %>

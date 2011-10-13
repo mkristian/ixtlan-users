@@ -3,6 +3,7 @@ package org.dhamma.users.client.views;
 import java.util.List;
 
 import org.dhamma.users.client.editors.RemotePermissionEditor;
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.RemotePermission;
 import org.dhamma.users.client.places.RemotePermissionPlace;
 
@@ -149,6 +150,7 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
         list.setText(0, 0, "Id");
         list.setText(0, 1, "Ip");
         list.setText(0, 2, "Token");
+        list.setText(0, 3, "Application");
         list.getRowFormatter().addStyleName(0, "model-list-header");
         int row = 1;
         for(RemotePermission model: models){
@@ -163,9 +165,11 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
 
         list.setText(row, 2, model.getToken() + "");
 
-        list.setWidget(row, 3, newButton(RestfulActionEnum.SHOW, model));
-        list.setWidget(row, 4, newButton(RestfulActionEnum.EDIT, model));
-        list.setWidget(row, 5, newButton(RestfulActionEnum.DESTROY, model));
+        list.setText(row, 3, model.getApplication() == null ? "-" : model.getApplication().toDisplay());
+
+        list.setWidget(row, 4, newButton(RestfulActionEnum.SHOW, model));
+        list.setWidget(row, 5, newButton(RestfulActionEnum.EDIT, model));
+        list.setWidget(row, 6, newButton(RestfulActionEnum.DESTROY, model));
     }
 
     public void updateInList(RemotePermission model) {
@@ -190,5 +194,9 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
 
     public void addToList(RemotePermission model) {
         setRow(list.getRowCount(), model);
+    }
+
+    public void resetApplications(List<Application> list){
+        editor.resetApplications(list);
     }
 }

@@ -10,6 +10,11 @@
   <%= @remote_permission.token %>
 </p>
 
+<p>
+  <b>Application:</b>
+  <%= @remote_permission.application %>
+</p>
+
 
 <% if allowed?(:remote_permissions, :update) %>
 <%= link_to 'Edit', edit_remote_permission_path(@remote_permission) %>

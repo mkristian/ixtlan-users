@@ -5,6 +5,16 @@
   <%= @group.name %>
 </p>
 
+<p>
+  <b>Description:</b>
+  <%= @group.description %>
+</p>
+
+<p>
+  <b>Application:</b>
+  <%= @group.application %>
+</p>
+
 
 <% if allowed?(:groups, :update) %>
 <%= link_to 'Edit', edit_group_path(@group) %>

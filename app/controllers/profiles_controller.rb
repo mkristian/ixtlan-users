@@ -30,11 +30,8 @@ class ProfilesController < ApplicationController
     profile.delete(:login)
     profile.delete(:id)
 
-#    new_password = 
-#profile.delete(:new_password)
     user = User.authenticate(@profile.login, profile.delete(:password))
     if user == @profile
- #     profile[:password] = new_password if new_password
       respond_to do |format|
         if @profile.update_attributes(profile)
           format.html { redirect_to(profile_path, :notice => 'Profile was successfully updated.') }

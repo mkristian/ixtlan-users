@@ -3,8 +3,10 @@ package org.dhamma.users.client.activities;
 import java.util.List;
 
 import org.dhamma.users.client.events.RemotePermissionEvent;
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.RemotePermission;
 import org.dhamma.users.client.places.RemotePermissionPlace;
+import org.dhamma.users.client.restservices.ApplicationsRestService;
 import org.dhamma.users.client.restservices.RemotePermissionsRestService;
 import org.dhamma.users.client.views.RemotePermissionView;
 
@@ -34,12 +36,24 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
     
     @Inject
     public RemotePermissionActivity(@Assisted RemotePermissionPlace place, final Notice notice, final RemotePermissionView view,
-            RemotePermissionsRestService service, PlaceController placeController) {
+            RemotePermissionsRestService service, PlaceController placeController, ApplicationsRestService applicationRestService) {
         this.place = place;
         this.notice = notice;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
+    
+        view.resetApplications(null);
+        applicationRestService.index(new MethodCallback<List<Application>>() {
+            
+            public void onSuccess(Method method, List<Application> response) {
+                view.resetApplications(response);
+            }
+            
+            public void onFailure(Method method, Throwable exception) {
+                notice.setText("failed to load applications");
+            }
+        });
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
@@ -92,7 +106,7 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
     public void create() {
         RemotePermission model = view.flush();
         view.setEnabled(false);
-        service.create(model, new MethodCallback<RemotePermission>() {
+        service.create(model.minimalClone(), new MethodCallback<RemotePermission>() {
 
             public void onFailure(Method method, Throwable exception) {
                 notice.setText("error creating Remote permission: "
@@ -135,7 +149,7 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
     public void save() {
         RemotePermission model = view.flush();
         view.setEnabled(false);
-        service.update(model, new MethodCallback<RemotePermission>() {
+        service.update(model.minimalClone(), new MethodCallback<RemotePermission>() {
 
             public void onFailure(Method method, Throwable exception) {
                 notice.setText("error saving Remote permission: "

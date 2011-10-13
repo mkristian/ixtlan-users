@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @application.name %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%= @application.url %>
+</p>
+
+
+<% if allowed?(:applications, :update) %>
+<%= link_to 'Edit', edit_application_path(@application) %>
+<% end %>
+<% if allowed?(:applications, :index) %>
+ | <%= link_to 'Back', applications_path %>
+<% end %>

@@ -3,6 +3,7 @@ class CreateRemotePermissions < ActiveRecord::Migration
     create_table :remote_permissions do |t|
       t.string :ip
       t.string :token
+      t.belongs_to :application
 
       t.timestamps
 

@@ -1,8 +1,12 @@
 package org.dhamma.users.client.activities;
 
+import java.util.List;
+
 import org.dhamma.users.client.events.ConfigurationEvent;
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Configuration;
 import org.dhamma.users.client.places.ConfigurationPlace;
+import org.dhamma.users.client.restservices.ApplicationsRestService;
 import org.dhamma.users.client.restservices.ConfigurationsRestService;
 import org.dhamma.users.client.views.ConfigurationView;
 
@@ -31,12 +35,24 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
     
     @Inject
     public ConfigurationActivity(@Assisted ConfigurationPlace place, final Notice notice, final ConfigurationView view,
-            ConfigurationsRestService service, PlaceController placeController) {
+            ConfigurationsRestService service, PlaceController placeController, ApplicationsRestService applicationRestService) {
         this.place = place;
         this.notice = notice;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
+    
+        view.resetApplications(null);
+        applicationRestService.index(new MethodCallback<List<Application>>() {
+            
+            public void onSuccess(Method method, List<Application> response) {
+                view.resetApplications(response);
+            }
+            
+            public void onFailure(Method method, Throwable exception) {
+                notice.setText("failed to load applications");
+            }
+        });
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
@@ -76,7 +92,7 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
     public void save() {
         Configuration model = view.flush();
         view.setEnabled(false);
-        service.update(model, new MethodCallback<Configuration>() {
+        service.update(model.minimalClone(), new MethodCallback<Configuration>() {
 
             public void onFailure(Method method, Throwable exception) {
                 notice.setText("error saving Configuration: "

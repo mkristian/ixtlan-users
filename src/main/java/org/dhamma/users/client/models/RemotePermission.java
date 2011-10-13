@@ -29,19 +29,25 @@ public class RemotePermission implements HasToDisplay, Identifyable {
 
   private String token;
 
+  @Json(name = "application_id")
+  private int applicationId;
+  private Application application;
+
   public RemotePermission(){
-    this(0, null, null, null);
+    this(0, null, null, null, 0);
   }
   
   @JsonCreator
   public RemotePermission(@JsonProperty("id") int id, 
           @JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
-          @JsonProperty("modifiedBy") User modifiedBy){
+          @JsonProperty("modifiedBy") User modifiedBy,
+          @JsonProperty("applicationId") int applicationId){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
+    this.applicationId = applicationId;
   }
 
   public int getId(){
@@ -74,6 +80,26 @@ public class RemotePermission implements HasToDisplay, Identifyable {
 
   public void setToken(String value){
     token = value;
+  }
+
+  public Application getApplication(){
+    return application;
+  }
+
+  public void setApplication(Application value){
+    application = value;
+    applicationId = value == null ? 0 : value.getId();
+  }
+
+  public int getApplicationId(){
+    return applicationId;
+  }
+
+  public RemotePermission minimalClone() {
+      RemotePermission clone = new RemotePermission(id, null, updatedAt, null, applicationId);
+      clone.setIp(this.ip);
+      clone.setToken(this.token);
+      return clone;
   }
 
   public int hashCode(){

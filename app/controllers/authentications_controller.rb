@@ -14,25 +14,26 @@ class AuthenticationsController < ApplicationController
 
   def create
     user = User.authenticate(params[:authentication][:login],
-                             params[:authentication][:password] )
-
-    if user.is_a? User
+                             params[:authentication][:password],
+                             request.remote_ip)
       
-      # for the log
-      @authentication = user
+    # for the log
+    @authentication = user
+
+    if user.valid?
 
       respond_to do |format|
-        format.xml  { render :xml => user.to_xml }
-        format.json  { render :json => user.to_json }
+        format.xml  { render :xml => user.to_xml(User.remote_options) }
+        format.json  { render :json => user.to_json(User.remote_options) }
       end
     else
-      head :not_found
+      head :unauthorized
     end
   end
 
   def reset_password
-    _params = params[:authentication] || params
-    @authentication = _params[:email] || _params[:login]
+    auth = params[:authentication] || params
+    @authentication = auth[:email] || auth[:login]
     pwd = User.reset_password(@authentication)
 
     if pwd
