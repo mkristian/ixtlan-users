@@ -1,56 +1,56 @@
 package org.dhamma.users.client.views;
 
+import org.dhamma.users.client.editors.ProfileEditor;
 import org.dhamma.users.client.models.Profile;
 import org.dhamma.users.client.places.ProfilePlace;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
 import de.mkristian.gwt.rails.places.RestfulAction;
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
-import de.mkristian.gwt.rails.views.TimestampedView;
 
 @Singleton
-public class ProfileViewImpl extends TimestampedView
-        implements ProfileView {
+public class ProfileViewImpl extends Composite implements ProfileView {
 
     @UiTemplate("ProfileView.ui.xml")
-    interface ProfileViewUiBinder extends UiBinder<Widget, ProfileViewImpl> {}
+    interface Binder extends UiBinder<Widget, ProfileViewImpl> {}
     
-    private static ProfileViewUiBinder uiBinder = GWT.create(ProfileViewUiBinder.class);
+    private static Binder BINDER = GWT.create(Binder.class);
 
-    
-    @UiField
-    Button editButton;
+    interface EditorDriver extends SimpleBeanEditorDriver<Profile, ProfileEditor> {}
 
-    @UiField
-    Button saveButton;
-    @UiField
-    TextBox email;
+    private final EditorDriver editorDriver = GWT.create(EditorDriver.class);
 
-    @UiField
-    TextBox name;
+    @UiField Button editButton;
+    @UiField Button showButton;
 
-    @UiField
-    PasswordTextBox password;
+    @UiField Button saveButton;
 
-    @UiField
-    Panel form;
+    @UiField Panel model;
+
+    @UiField ProfileEditor editor;
 
     private Presenter presenter;
 
     public ProfileViewImpl() {
-        initWidget(uiBinder.createAndBindUi(this));
+        initWidget(BINDER.createAndBindUi(this));
+        editorDriver.initialize(editor);
+    }
+
+    @UiHandler("showButton")
+    void onClickShow(ClickEvent e) {
+        presenter.goTo(new ProfilePlace(RestfulActionEnum.SHOW));
     }
 
     @UiHandler("editButton")
@@ -62,43 +62,27 @@ public class ProfileViewImpl extends TimestampedView
     void onClickSave(ClickEvent e) {
         presenter.save();
     }
-
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
     }
 
-    public void reset(Profile model) {
-        resetSignature(model.createdAt, model.updatedAt);
-        email.setText(model.email);
-        name.setText(model.name);
-        password.setText(null);
+    public void edit(Profile model) {
+        this.editorDriver.edit(model);
+    }
+
+    public Profile flush() {
+        return editorDriver.flush();
+    }
+
+    public void setEnabled(boolean enabled) {
+        editor.setEnabled(enabled);
     }
 
     public void reset(RestfulAction action) {
         editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()) || 
                 action.name().equals(RestfulActionEnum.INDEX.name()));
         saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
+        showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         setEnabled(!action.viewOnly());
-    }
-
-    public Profile retrieveProfile() {
-        Profile model = new Profile();
-
-        model.createdAt = createdAt.getValue();
-        model.updatedAt = updatedAt.getValue();
-
-        model.email = email.getText();
-
-        model.name = name.getText();
-
-        model.password = password.getText();
-
-        return model;
-    }
-
-    public void setEnabled(boolean enabled) {
-         email.setEnabled(enabled);
-         name.setEnabled(enabled);
-         password.setEnabled(enabled);
     }
 }

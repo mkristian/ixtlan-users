@@ -11,23 +11,20 @@
     </div>
   <% end %>
 
-  <div class="field"><!-- begin - email -->
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </div><!-- end - email -->
   <div class="field"><!-- begin - name -->
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div><!-- end - name -->
-  <div class="field"><!-- begin - openid_identifier -->
-    <%= f.label :openid_identifier %><br />
-    <%= f.text_field :openid_identifier %>
-  </div><!-- end - openid_identifier -->
+  <div class="field"><!-- begin - email -->
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </div><!-- end - email -->
   <div class="field"><!-- begin - password -->
     <%= f.label :password %><br />
     <%= f.text_field :password %>
   </div><!-- end - password -->
   <div class="actions">
+    <%= f.hidden_field :updated_at %>
     <%= f.submit %>
   </div>
 <% end %>

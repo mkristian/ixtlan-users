@@ -1,5 +1,6 @@
 package org.dhamma.users.client.activities;
 
+import org.dhamma.users.client.events.ProfileEvent;
 import org.dhamma.users.client.models.Profile;
 import org.dhamma.users.client.places.ProfilePlace;
 import org.dhamma.users.client.restservices.ProfilesRestService;
@@ -17,6 +18,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import de.mkristian.gwt.rails.Notice;
+import de.mkristian.gwt.rails.events.ModelEvent.Action;
 
 public class ProfileActivity extends AbstractActivity implements ProfileView.Presenter{
 
@@ -25,9 +27,10 @@ public class ProfileActivity extends AbstractActivity implements ProfileView.Pre
     private final Notice notice;
     private final PlaceController placeController;
     private final ProfileView view;
+    private EventBus eventBus;
     
     @Inject
-    public ProfileActivity(@Assisted ProfilePlace place, Notice notice, ProfileView view,
+    public ProfileActivity(@Assisted ProfilePlace place, final Notice notice, final ProfileView view,
             ProfilesRestService service, PlaceController placeController) {
         this.place = place;
         this.notice = notice;
@@ -37,6 +40,7 @@ public class ProfileActivity extends AbstractActivity implements ProfileView.Pre
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
+        this.eventBus = eventBus;
         display.setWidget(view.asWidget());
         view.setPresenter(this);
         load();
@@ -58,8 +62,9 @@ public class ProfileActivity extends AbstractActivity implements ProfileView.Pre
             }
 
             public void onSuccess(Method method, Profile response) {
+                eventBus.fireEvent(new ProfileEvent(response, Action.LOAD));
                 notice.setText(null);
-                view.reset(response);
+                view.edit(response);
                 view.reset(place.action);
             }
         });
@@ -69,7 +74,7 @@ public class ProfileActivity extends AbstractActivity implements ProfileView.Pre
     }
 
     public void save() {
-        Profile model = view.retrieveProfile();
+        Profile model = view.flush();
         view.setEnabled(false);
         service.update(model, new MethodCallback<Profile>() {
 
@@ -80,8 +85,9 @@ public class ProfileActivity extends AbstractActivity implements ProfileView.Pre
             }
 
             public void onSuccess(Method method, Profile response) {
+                eventBus.fireEvent(new ProfileEvent(response, Action.UPDATE));
                 notice.setText(null);
-                view.reset(response);
+                view.edit(response);
                 view.reset(place.action);
             }
         });

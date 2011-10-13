@@ -6,7 +6,7 @@
 
   <g:FlowPanel styleName="gwt-rails-display">
 
-    <g:Label>Configurations</g:Label>
+    <g:Label>Configuration</g:Label>
 
     <g:FlowPanel styleName="gwt-rails-buttons">
       <g:Button ui:field="editButton">Edit</g:Button>

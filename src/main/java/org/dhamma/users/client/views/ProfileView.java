@@ -18,11 +18,11 @@ public interface ProfileView extends IsWidget {
     }
     void setPresenter(Presenter presenter);
 
-    void reset(Profile model);
+    void edit(Profile model);
+
+    Profile flush();
 
     void reset(RestfulAction action);
     
     void setEnabled(boolean enabled);
-
-    Profile retrieveProfile();
 }

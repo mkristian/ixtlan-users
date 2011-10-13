@@ -1,45 +1,28 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
-  xmlns:g="urn:import:com.google.gwt.user.client.ui">
+  xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:t="urn:import:org.dhamma.users.client.editors">
 
-  <ui:style>
-     .buttons {}
-     .signature { float: left; }
-     .signature * { display: inline; margin-right: 1em; font-size: 0.8em;}
-     .fields { clear: both;}
-     .field { }
-  </ui:style>
+  <g:FlowPanel styleName="gwt-rails-display">
 
-  <g:FlowPanel styleName="display">
-    <g:FlowPanel styleName="{style.buttons}">
+    <g:Label>Profile</g:Label>
+
+    <g:FlowPanel styleName="gwt-rails-buttons">
       <g:Button ui:field="editButton">Edit</g:Button>
+      <g:Button ui:field="showButton">Show</g:Button>
     </g:FlowPanel>
-    <g:FlowPanel ui:field="form" styleName="form">
-      <g:FlowPanel styleName="{style.signature}" ui:field="signature">
 
-        <g:Label>created at: </g:Label>
-	<g:DateLabel ui:field="createdAt" predefinedFormat="DATE_TIME_MEDIUM"/>
-	<g:Label>updated at: </g:Label>
-	<g:DateLabel ui:field="updatedAt" predefinedFormat="DATE_TIME_MEDIUM" />
-      </g:FlowPanel>
-      <g:FlowPanel styleName="{style.fields}">
-        <g:FlowPanel styleName="{style.field}">
-          <g:HTML><label name="email">Email</label></g:HTML>
-	  <g:TextBox ui:field="email" name="email"/>
-	</g:FlowPanel>
-        <g:FlowPanel styleName="{style.field}">
-          <g:HTML><label name="name">Name</label></g:HTML>
-	  <g:TextBox ui:field="name" name="name"/>
-	</g:FlowPanel>
-        <g:FlowPanel styleName="{style.field}">
-          <g:HTML><label name="password">Password</label></g:HTML>
-	  <g:PasswordTextBox ui:field="password" name="password"/>
-	</g:FlowPanel>
-      </g:FlowPanel>
-      <g:FlowPanel styleName="{style.buttons}">
+    <g:FlowPanel ui:field="model" styleName="gwt-rails-model">
+
+      <t:ProfileEditor ui:field="editor" styleName="gwt-rails-model-editor" />
+
+      <g:FlowPanel styleName="gwt-rails-buttons">
         <g:Button ui:field="saveButton">Save</g:Button>
       </g:FlowPanel>
+
     </g:FlowPanel>
+
   </g:FlowPanel>
+
 </ui:UiBinder>
