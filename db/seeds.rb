@@ -36,6 +36,7 @@ RemotePermission.create(:ip => '127.0.0.1',
                         :application => dev)
 
 c = Configuration.instance
+c.from_email = 'noreply@example.com'
 c.application = users
 c.modified_by = u
 c.save
