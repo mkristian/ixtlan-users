@@ -15,7 +15,7 @@ class AuthenticationsController < ApplicationController
   def create
     user = User.authenticate(params[:authentication][:login],
                              params[:authentication][:password],
-                             request.remote_ip)
+                             x_service_token)
       
     # for the log
     @authentication = user

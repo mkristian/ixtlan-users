@@ -9,8 +9,12 @@ class ApplicationController < ActionController::Base
     session['user']
   end
 
+  def x_service_token
+    request.headers['X-SERVICE-TOKEN']
+  end
+
   def remote_permission
-    perm = RemotePermission.find_by_token(request.headers['X-SERVICE-TOKEN'])
+    perm = RemotePermission.find_by_token(x_service_token)
     raise "ip #{request.remote_ip} wrong authentication" unless perm 
     # if the perm.id == nil then do not check IP - needed when using clusters
     raise "ip #{request.remote_ip} not allowed" if (!perm.ip.blank? && request.remote_ip != perm.ip)

@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     end
   end
   
-  def self.authenticate(login, password, remote_ip = nil)
+  def self.authenticate(login, password, token = nil)
     result = User.new
     if password.blank?
       result.log = "no password given with login: #{login}"
@@ -51,13 +51,13 @@ class User < ActiveRecord::Base
         result.log = "login not found: #{login}"
       end
     end
-    result.filter_groups(remote_ip) if result.valid?
+    result.filter_groups(token) if result.valid?
     result
   end
   
-  def filter_groups(remote_ip)
-    if remote_ip
-      perm = RemotePermission.find_by_ip(remote_ip)
+  def filter_groups(token)
+    if token
+      perm = RemotePermission.find_by_token(token)
       app_id = (perm && perm.application) ? perm.application.id : 0
       
       groups.delete_if do |g|
