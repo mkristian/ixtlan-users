@@ -4,14 +4,16 @@ class ApplicationController < ActionController::Base
   protected
 
   def current_user(user = nil)
+    # TODO just put user_id and user.groups names into session 
     session['user'] = user if user
     session['user']
   end
 
-  def ip_restriction
-    perm = RemotePermission.find_by_ip(request.remote_ip)
-    raise "ip #{request.remote_ip} not allowed" unless perm 
-    raise "ip #{request.remote_ip} wrong authentication" unless (request.headers['X-SERVICE-TOKEN'] == perm.token)
+  def remote_permission
+    perm = RemotePermission.find_by_token(request.headers['X-SERVICE-TOKEN'])
+    raise "ip #{request.remote_ip} wrong authentication" unless perm 
+    # if the perm.id == nil then do not check IP - needed when using clusters
+    raise "ip #{request.remote_ip} not allowed" if (!perm.ip.blank? && request.remote_ip != perm.ip)
   end
 
   def groups_for_current_users

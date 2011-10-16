@@ -1,7 +1,7 @@
 class AuthenticationsController < ApplicationController
 
   skip_before_filter :authorization
-  before_filter :ip_restriction
+  before_filter :remote_permission
 
   protected
 
@@ -37,7 +37,7 @@ class AuthenticationsController < ApplicationController
     pwd = User.reset_password(@authentication)
 
     if pwd
-      render :inline => pwd
+      render :inline => "password sent"
     else
       head :not_found
     end
