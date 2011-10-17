@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   def groups_for_current_users
     app_id = Configuration.instance.application.nil? ? 0 :Configuration.instance.application.id
     current_user.groups.select do |g|
-      g.application.id != app_id
+      g.application.id == app_id
     end.collect do |g|
       g.name
     end
