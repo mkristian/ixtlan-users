@@ -1,9 +1,9 @@
 profiles:
   defaults: [*] 
 #  index: []
-#  show: []
+  show: [*]
 #  new: []
 #  create: []
 #  edit: []
-#  update: []
+  update: [*]
 #  destroy: []
