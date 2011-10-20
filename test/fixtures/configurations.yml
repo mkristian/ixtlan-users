@@ -2,10 +2,8 @@
 
 one:
   idle_session_timeout: 1
-  password_from_email: MyString
-  login_url: MyString
+  from_email: MyString
 
 two:
   idle_session_timeout: 1
-  password_from_email: MyString
-  login_url: MyString
+  from_email: MyString

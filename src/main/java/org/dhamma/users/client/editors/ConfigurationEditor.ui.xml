@@ -25,10 +25,6 @@
         <label name="fromEmail">From email</label>
         <g:TextBox ui:field="fromEmail"/>
       </g:HTMLPanel>
-      <g:HTMLPanel>
-        <label name="application">Application</label>
-        <r:IdentifyableListBox ui:field="application"/>
-      </g:HTMLPanel>
     </g:FlowPanel>
 
   </g:FlowPanel>

@@ -22,9 +22,9 @@ class ApplicationController < ActionController::Base
 
   def current_user_group_names
     if current_user
-      app_id = Configuration.instance.application.nil? ? 0 :Configuration.instance.application.id
+      app_ids = [Application.THIS.id, Application.ALL.id]
       group_names = current_user.groups.select do |g|
-        g.application.id == app_id
+        app_ids.member?(g.application.id)
       end.collect do |g|
         g.name.to_s
       end

@@ -1,9 +1,6 @@
 package org.dhamma.users.client.views;
 
-import java.util.List;
-
 import org.dhamma.users.client.editors.ConfigurationEditor;
-import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Configuration;
 import org.dhamma.users.client.places.ConfigurationPlace;
 
@@ -87,9 +84,5 @@ public class ConfigurationViewImpl extends Composite implements ConfigurationVie
         saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         setEnabled(!action.viewOnly());
-    }
-
-    public void resetApplications(List<Application> list){
-        editor.resetApplications(list);
     }
 }

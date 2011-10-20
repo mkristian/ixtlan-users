@@ -29,23 +29,17 @@ public class Configuration implements HasToDisplay {
   @Json(name = "from_email")
   private String fromEmail;
 
-  @Json(name = "application_id")
-  private int applicationId;
-  private Application application;
-
   public Configuration(){
-    this(null, null, null, 0);
+    this(null, null, null);
   }
   
   @JsonCreator
   public Configuration(@JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
-          @JsonProperty("modifiedBy") User modifiedBy,
-          @JsonProperty("applicationId") int applicationId){
+          @JsonProperty("modifiedBy") User modifiedBy){
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
-    this.applicationId = applicationId;
   }
 
   public Date getCreatedAt(){
@@ -74,26 +68,6 @@ public class Configuration implements HasToDisplay {
 
   public void setFromEmail(String value){
     fromEmail = value;
-  }
-
-  public Application getApplication(){
-    return application;
-  }
-
-  public void setApplication(Application value){
-    application = value;
-    applicationId = value == null ? 0 : value.getId();
-  }
-
-  public int getApplicationId(){
-    return applicationId;
-  }
-
-  public Configuration minimalClone() {
-      Configuration clone = new Configuration(null, updatedAt, null, applicationId);
-      clone.setIdleSessionTimeout(this.idleSessionTimeout);
-      clone.setFromEmail(this.fromEmail);
-      return clone;
   }
 
   public String toDisplay() {

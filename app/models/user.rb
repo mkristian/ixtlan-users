@@ -59,9 +59,9 @@ class User < ActiveRecord::Base
     if token
       perm = RemotePermission.find_by_token(token)
       app_id = (perm && perm.application) ? perm.application.id : 0
-      
+      app_ids =[app_id, Application.ALL.id]
       groups.delete_if do |g|
-        g.application.id != app_id
+        !app_ids.member?(g.application.id)
       end
     end
   end

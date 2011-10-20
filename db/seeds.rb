@@ -12,31 +12,49 @@ u.save
 u.modified_by = u
 u.save
 
-users = Application.create(:name => "users", 
-                           :url => "http://localhost/Users.html",
+this = Application.THIS
+this.url = "http://localhost/users.html"
+this.modified_by = u
+this.save
+
+all = Application.ALL
+all.url = ''
+all.modified_by = u
+all.save
+
+root = Group.ROOT
+root.modified_by = u
+root.save
+
+u.groups << root
+
+user_admin = Group.USER_ADMIN
+user_admin.modified_by = u
+user_admin.save
+
+at = Group.AT
+at.modified_by = u
+at.save
+
+unless ENV['email'] || ENV['login']
+  # harded access credentials only for development
+  dev = Application.create(:name => "development", 
+                           :url => "http://localhost/Dev.html",
                            :modified_by => u)
-dev = Application.create(:name => "development", 
-                         :url => "http://localhost/Dev.html",
-                         :modified_by => u)
-
-users_root = Group.create(:name => "root", 
+  RemotePermission.create(:ip => '127.0.0.1', 
+                          :token => 'be happy', 
+                          :modified_by => u,
+                          :application => dev)
+  dev_root = Group.create(:name => "root", 
                           :modified_by => u, 
-                          :application => users)
-dev_root = Group.create(:name => "root", 
-                        :modified_by => u, 
-                        :application => dev)
+                          :application => dev)
+  u.groups << dev_root
+end
 
-u.groups << users_root
-u.groups << dev_root
 u.save
 
-RemotePermission.create(:ip => '127.0.0.1', 
-                        :token => 'be happy', 
-                        :modified_by => u,
-                        :application => dev)
 
 c = Configuration.instance
 c.from_email = 'noreply@example.com'
-c.application = users
 c.modified_by = u
 c.save

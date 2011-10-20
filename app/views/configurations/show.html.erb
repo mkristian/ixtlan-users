@@ -10,11 +10,6 @@
   <%= @configuration.from_email %>
 </p>
 
-<p>
-  <b>Application:</b>
-  <%= @configuration.application %>
-</p>
-
 
 <% if allowed?(:configurations, :update) %>
 <%= link_to 'Edit', edit_configuration_path %>

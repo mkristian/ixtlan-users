@@ -1,8 +1,5 @@
 package org.dhamma.users.client.views;
 
-import java.util.List;
-
-import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Configuration;
 
 import com.google.gwt.place.shared.Place;
@@ -28,6 +25,4 @@ public interface ConfigurationView extends IsWidget {
     void reset(RestfulAction action);
     
     void setEnabled(boolean enabled);
-
-    void resetApplications(List<Application> list);
 }

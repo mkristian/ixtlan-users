@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111013144631) do
+ActiveRecord::Schema.define(:version => 20111020161047) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(:version => 20111013144631) do
   create_table "configurations", :force => true do |t|
     t.integer  "idle_session_timeout", :default => 15
     t.string   "from_email"
-    t.integer  "application_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "modified_by_id"
