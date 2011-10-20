@@ -20,12 +20,18 @@ class ApplicationController < ActionController::Base
     raise "ip #{request.remote_ip} not allowed" if (!perm.ip.blank? && request.remote_ip != perm.ip)
   end
 
-  def groups_for_current_users
-    app_id = Configuration.instance.application.nil? ? 0 :Configuration.instance.application.id
-    current_user.groups.select do |g|
-      g.application.id == app_id
-    end.collect do |g|
-      g.name
+  def current_user_group_names
+    if current_user
+      app_id = Configuration.instance.application.nil? ? 0 :Configuration.instance.application.id
+      group_names = current_user.groups.select do |g|
+        g.application.id == app_id
+      end.collect do |g|
+        g.name.to_s
+      end
+      group_names << 'profile' # to allow every user the profile page
+      group_names
+    else
+      []
     end
   end
 

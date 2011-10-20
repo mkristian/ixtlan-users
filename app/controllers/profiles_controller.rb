@@ -8,8 +8,8 @@ class ProfilesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @profile }
-      format.json  { render :json => @profile.to_json(:root => :profile, :methods => []) }
+      format.xml  { render :xml => @profile.to_xml(User.options.merge(:root => 'profile')) }
+      format.json  { render :json => @profile.to_json(User.options.merge(:root => 'profile')) }
     end
   end
 
@@ -35,8 +35,8 @@ class ProfilesController < ApplicationController
       respond_to do |format|
         if @profile.update_attributes(profile)
           format.html { redirect_to(profile_path, :notice => 'Profile was successfully updated.') }
-          format.xml  { render :xml => @profile }
-          format.json  { render :json => @profile.to_json(:root => :profile, :methods => []) }
+          format.xml  { render :xml => @profile.to_json(User.options.merge(:root => 'profile')) }
+          format.json  { render :json => @profile.to_json(User.options.merge(:root => 'profile')) }
         else
           format.html { render :action => "edit" }
           format.xml  { render :xml => @profile.errors, :status => :unprocessable_entity }

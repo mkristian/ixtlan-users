@@ -1,3 +1,9 @@
+PATH
+  remote: ../../ixtlan/ixtlan-guard
+  specs:
+    ixtlan-guard (0.7.0)
+      ixtlan-core (~> 0.6.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -40,8 +46,6 @@ GEM
     ixtlan-core (0.6.1)
       slf4r (>= 0.4.2, < 0.4.99999)
     ixtlan-generators (0.1.2)
-    ixtlan-guard (0.6.1)
-      ixtlan-core (~> 0.6.0)
     ixtlan-session-timeout (0.4.0)
     jdbc-sqlite3 (3.7.2)
     mail (2.2.19)
@@ -93,7 +97,7 @@ DEPENDENCIES
   enforce-ssl
   ixtlan-core
   ixtlan-generators
-  ixtlan-guard
+  ixtlan-guard!
   ixtlan-session-timeout
   jdbc-sqlite3
   pg

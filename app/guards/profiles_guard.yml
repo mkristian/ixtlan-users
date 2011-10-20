@@ -1,9 +1,5 @@
 profiles:
-  defaults: [*] 
-#  index: []
-  show: [*]
-#  new: []
-#  create: []
+  defaults: [*] # to allow every user the profile page
+#  show: []
 #  edit: []
-  update: [*]
-#  destroy: []
+#  update: []

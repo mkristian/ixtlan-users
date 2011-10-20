@@ -69,7 +69,7 @@ gem 'ixtlan-generators'#, :path => '../../ixtlan/ixtlan-generators'
 
 gem 'enforce-ssl'
 gem "ixtlan-session-timeout"
-gem "ixtlan-guard"#, :path => '../../ixtlan/ixtlan-guard'
+gem "ixtlan-guard", :path => '../../ixtlan/ixtlan-guard'
 gem "ixtlan-core"
 
 gem 'bcrypt-ruby'

@@ -159,6 +159,16 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
+      <artifactId>resty-generators</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-generators</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
       <artifactId>enforce-ssl</artifactId>
       <type>gem</type>
     </dependency>
@@ -183,9 +193,9 @@
       <type>gem</type>
     </dependency>
     <dependency>
-      <groupId>de.mkristian.rails-gwt</groupId>
+      <groupId>de.mkristian.gwt</groupId>
       <artifactId>rails-gwt</artifactId>
-      <version>0.3.0-SNAPSHOT</version>
+      <version>0.6.1-SNAPSHOT</version>
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
@@ -249,14 +259,8 @@
     <dependencies>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>ixtlan-generators</artifactId>
-        <version>0.1.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
         <artifactId>ixtlan-guard</artifactId>
-        <version>0.6.1</version>
+        <version>0.7.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -269,12 +273,6 @@
         <groupId>rubygems</groupId>
         <artifactId>slf4r</artifactId>
         <version>0.4.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>resty-generators</artifactId>
-        <version>0.6.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -405,14 +403,14 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>diff-lcs</artifactId>
-        <version>1.1.3</version>
+        <artifactId>enforce-ssl</artifactId>
+        <version>0.2.2</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>enforce-ssl</artifactId>
-        <version>0.2.2</version>
+        <artifactId>ixtlan-generators</artifactId>
+        <version>0.1.2</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -425,6 +423,12 @@
         <groupId>rubygems</groupId>
         <artifactId>jdbc-sqlite3</artifactId>
         <version>3.7.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>pg</artifactId>
+        <version>0.11.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -465,32 +469,14 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>rspec</artifactId>
-        <version>2.7.0.rc1</version>
+        <artifactId>resty-generators</artifactId>
+        <version>0.6.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>rspec-core</artifactId>
-        <version>2.7.0.rc1</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>rspec-expectations</artifactId>
-        <version>2.7.0.rc1</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>rspec-mocks</artifactId>
-        <version>2.7.0.rc1</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>rspec-rails</artifactId>
-        <version>2.7.0.rc1</version>
+        <artifactId>sqlite3</artifactId>
+        <version>1.3.4</version>
         <type>gem</type>
       </dependency>
     </dependencies>
