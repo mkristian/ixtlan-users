@@ -64,14 +64,12 @@ group :production do
   gem 'pg', :platforms => :ruby
 end
 
-gem 'resty-generators'#, :path => '../../rails-resty-gwt/resty-generators'
+gem 'resty-generators', :path => '../../rails-resty-gwt/resty-generators'
 gem 'ixtlan-generators'#, :path => '../../ixtlan/ixtlan-generators'
 
 gem 'enforce-ssl'
 gem "ixtlan-session-timeout"
 gem "ixtlan-guard", :path => '../../ixtlan/ixtlan-guard'
-gem "ixtlan-core"
+gem "ixtlan-core", :path => '../../ixtlan/ixtlan-core'
 
 gem 'bcrypt-ruby'
-
-#gem 'rspec-rails', '2.7.0.rc1', :group => [:development,:test]

@@ -1,6 +1,7 @@
 package org.dhamma.users.client.activities;
 
 import org.dhamma.users.client.events.ProfileEvent;
+import org.dhamma.users.client.events.ProfileEventHandler;
 import org.dhamma.users.client.models.Profile;
 import org.dhamma.users.client.places.ProfilePlace;
 import org.dhamma.users.client.restservices.ProfilesRestService;
@@ -18,6 +19,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import de.mkristian.gwt.rails.Notice;
+import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
 
 public class ProfileActivity extends AbstractActivity implements ProfileView.Presenter{
@@ -37,14 +39,17 @@ public class ProfileActivity extends AbstractActivity implements ProfileView.Pre
         this.view = view;
         this.service = service;
         this.placeController = placeController;
+
+        notice.hide();
+        view.setup(this, place.action);
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
         this.eventBus = eventBus;
+
         display.setWidget(view.asWidget());
-        view.setPresenter(this);
+
         load();
-        view.reset(place.action);
     }
 
     public void goTo(Place place) {
@@ -52,45 +57,37 @@ public class ProfileActivity extends AbstractActivity implements ProfileView.Pre
     }
 
     public void load() {
-        view.setEnabled(false);
         service.show(new MethodCallback<Profile>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error loading Profile: "
-                        + exception.getMessage());
-                view.reset(place.action);
+                notice.finishLoading();
+                notice.error("error loading Profile", exception);
             }
 
             public void onSuccess(Method method, Profile response) {
+                notice.finishLoading();
                 eventBus.fireEvent(new ProfileEvent(response, Action.LOAD));
-                notice.setText(null);
                 view.edit(response);
-                view.reset(place.action);
             }
         });
-        if(!notice.isVisible()){
-            notice.setText("loading Profile . . .");
-        }
+        notice.loading();
     }
 
     public void save() {
         Profile model = view.flush();
-        view.setEnabled(false);
         service.update(model, new MethodCallback<Profile>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error saving Profile: "
-                        + exception.getMessage());
-                view.reset(place.action);
+                notice.finishLoading();
+                notice.error("error saving Profile", exception);
             }
 
             public void onSuccess(Method method, Profile response) {
+                notice.finishLoading();
                 eventBus.fireEvent(new ProfileEvent(response, Action.UPDATE));
-                notice.setText(null);
                 view.edit(response);
-                view.reset(place.action);
             }
         });
-        notice.setText("saving Profile . . .");
+        notice.loading();
     }
 }

@@ -38,12 +38,11 @@ public class SessionActivityPlaceActivityMapper extends ActivityPlaceActivityMap
     protected Activity pessimisticGetActivity(Place place) {
         if (!(place instanceof NoAuthorization)) {
             if(manager.hasSession()){
-                if(!manager.isAllowed((RestfulPlace<?>)place)){
-                    notice.setText("nothing to see");
+                if(!manager.isAllowed((RestfulPlace<?, ?>)place)){
+                    notice.error("nothing to see");
                     return null;
                 }
-                //TODO move into a dispatch filter or callback filter
-                manager.resetTimer();
+                manager.resetCountDown();
             }
             else {
                 return LoginPlace.LOGIN.create(factory);
@@ -59,10 +58,11 @@ public class SessionActivityPlaceActivityMapper extends ActivityPlaceActivityMap
     protected Activity optimisticGetActivity(Place place) {
         if (place instanceof NeedsAuthorization) {
             if(manager.hasSession()){
-                if(!manager.isAllowed((RestfulPlace<?>)place)){
-                    notice.setText("nothing to see");
+                if(!manager.isAllowed((RestfulPlace<?, ?>)place)){
+                    notice.error("nothing to see");
                     return null;
                 }
+                manager.resetCountDown();
             }
             else {
                 return LoginPlace.LOGIN.create(factory);

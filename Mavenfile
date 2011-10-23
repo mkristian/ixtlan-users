@@ -1,5 +1,6 @@
 #-*- mode: ruby -*-
-GWT_VERSION = '2.3.0'
+GWT_VERSION = '2.4.0'
+jar('org.jruby:jruby-complete', '1.6.4')
 jar('de.mkristian.gwt:rails-gwt', '0.6.1-SNAPSHOT').scope :provided
 jar('org.fusesource.restygwt:restygwt', '1.2').scope :provided
 jar('javax.ws.rs:jsr311-api', '1.1').scope :provided

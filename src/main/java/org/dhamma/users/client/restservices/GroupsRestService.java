@@ -1,26 +1,24 @@
 package org.dhamma.users.client.restservices;
 
-import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
 import de.mkristian.gwt.rails.dispatchers.DefaultDispatcherSingleton;
+
 import java.util.List;
 
 import javax.ws.rs.*;
 
-import org.fusesource.restygwt.client.*;
+import org.fusesource.restygwt.client.Attribute;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.fusesource.restygwt.client.Options;
+import org.fusesource.restygwt.client.RestService;
 
 import org.dhamma.users.client.models.*;
 
-
-@Options(dispatcher = RestfulDispatcherSingleton.class)
+@Options(dispatcher = DefaultDispatcherSingleton.class)
 public interface GroupsRestService extends RestService {
 
   @GET @Path("/groups")
-  @Options(dispatcher = DefaultDispatcherSingleton.class)
   void index(MethodCallback<List<Group>> callback);
 
-//  @GET @Path("/groups")
-//  void index(MethodCallback<List<Group>> callback, @QueryParam("limit") int limit, @QueryParam("offset") int offset);
-//
   @GET @Path("/groups/{id}")
   void show(@PathParam("id") int id, MethodCallback<Group> callback);
 

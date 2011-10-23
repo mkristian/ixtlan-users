@@ -1,5 +1,7 @@
 Users::Application.routes.draw do
 
+  resources :users
+
   resources :applications
 
   resources :remote_permissions

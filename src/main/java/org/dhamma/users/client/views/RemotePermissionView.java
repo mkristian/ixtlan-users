@@ -16,28 +16,20 @@ public interface RemotePermissionView extends IsWidget {
 
     public interface Presenter {
         void create();
-        
         void save();
         void delete(RemotePermission model);
         void goTo(Place place);
     }
-    void setPresenter(Presenter presenter);
+
+    void setup(Presenter presenter, RestfulAction action);
+
+    void reset(List<RemotePermission> models);
+
+    void resetApplications(List<Application> list);
 
     void edit(RemotePermission model);
 
     RemotePermission flush();
 
-    void reset(List<RemotePermission> models);
-
-    void reset(RestfulAction action);
-    
-    void setEnabled(boolean enabled);
-
-    void updateInList(RemotePermission model);
-
     void removeFromList(RemotePermission model);
-
-    void addToList(RemotePermission model);
-
-    void resetApplications(List<Application> list);
 }

@@ -67,8 +67,12 @@ public class RemotePermissionEditor extends Composite implements Editor<RemotePe
         }
     }
 
-    public void setEnabled(boolean enabled) {
+    public void resetVisibility() {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
+    }
+
+    public void setEnabled(boolean enabled) {
+        resetVisibility();
         this.ip.setEnabled(enabled);
         this.token.setEnabled(enabled);
         this.application.setEnabled(enabled);

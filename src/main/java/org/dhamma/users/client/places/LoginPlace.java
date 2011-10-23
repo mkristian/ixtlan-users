@@ -1,11 +1,12 @@
 package org.dhamma.users.client.places;
 
-import org.dhamma.users.client.ActivityPlace;
 import org.dhamma.users.client.managed.ActivityFactory;
 
 import com.google.gwt.activity.shared.Activity;
 
-public class LoginPlace extends ActivityPlace<Void> {
+import de.mkristian.gwt.rails.places.RestfulPlace;
+
+public class LoginPlace extends RestfulPlace<Void, ActivityFactory> {
 
     public static final LoginPlace LOGIN = new LoginPlace();
 

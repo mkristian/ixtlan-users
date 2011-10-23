@@ -3,13 +3,17 @@ package org.dhamma.users.client.activities;
 import java.util.List;
 
 import org.dhamma.users.client.events.GroupEvent;
+import org.dhamma.users.client.events.GroupEventHandler;
+import org.dhamma.users.client.caches.GroupsCache;
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
-import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.GroupPlace;
-import org.dhamma.users.client.restservices.ApplicationsRestService;
+import org.dhamma.users.client.caches.ApplicationsCache;
+import org.dhamma.users.client.events.ApplicationEvent;
+import org.dhamma.users.client.events.ApplicationEventHandler;
 import org.dhamma.users.client.restservices.GroupsRestService;
 import org.dhamma.users.client.views.GroupView;
+
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
@@ -22,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
 import de.mkristian.gwt.rails.Notice;
+import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
 
@@ -32,50 +37,60 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
     private final Notice notice;
     private final PlaceController placeController;
     private final GroupView view;
+    private final GroupsCache cache;
+    private final ApplicationsCache applicationsCache;
     private EventBus eventBus;
     
     @Inject
     public GroupActivity(@Assisted GroupPlace place, final Notice notice, final GroupView view,
-            GroupsRestService service, PlaceController placeController, 
-            ApplicationsRestService applicationRestService,
-            final SimpleCache<User> cache) {
+            GroupsRestService service, PlaceController placeController,
+            GroupsCache cache, ApplicationsCache applicationsCache) {
         this.place = place;
         this.notice = notice;
         this.view = view;
         this.service = service;
-        
         this.placeController = placeController;
-        
-        List<Application> applications = cache.get("applications");
-        view.resetApplications(applications);
-        if (applications == null){
-        
-            applicationRestService.index(new MethodCallback<List<Application>>() {
+        this.cache = cache;
+        this.applicationsCache = applicationsCache;
 
-                public void onSuccess(Method method,
-                        List<Application> response) {
-                    view.resetApplications(response);
-                    cache.put("applications", response);
-                }
-
-                public void onFailure(Method method, Throwable exception) {
-                    notice.setText("failed to load applications");
-                }
-            });
-        }
+        notice.hide();
+        view.setup(this, place.action);
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
         this.eventBus = eventBus;
+
+        this.eventBus.addHandler(ApplicationEvent.TYPE, new ApplicationEventHandler() {
+            
+            public void onModelEvent(ModelEvent<Application> event) {
+                if(event.getModels() != null) {
+                    view.resetApplications(event.getModels());
+                }
+            }
+        });
+        view.resetApplications(applicationsCache.getOrLoadModels());
+
+        this.eventBus.addHandler(GroupEvent.TYPE, new GroupEventHandler() {
+
+            public void onModelEvent(ModelEvent<Group> event) {
+                notice.finishLoading();
+                if (event.getModels() != null) {
+                    view.reset(event.getModels());
+                } else if (event.getModel() == null) {
+                    // TODO maybe error message ?
+                    notice.error("error loading list of Group");
+                }
+            }
+        });
+
         display.setWidget(view.asWidget());
-        view.setPresenter(this);
-        switch(RestfulActionEnum.valueOf(place.action.name())){
+
+        switch(RestfulActionEnum.valueOf(place.action)){
             case EDIT: 
             case SHOW:
-                load(place.model == null ? place.id : place.model.getId());
+                load(place.id);
                 break;
             case NEW:
-                notice.setText(null);
                 view.edit(new Group());
                 break;
             case INDEX:
@@ -83,123 +98,100 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
                 load();
                 break;
         }
-        view.reset(place.action);
     }
 
     public void goTo(Place place) {
         placeController.goTo(place);
     }
 
-    public void load(){  
-        view.setEnabled(false);
-        service.index(new MethodCallback<List<Group>>() {
-
-            public void onFailure(Method method, Throwable exception) {
-                notice.setText("error loading list of Group: "
-                        + exception.getMessage());
-                view.reset(place.action);
-            }
-
-            public void onSuccess(Method method, List<Group> response) {
-                eventBus.fireEvent(new GroupEvent(response, Action.LOAD));
-                notice.setText(null);
-                view.reset(response);
-                view.reset(place.action);
-            }
-        });
-        if(!notice.isVisible()){
-            notice.setText("loading list of Group . . .");
+    public void load(){
+        List<Group> models = cache.getOrLoadModels();
+        if (models != null){
+            view.reset(models);
+        }
+        else {
+            // loading the event callback fills the resets the models
+            notice.loading();
         }
     }
 
     public void create() {
         Group model = view.flush();
-        view.setEnabled(false);
         service.create(model.minimalClone(), new MethodCallback<Group>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error creating Group: "
-                        + exception.getMessage());
-                view.reset(place.action);
+                notice.finishLoading();
+                notice.error("error creating Group", exception);
             }
 
             public void onSuccess(Method method, Group response) {
+                notice.finishLoading();
                 eventBus.fireEvent(new GroupEvent(response, Action.CREATE));
-                notice.setText(null);
-                view.addToList(response);
                 goTo(new GroupPlace(response.getId(), RestfulActionEnum.EDIT));
             }
         });
-        notice.setText("creating Group . . .");
+        notice.loading();
     }
 
     public void load(int id) {
-        view.setEnabled(false);
-        service.show(id, new MethodCallback<Group>() {
+        Group model = cache.getModel(id);
+        view.edit(model);
+        if (model.getCreatedAt() == null) {
+            service.show(id, new MethodCallback<Group>() {
 
-            public void onFailure(Method method, Throwable exception) {
-                notice.setText("error loading Group: "
-                        + exception.getMessage());
-                view.reset(place.action);
-            }
+                public void onFailure(Method method, Throwable exception) {
+                    notice.finishLoading();
+                    notice.error("error loading Group", exception);
+                }
 
-            public void onSuccess(Method method, Group response) {
-                eventBus.fireEvent(new GroupEvent(response, Action.LOAD));
-                notice.setText(null);
-                view.edit(response);
-                view.reset(place.action);
-            }
-        });
-        if(!notice.isVisible()){
-            notice.setText("loading Group . . .");
+                public void onSuccess(Method method, Group response) {
+                    notice.finishLoading();
+                    eventBus.fireEvent(new GroupEvent(response, Action.LOAD));
+                    view.edit(response);
+                }
+            });
+            notice.loading();
         }
     }
 
     public void save() {
         Group model = view.flush();
-        view.setEnabled(false);
         service.update(model.minimalClone(), new MethodCallback<Group>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error saving Group: "
-                        + exception.getMessage());
-                view.reset(place.action);
+                notice.finishLoading();
+                notice.error("error saving Group", exception);
             }
 
             public void onSuccess(Method method, Group response) {
+                notice.finishLoading();
                 eventBus.fireEvent(new GroupEvent(response, Action.UPDATE));
-                notice.setText(null);
-                view.updateInList(response);
                 view.edit(response);
-                view.reset(place.action);
             }
         });
-        notice.setText("saving Group . . .");
+        notice.loading();
     }
 
     public void delete(final Group model){
-        view.setEnabled(false);
         service.destroy(model, new MethodCallback<Void>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error deleting Group: "
-                        + exception.getMessage());
-                view.reset(place.action);
+                notice.finishLoading();
+                notice.error("error deleting Group", exception);
             }
 
             public void onSuccess(Method method, Void response) {
+                notice.finishLoading();
                 eventBus.fireEvent(new GroupEvent(model, Action.DESTROY));
-                notice.setText(null);
-                view.removeFromList(model);
                 GroupPlace next = new GroupPlace(RestfulActionEnum.INDEX);
                 if(placeController.getWhere().equals(next)){
-                    view.reset(place.action);
+                    view.removeFromList(model);
                 }
                 else{
                     goTo(next);
                 }
             }
         });
-        notice.setText("deleting Group . . .");
+        notice.loading();
     }
 }

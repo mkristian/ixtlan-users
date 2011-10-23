@@ -1,5 +1,6 @@
-.notice 
-{
+.gwt-rails-loading, .gwt-rails-info, .gwt-rails-warn, .gwt-rails-error
+{ 
+  font-family: verdana, arial, helvetica, sans-serif;
   background-color:lightgoldenRodYellow;
   border:1px solid darkgoldenrod;
   color:darkgoldenrod;
@@ -15,7 +16,38 @@
   top:3em;
   opacity:.9;
 }
+.gwt-rails-info
+{ 
+  background-color:lightgreen;
+  border:1px solid darkgreen;
+  color:darkgreen;
+}
+.gwt-rails-warn
+{ 
+  background-color:lightgoldenRodYellow;
+  border:1px solid darkgoldenrod;
+  color:darkgoldenrod;
+}
 
+.gwt-rails-error
+{ 
+  background-color:lightred;
+  border:1px solid darkred;
+  color:darkred;
+}
+.gwt-rails-loading
+{
+  background-color:lightgoldenRodYellow;
+  border: 0;
+  margin-left:40%;
+  margin-right:40%;
+  padding:.0em;
+  padding-right: 0.3em;
+  padding-left: 0.3em;
+  width:auto;
+  top: 0;
+  opacity:.8;
+}
 .gwt-rails-breadcrumbs *
 {
   float: right;

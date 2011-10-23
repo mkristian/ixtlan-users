@@ -46,15 +46,18 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     }
 
     public void login(final String login, String password) {
+        notice.loading();
         Authentication authentication = new Authentication(login, password);
         service.create(authentication, new MethodCallback<Session<User>>() {
 
             public void onSuccess(Method method, Session<User> session) {
+                notice.finishLoading();
                 GWT.log("logged in: " + login);
                 sessionManager.login(session);
             }
 
             public void onFailure(Method method, Throwable exception) {
+                notice.finishLoading();
                 GWT.log("login failed: " + exception.getMessage(), exception);
                 sessionManager.accessDenied();
             }
@@ -62,15 +65,18 @@ public class LoginActivity extends AbstractActivity implements LoginView.Present
     }
 
     public void resetPassword(final String login) {
+        notice.loading();
         Authentication authentication = new Authentication(login);
         service.resetPassword(authentication, new MethodCallback<Void>() {
 
             public void onSuccess(Method method, Void result) {
-                notice.setText("new password was sent to your email address");
+                notice.finishLoading();
+                notice.info("new password was sent to your email address");
             }
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("could not reset password - username/email unknown");
+                notice.finishLoading();
+                notice.error("could not reset password - username/email unknown");
             }
         });
     }

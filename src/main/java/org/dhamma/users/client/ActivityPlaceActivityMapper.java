@@ -4,10 +4,12 @@ import org.dhamma.users.client.managed.ActivityFactory;
 
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.Place;
 import com.google.inject.Inject;
 
 import de.mkristian.gwt.rails.Notice;
+import de.mkristian.gwt.rails.places.RestfulPlace;
 
 public class ActivityPlaceActivityMapper implements ActivityMapper {
     protected final ActivityFactory factory;
@@ -20,11 +22,13 @@ public class ActivityPlaceActivityMapper implements ActivityMapper {
     }
 
 
+    @SuppressWarnings("unchecked")
     public Activity getActivity(Place place) {
-        if (place instanceof ActivityPlace<?>) {
-            return ((ActivityPlace<?>) place).create(factory);
+        if (place instanceof RestfulPlace<?, ?>) {
+            GWT.log(((RestfulPlace<?, ActivityFactory>)place).getClass().toString());
+            return ((RestfulPlace<?, ActivityFactory>) place).create(factory);
         }
-        notice.setText("nothing to see");
+        notice.error("nothing to see");
         return null;
     }
 }

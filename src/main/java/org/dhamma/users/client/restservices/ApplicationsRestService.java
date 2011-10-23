@@ -1,26 +1,24 @@
 package org.dhamma.users.client.restservices;
 
-import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
 import de.mkristian.gwt.rails.dispatchers.DefaultDispatcherSingleton;
+
 import java.util.List;
 
 import javax.ws.rs.*;
 
-import org.fusesource.restygwt.client.*;
+import org.fusesource.restygwt.client.Attribute;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.fusesource.restygwt.client.Options;
+import org.fusesource.restygwt.client.RestService;
 
 import org.dhamma.users.client.models.*;
 
-
-@Options(dispatcher = RestfulDispatcherSingleton.class)
+@Options(dispatcher = DefaultDispatcherSingleton.class)
 public interface ApplicationsRestService extends RestService {
 
   @GET @Path("/applications")
-  @Options(dispatcher = DefaultDispatcherSingleton.class)
   void index(MethodCallback<List<Application>> callback);
 
-//  @GET @Path("/applications")
-//  void index(MethodCallback<List<Application>> callback, @QueryParam("limit") int limit, @QueryParam("offset") int offset);
-//
   @GET @Path("/applications/{id}")
   void show(@PathParam("id") int id, MethodCallback<Application> callback);
 

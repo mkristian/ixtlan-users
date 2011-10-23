@@ -41,10 +41,11 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
         this.eventBus = eventBus;
-        display.setWidget(view.asWidget());
         view.setPresenter(this);
-        load();
         view.reset(place.action);
+        view.setEnabled(false);
+        display.setWidget(view.asWidget());
+        load();
     }
 
     public void goTo(Place place) {
@@ -52,45 +53,42 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
     }
 
     public void load() {
-        view.setEnabled(false);
         service.show(new MethodCallback<Configuration>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error loading Configuration: "
+                notice.error("error loading Configuration: "
                         + exception.getMessage());
                 view.reset(place.action);
             }
 
             public void onSuccess(Method method, Configuration response) {
                 eventBus.fireEvent(new ConfigurationEvent(response, Action.LOAD));
-                notice.setText(null);
+                notice.finishLoading();
                 view.edit(response);
                 view.reset(place.action);
             }
         });
-        if(!notice.isVisible()){
-            notice.setText("loading Configuration . . .");
-        }
+        notice.loading();
     }
 
     public void save() {
         Configuration model = view.flush();
-        view.setEnabled(false);
         service.update(model, new MethodCallback<Configuration>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.setText("error saving Configuration: "
+                notice.finishLoading();
+                notice.error("error saving Configuration: "
                         + exception.getMessage());
                 view.reset(place.action);
             }
 
             public void onSuccess(Method method, Configuration response) {
                 eventBus.fireEvent(new ConfigurationEvent(response, Action.UPDATE));
-                notice.setText(null);
+                notice.finishLoading();
                 view.edit(response);
                 view.reset(place.action);
             }
         });
-        notice.setText("saving Configuration . . .");
+        notice.loading();
     }
 }

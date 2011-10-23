@@ -40,8 +40,12 @@ public class ProfileEditor extends Composite implements Editor<Profile>{
         initWidget(BINDER.createAndBindUi(this));
     }
 
-    public void setEnabled(boolean enabled) {
+    public void resetVisibility() {
         this.signature.setVisible(createdAt.getValue() != null);
+    }
+
+    public void setEnabled(boolean enabled) {
+        resetVisibility();
         this.name.setEnabled(enabled);
         this.email.setEnabled(enabled);
         this.password.setEnabled(enabled);

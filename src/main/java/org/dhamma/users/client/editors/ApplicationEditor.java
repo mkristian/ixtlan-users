@@ -42,8 +42,12 @@ public class ApplicationEditor extends Composite implements Editor<Application>{
         initWidget(BINDER.createAndBindUi(this));
     }
 
-    public void setEnabled(boolean enabled) {
+    public void resetVisibility() {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
+    }
+
+    public void setEnabled(boolean enabled) {
+        resetVisibility();
         this.name.setEnabled(enabled);
         this.url.setEnabled(enabled);
     }

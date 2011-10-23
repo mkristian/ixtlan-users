@@ -15,26 +15,18 @@ public interface ApplicationView extends IsWidget {
 
     public interface Presenter {
         void create();
-        
         void save();
         void delete(Application model);
         void goTo(Place place);
     }
-    void setPresenter(Presenter presenter);
+
+    void setup(Presenter presenter, RestfulAction action);
+
+    void reset(List<Application> models);
 
     void edit(Application model);
 
     Application flush();
 
-    void reset(List<Application> models);
-
-    void reset(RestfulAction action);
-    
-    void setEnabled(boolean enabled);
-
-    void updateInList(Application model);
-
     void removeFromList(Application model);
-
-    void addToList(Application model);
 }

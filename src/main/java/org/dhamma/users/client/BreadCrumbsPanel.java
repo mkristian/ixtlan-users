@@ -32,7 +32,7 @@ public class BreadCrumbsPanel extends FlowPanel {
         sessionManager.addSessionHandler(new SessionHandler<User>() {
 
             public void timeout() {
-                notice.setText("timeout");
+                notice.info("timeout");
                 logout();
             }
 
@@ -51,7 +51,7 @@ public class BreadCrumbsPanel extends FlowPanel {
             }
 
             public void accessDenied() {
-                notice.setText("access denied");
+                notice.warn("access denied");
             }
         });
         logout = new Button("logout");

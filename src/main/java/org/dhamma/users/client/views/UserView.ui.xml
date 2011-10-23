@@ -12,6 +12,8 @@
       <g:Button ui:field="newButton">New</g:Button>
       <g:Button ui:field="editButton">Edit</g:Button>
       <g:Button ui:field="showButton">Show</g:Button>
+      <g:InlineLabel>Search: </g:InlineLabel>
+      <g:TextBox ui:field="searchBox" />
     </g:FlowPanel>
 
     <g:FlowPanel ui:field="model" styleName="gwt-rails-model">

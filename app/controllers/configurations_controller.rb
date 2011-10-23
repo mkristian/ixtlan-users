@@ -13,7 +13,7 @@ class ConfigurationsController < ApplicationController
 
   def stale?
     if @configuration.nil?
-      @configuration = Configuration.find(params[:id])
+      @configuration = Configuration.instance
       respond_to do |format|
         format.html { render :action => "edit" }
         format.xml  { render :xml => nil, :status => :conflict }

@@ -88,23 +88,8 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
         presenter.delete(flush());
     }
 
-    public void setPresenter(Presenter presenter) {
+    public void setup(Presenter presenter, RestfulAction action) {
         this.presenter = presenter;
-    }
-
-    public void edit(RemotePermission model) {
-        this.editorDriver.edit(model);
-    }
-
-    public RemotePermission flush() {
-        return editorDriver.flush();
-    }
-
-    public void setEnabled(boolean enabled) {
-        editor.setEnabled(enabled);
-    }
-
-    public void reset(RestfulAction action) {
         newButton.setVisible(!action.name().equals(RestfulActionEnum.NEW.name()));
         if(action.name().equals(RestfulActionEnum.INDEX.name())){
             editButton.setVisible(false);
@@ -118,10 +103,19 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
             showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
             saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
             deleteButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
-            setEnabled(!action.viewOnly());
             list.setVisible(false);
             model.setVisible(true);
         }
+        editor.setEnabled(!action.viewOnly());
+    }
+
+    public void edit(RemotePermission model) {
+        this.editorDriver.edit(model);
+        this.editor.resetVisibility();
+    }
+
+    public RemotePermission flush() {
+        return editorDriver.flush();
     }
 
     private final ClickHandler clickHandler = new ClickHandler() {
@@ -172,16 +166,6 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
         list.setWidget(row, 6, newButton(RestfulActionEnum.DESTROY, model));
     }
 
-    public void updateInList(RemotePermission model) {
-        String id = model.getId() + "";
-        for(int i = 0; i < list.getRowCount(); i++){
-            if(list.getText(i, 0).equals(id)){
-                setRow(i, model);
-                return;
-            }
-        }
-    }
-
     public void removeFromList(RemotePermission model) {
         String id = model.getId() + "";
         for(int i = 0; i < list.getRowCount(); i++){
@@ -190,10 +174,6 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
                 return;
             }
         }
-    }
-
-    public void addToList(RemotePermission model) {
-        setRow(list.getRowCount(), model);
     }
 
     public void resetApplications(List<Application> list){

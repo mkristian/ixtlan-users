@@ -16,28 +16,20 @@ public interface GroupView extends IsWidget {
 
     public interface Presenter {
         void create();
-        
         void save();
         void delete(Group model);
         void goTo(Place place);
     }
-    void setPresenter(Presenter presenter);
+
+    void setup(Presenter presenter, RestfulAction action);
+
+    void reset(List<Group> models);
+
+    void resetApplications(List<Application> list);
 
     void edit(Group model);
 
     Group flush();
 
-    void reset(List<Group> models);
-
-    void reset(RestfulAction action);
-    
-    void setEnabled(boolean enabled);
-
-    void updateInList(Group model);
-
     void removeFromList(Group model);
-
-    void addToList(Group model);
-
-    void resetApplications(List<Application> list);
 }

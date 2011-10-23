@@ -67,8 +67,12 @@ public class GroupEditor extends Composite implements Editor<Group>{
         }
     }
 
-    public void setEnabled(boolean enabled) {
+    public void resetVisibility() {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
+    }
+
+    public void setEnabled(boolean enabled) {
+        resetVisibility();
         this.name.setEnabled(enabled);
         this.description.setEnabled(enabled);
         this.application.setEnabled(enabled);

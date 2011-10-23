@@ -11,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
@@ -51,7 +53,11 @@ public class UserViewImpl extends Composite implements UserView {
 
     @UiField UserEditor editor;
 
+    @UiField TextBox searchBox;
+    
     private Presenter presenter;
+
+    private String query;
 
     public UserViewImpl() {
         initWidget(BINDER.createAndBindUi(this));
@@ -88,23 +94,16 @@ public class UserViewImpl extends Composite implements UserView {
         presenter.delete(flush());
     }
 
-    public void setPresenter(Presenter presenter) {
+    @UiHandler("searchBox")
+    void onSearchChange(KeyUpEvent e){
+        if(searchBox.getValue() != null && !searchBox.getValue().equals(query)){
+            query = searchBox.getValue();
+            presenter.load(searchBox.getValue());
+        }
+    }
+    
+    public void setup(Presenter presenter, RestfulAction action) {
         this.presenter = presenter;
-    }
-
-    public void edit(User model) {
-        this.editorDriver.edit(model);
-    }
-
-    public User flush() {
-        return editorDriver.flush();
-    }
-
-    public void setEnabled(boolean enabled) {
-        editor.setEnabled(enabled);
-    }
-
-    public void reset(RestfulAction action) {
         newButton.setVisible(!action.name().equals(RestfulActionEnum.NEW.name()));
         if(action.name().equals(RestfulActionEnum.INDEX.name())){
             editButton.setVisible(false);
@@ -118,10 +117,19 @@ public class UserViewImpl extends Composite implements UserView {
             showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
             saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
             deleteButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
-            setEnabled(!action.viewOnly());
             list.setVisible(false);
             model.setVisible(true);
         }
+        editor.setEnabled(!action.viewOnly());
+    }
+    
+    public void edit(User model) {
+        this.editorDriver.edit(model);
+        this.editor.resetVisibility();
+    }
+
+    public User flush() {
+        return editorDriver.flush();
     }
 
     private final ClickHandler clickHandler = new ClickHandler() {
@@ -172,16 +180,6 @@ public class UserViewImpl extends Composite implements UserView {
         list.setWidget(row, 6, newButton(RestfulActionEnum.DESTROY, model));
     }
 
-    public void updateInList(User model) {
-        String id = model.getId() + "";
-        for(int i = 0; i < list.getRowCount(); i++){
-            if(list.getText(i, 0).equals(id)){
-                setRow(i, model);
-                return;
-            }
-        }
-    }
-
     public void removeFromList(User model) {
         String id = model.getId() + "";
         for(int i = 0; i < list.getRowCount(); i++){
@@ -190,10 +188,6 @@ public class UserViewImpl extends Composite implements UserView {
                 return;
             }
         }
-    }
-
-    public void addToList(User model) {
-        setRow(list.getRowCount(), model);
     }
 
     public void resetGroups(List<Group> groups) {

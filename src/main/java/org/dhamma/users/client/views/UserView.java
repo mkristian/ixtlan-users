@@ -16,28 +16,21 @@ public interface UserView extends IsWidget {
 
     public interface Presenter {
         void create();
-        
+        void load(String query);
         void save();
         void delete(User model);
         void goTo(Place place);
     }
-    void setPresenter(Presenter presenter);
+
+    void setup(Presenter presenter, RestfulAction action);
+
+    void reset(List<User> models);
+
+    void resetGroups(List<Group> groups);
 
     void edit(User model);
 
     User flush();
 
-    void reset(List<User> models);
-
-    void reset(RestfulAction action);
-    
-    void setEnabled(boolean enabled);
-
-    void updateInList(User model);
-
     void removeFromList(User model);
-
-    void addToList(User model);
-
-    void resetGroups(List<Group> groups);
 }

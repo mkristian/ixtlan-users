@@ -12,17 +12,13 @@ import de.mkristian.gwt.rails.places.RestfulAction;
 public interface ProfileView extends IsWidget {
 
     public interface Presenter {
-        
         void save();
         void goTo(Place place);
     }
-    void setPresenter(Presenter presenter);
+
+    void setup(Presenter presenter, RestfulAction action);
 
     void edit(Profile model);
 
     Profile flush();
-
-    void reset(RestfulAction action);
-    
-    void setEnabled(boolean enabled);
 }

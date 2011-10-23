@@ -29,7 +29,7 @@ public class UsersPlaceHistoryMapper extends RestfulPlaceHistoryMapper {
     
     @Override
     public Place getPlace(String token) {
-        RestfulPlace<?> place = (RestfulPlace<?>) super.getPlace(token);
+        RestfulPlace<?, ?> place = (RestfulPlace<?, ?>) super.getPlace(token);
         if(place != null){
             // place needs to be different on the level of equals in order to trigger an activity
             place.hasSession = manager.hasSession();
