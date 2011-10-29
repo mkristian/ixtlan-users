@@ -14,6 +14,7 @@ Users::Application.routes.draw do
     member do
       post :reset_password
       get :current_groups
+      put :ping
     end
   end
 

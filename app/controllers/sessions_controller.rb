@@ -36,21 +36,24 @@ class SessionsController < ApplicationController
     end
   end
 
-  def current_groups
-    groups = current_user.groups
+  # def current_groups
+  #   groups = current_user.groups
 
-    if groups.detect {|g| g.name == 'root'}
-      groups = Group.all
-    end
+  #   if groups.detect {|g| g.name == 'root'}
+  #     groups = Group.all
+  #   end
 
-    # for the log
-    @session = groups
+  #   # for the log
+  #   @session = groups
 
-    respond_to do |format|
-      format.html { render :inlinetext => "not implemented" }
-      format.xml  { render :xml => groups.to_xml(Group.options) }
-      format.json  { render :json => groups.to_json(Group.options) }
-    end
+  #   respond_to do |format|
+  #     format.html { render :inlinetext => "not implemented" }
+  #     format.xml  { render :xml => groups.to_xml(Group.options) }
+  #     format.json  { render :json => groups.to_json(Group.options) }
+  #   end
+  # end
+  def ping
+    head :ok
   end
 
   def destroy

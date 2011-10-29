@@ -30,7 +30,7 @@ class GroupsController < ApplicationController
   # GET /groups.xml
   # GET /groups.json
   def index
-    @groups = Group.all
+    @groups = current_user.root? ? Group.all : current_user.groups
 
     respond_to do |format|
       format.html # index.html.erb 

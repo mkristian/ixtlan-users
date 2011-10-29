@@ -30,7 +30,7 @@ class ApplicationsController < ApplicationController
   # GET /applications.xml
   # GET /applications.json
   def index
-    @applications = Application.all
+    @applications = current_user.root? ? Application.all : current_user.applications
 
     respond_to do |format|
       format.html # index.html.erb 
