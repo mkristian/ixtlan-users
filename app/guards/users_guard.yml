@@ -1,5 +1,6 @@
 users:
-  defaults: [] 
+  defaults: [user-admin]
+  change: [] 
 #  index: []
 #  show: []
 #  new: []

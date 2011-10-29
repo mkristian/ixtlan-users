@@ -1,5 +1,6 @@
 applications:
   defaults: [] 
+  index: [user-admin]
 #  index: []
 #  show: []
 #  new: []
