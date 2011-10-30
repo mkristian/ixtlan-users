@@ -1,6 +1,5 @@
 #-*- mode: ruby -*-
 GWT_VERSION = '2.4.0'
-jar('org.jruby:jruby-complete', '1.6.4')
 jar('de.mkristian.gwt:rails-gwt', '0.6.1-SNAPSHOT').scope :provided
 jar('org.fusesource.restygwt:restygwt', '1.2').scope :provided
 jar('javax.ws.rs:jsr311-api', '1.1').scope :provided
@@ -32,7 +31,7 @@ profile("mac") do |mac|
   mac.plugin('org.codehaus.mojo:gwt-maven-plugin').with(:extraJvmArgs => "-d32 -XstartOnFirstThread -Xmx512m")
 end
 
-repository(:snapshots).url "http://mojo.saumya.de"
+#repository(:snapshots).url "http://mojo.saumya.de"
 #properties['jruby.plugins.version'] ='0.28.5-SNAPSHOT'
-
+properties['jruby.version'] = '1.6.4'
 # vim: syntax=Ruby

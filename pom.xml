@@ -7,10 +7,6 @@
   <packaging>war</packaging>
   <repositories>
     <repository>
-      <id>snapshots</id>
-      <url>http://mojo.saumya.de</url>
-    </repository>
-    <repository>
       <id>rubygems-releases</id>
       <url>http://rubygems-proxy.torquebox.org/releases</url>
     </repository>
@@ -174,14 +170,13 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
-      <artifactId>bcrypt-ruby</artifactId>
+      <artifactId>slf4r</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
-      <groupId>org.jruby</groupId>
-      <artifactId>jruby-complete</artifactId>
-      <version>1.6.4</version>
-      <type>jar</type>
+      <groupId>rubygems</groupId>
+      <artifactId>bcrypt-ruby</artifactId>
+      <type>gem</type>
     </dependency>
     <dependency>
       <groupId>de.mkristian.gwt</groupId>
@@ -232,6 +227,12 @@
       <type>jar</type>
       <scope>provided</scope>
       <classifier>sources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.jruby</groupId>
+      <artifactId>jruby-complete</artifactId>
+      <version>1.6.4</version>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.jruby.rack</groupId>
@@ -472,6 +473,7 @@
     <gem.path>${project.build.directory}/rubygems</gem.path>
     <jetty.version>7.5.1.v20110908</jetty.version>
     <jruby.plugins.version>0.28.5</jruby.plugins.version>
+    <jruby.version>1.6.4</jruby.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <rails.env>development</rails.env>
   </properties>
