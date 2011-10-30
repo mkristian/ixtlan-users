@@ -120,7 +120,7 @@ public class ApplicationActivity extends AbstractActivity implements Application
     public void load(int id) {
         Application model = cache.getModel(id);
         view.edit(model);
-        if (model.getCreatedAt() == null) {
+        if (model == null || model.getCreatedAt() == null) {
             service.show(id, new MethodCallback<Application>() {
 
                 public void onFailure(Method method, Throwable exception) {

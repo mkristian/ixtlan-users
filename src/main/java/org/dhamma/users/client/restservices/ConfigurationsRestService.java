@@ -4,7 +4,9 @@ import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
 
 import javax.ws.rs.*;
 
-import org.fusesource.restygwt.client.*;
+import org.fusesource.restygwt.client.MethodCallback;
+import org.fusesource.restygwt.client.Options;
+import org.fusesource.restygwt.client.RestService;
 
 import org.dhamma.users.client.models.*;
 

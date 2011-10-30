@@ -136,7 +136,7 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
     public void load(int id) {
         RemotePermission model = cache.getModel(id);
         view.edit(model);
-        if (model.getCreatedAt() == null) {
+        if (model == null || model.getCreatedAt() == null) {
             service.show(id, new MethodCallback<RemotePermission>() {
 
                 public void onFailure(Method method, Throwable exception) {

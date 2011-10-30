@@ -22,7 +22,6 @@ import de.mkristian.gwt.rails.events.ModelEvent.Action;
 
 public class ConfigurationActivity extends AbstractActivity implements ConfigurationView.Presenter{
 
-    private final ConfigurationPlace place;
     private final ConfigurationsRestService service;
     private final Notice notice;
     private final PlaceController placeController;
@@ -32,19 +31,20 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
     @Inject
     public ConfigurationActivity(@Assisted ConfigurationPlace place, final Notice notice, final ConfigurationView view,
             ConfigurationsRestService service, PlaceController placeController) {
-        this.place = place;
         this.notice = notice;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
+
+        notice.hide();
+        view.setup(this, place.action);
     }
 
     public void start(AcceptsOneWidget display, EventBus eventBus) {
         this.eventBus = eventBus;
-        view.setPresenter(this);
-        view.reset(place.action);
-        view.setEnabled(false);
+
         display.setWidget(view.asWidget());
+
         load();
     }
 
@@ -56,16 +56,14 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
         service.show(new MethodCallback<Configuration>() {
 
             public void onFailure(Method method, Throwable exception) {
-                notice.error("error loading Configuration: "
-                        + exception.getMessage());
-                view.reset(place.action);
+                notice.finishLoading();
+                notice.error("error loading Configuration", exception);
             }
 
             public void onSuccess(Method method, Configuration response) {
-                eventBus.fireEvent(new ConfigurationEvent(response, Action.LOAD));
                 notice.finishLoading();
+                eventBus.fireEvent(new ConfigurationEvent(response, Action.LOAD));
                 view.edit(response);
-                view.reset(place.action);
             }
         });
         notice.loading();
@@ -77,16 +75,13 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving Configuration: "
-                        + exception.getMessage());
-                view.reset(place.action);
+                notice.error("error saving Configuration", exception);
             }
 
             public void onSuccess(Method method, Configuration response) {
-                eventBus.fireEvent(new ConfigurationEvent(response, Action.UPDATE));
                 notice.finishLoading();
+                eventBus.fireEvent(new ConfigurationEvent(response, Action.UPDATE));
                 view.edit(response);
-                view.reset(place.action);
             }
         });
         notice.loading();

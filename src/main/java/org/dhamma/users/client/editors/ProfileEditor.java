@@ -11,13 +11,7 @@ import com.google.gwt.user.client.ui.DateLabel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DateBox;
 
-import de.mkristian.gwt.rails.editors.UserLabel;
-import de.mkristian.gwt.rails.editors.DoubleBox;
-import de.mkristian.gwt.rails.editors.IntegerBox;
-import de.mkristian.gwt.rails.editors.LongBox;
-import de.mkristian.gwt.rails.editors.IdentifyableListBox;
 
 public class ProfileEditor extends Composite implements Editor<Profile>{
     

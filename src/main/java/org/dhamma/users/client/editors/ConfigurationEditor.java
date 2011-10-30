@@ -12,13 +12,9 @@ import com.google.gwt.user.client.ui.DateLabel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DateBox;
 
 import de.mkristian.gwt.rails.editors.UserLabel;
-import de.mkristian.gwt.rails.editors.DoubleBox;
 import de.mkristian.gwt.rails.editors.IntegerBox;
-import de.mkristian.gwt.rails.editors.LongBox;
-import de.mkristian.gwt.rails.editors.IdentifyableListBox;
 
 public class ConfigurationEditor extends Composite implements Editor<Configuration>{
     
@@ -40,8 +36,12 @@ public class ConfigurationEditor extends Composite implements Editor<Configurati
         initWidget(BINDER.createAndBindUi(this));
     }
 
-    public void setEnabled(boolean enabled) {
+    public void resetVisibility() {
         this.signature.setVisible(createdAt.getValue() != null);
+    }
+
+    public void setEnabled(boolean enabled) {
+        resetVisibility();
         this.idleSessionTimeout.setEnabled(enabled);
         this.fromEmail.setEnabled(enabled);
     }

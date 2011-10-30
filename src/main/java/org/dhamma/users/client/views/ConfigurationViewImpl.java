@@ -62,27 +62,21 @@ public class ConfigurationViewImpl extends Composite implements ConfigurationVie
     void onClickSave(ClickEvent e) {
         presenter.save();
     }
-    public void setPresenter(Presenter presenter) {
+    public void setup(Presenter presenter, RestfulAction action) {
         this.presenter = presenter;
-    }
-
-    public void edit(Configuration model) {
-        this.editorDriver.edit(model);
-    }
-
-    public Configuration flush() {
-        return editorDriver.flush();
-    }
-
-    public void setEnabled(boolean enabled) {
-        editor.setEnabled(enabled);
-    }
-
-    public void reset(RestfulAction action) {
         editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()) || 
                 action.name().equals(RestfulActionEnum.INDEX.name()));
         saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
         showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
-        setEnabled(!action.viewOnly());
+        editor.setEnabled(!action.viewOnly());
+    }
+
+    public void edit(Configuration model) {
+        this.editorDriver.edit(model);
+        this.editor.resetVisibility();
+    }
+
+    public Configuration flush() {
+        return editorDriver.flush();
     }
 }

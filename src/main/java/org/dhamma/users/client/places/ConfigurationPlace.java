@@ -1,12 +1,12 @@
 package org.dhamma.users.client.places;
 
+import de.mkristian.gwt.rails.places.RestfulAction;
+import de.mkristian.gwt.rails.places.RestfulPlace;
+
 import org.dhamma.users.client.managed.ActivityFactory;
 import org.dhamma.users.client.models.Configuration;
 
 import com.google.gwt.activity.shared.Activity;
-
-import de.mkristian.gwt.rails.places.RestfulAction;
-import de.mkristian.gwt.rails.places.RestfulPlace;
 
 public class ConfigurationPlace extends RestfulPlace<Configuration, ActivityFactory> {
     

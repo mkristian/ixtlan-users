@@ -136,7 +136,7 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
     public void load(int id) {
         Group model = cache.getModel(id);
         view.edit(model);
-        if (model.getCreatedAt() == null) {
+        if (model == null || model.getCreatedAt() == null) {
             service.show(id, new MethodCallback<Group>() {
 
                 public void onFailure(Method method, Throwable exception) {
