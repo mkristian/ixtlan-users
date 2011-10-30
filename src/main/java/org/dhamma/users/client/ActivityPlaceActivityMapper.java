@@ -21,11 +21,10 @@ public class ActivityPlaceActivityMapper implements ActivityMapper {
         this.factory = factory;
     }
 
-
     @SuppressWarnings("unchecked")
     public Activity getActivity(Place place) {
         if (place instanceof RestfulPlace<?, ?>) {
-            GWT.log(((RestfulPlace<?, ActivityFactory>)place).getClass().toString());
+            GWT.log(place.toString());
             return ((RestfulPlace<?, ActivityFactory>) place).create(factory);
         }
         notice.error("nothing to see");
