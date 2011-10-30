@@ -5,10 +5,11 @@ import javax.inject.Singleton;
 
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.restservices.SessionRestService;
-
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -32,8 +33,13 @@ public class BreadCrumbsPanel extends FlowPanel {
         sessionManager.addSessionHandler(new SessionHandler<User>() {
 
             public void timeout() {
-                notice.info("timeout");
                 logout();
+                Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+                    
+                    public void execute() {
+                        notice.info("timeout");  
+                    }
+                });
             }
 
             public void logout() {
