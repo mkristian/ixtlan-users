@@ -1,13 +1,10 @@
 package org.dhamma.users.client.restservices;
 
-import java.util.List;
-
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
-import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.User;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.RestService;
@@ -27,6 +24,6 @@ public interface SessionRestService extends RestService {
     @POST @Path("/reset_password")
     void resetPassword(Authentication authentication, MethodCallback<Void> methodCallback);
     
-    @GET @Path("/current_groups")
-    void currentGroups(MethodCallback<List<Group>> callback);
+    @PUT @Path("/ping")
+    void ping(MethodCallback<Void> callback);
 }
