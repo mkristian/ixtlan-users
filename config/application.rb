@@ -38,5 +38,7 @@ module Users
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    config.middleware.insert_before ActionDispatch::Static, Rack::Deflater
   end
 end
