@@ -1,5 +1,5 @@
 function Users(){
-  var $intern_0 = '', $intern_35 = '" for "gwt:onLoadErrorFn"', $intern_33 = '" for "gwt:onPropertyErrorFn"', $intern_21 = '"><\/script>', $intern_10 = '#', $intern_62 = '../stylesheets/users.css', $intern_61 = '.cache.html', $intern_12 = '/', $intern_54 = '0AB3BF1ADCB5A7628F6FE01C32E8080A', $intern_55 = '566F047A284ED48427E0E1E9174A1539', $intern_56 = '88239EF2895AB4C606F6108624B941C2', $intern_60 = ':', $intern_27 = '::', $intern_69 = '<script defer="defer">Users.onInjectionDone(\'Users\')<\/script>', $intern_20 = '<script id="', $intern_30 = '=', $intern_11 = '?', $intern_57 = 'ABD45C0AB52F04458EEED6E511348AD6', $intern_32 = 'Bad handler "', $intern_58 = 'C2F58F4B593D3B9152C57068FD160807', $intern_68 = 'DOMContentLoaded', $intern_59 = 'FBCA4F34537A71BA667437C286A06B7F', $intern_22 = 'SCRIPT', $intern_1 = 'Users', $intern_17 = 'Users.nocache.js', $intern_26 = 'Users::', $intern_19 = '__gwt_marker_Users', $intern_23 = 'base', $intern_15 = 'baseUrl', $intern_4 = 'begin', $intern_3 = 'bootstrap', $intern_14 = 'clear.cache.gif', $intern_29 = 'content', $intern_9 = 'end', $intern_48 = 'gecko', $intern_49 = 'gecko1_8', $intern_5 = 'gwt.codesvr=', $intern_6 = 'gwt.hosted=', $intern_7 = 'gwt.hybrid', $intern_34 = 'gwt:onLoadErrorFn', $intern_31 = 'gwt:onPropertyErrorFn', $intern_28 = 'gwt:property', $intern_67 = 'head', $intern_52 = 'hosted.html?Users', $intern_66 = 'href', $intern_47 = 'ie6', $intern_46 = 'ie8', $intern_45 = 'ie9', $intern_36 = 'iframe', $intern_13 = 'img', $intern_37 = "javascript:''", $intern_63 = 'link', $intern_51 = 'loadExternalRefs', $intern_24 = 'meta', $intern_39 = 'moduleRequested', $intern_8 = 'moduleStartup', $intern_44 = 'msie', $intern_25 = 'name', $intern_41 = 'opera', $intern_38 = 'position:absolute;width:0;height:0;border:none', $intern_64 = 'rel', $intern_43 = 'safari', $intern_16 = 'script', $intern_53 = 'selectingPermutation', $intern_2 = 'startup', $intern_65 = 'stylesheet', $intern_18 = 'undefined', $intern_50 = 'unknown', $intern_40 = 'user.agent', $intern_42 = 'webkit';
+  var $intern_0 = '', $intern_35 = '" for "gwt:onLoadErrorFn"', $intern_33 = '" for "gwt:onPropertyErrorFn"', $intern_21 = '"><\/script>', $intern_10 = '#', $intern_65 = '../stylesheets/users.css', $intern_64 = '.cache.html', $intern_12 = '/', $intern_57 = '30127B8B80B41593D1432C4EC1422F6C', $intern_58 = '51B4AC505ED16E0A671C380F40C95A45', $intern_59 = '8111C0668D06105EB0A4E73F86BA9BA1', $intern_60 = '860FE51C83208ABF609CD22B2836A3BA', $intern_61 = '8BEEF10535B4461ABDC3CC8DAC3983A1', $intern_62 = '947B07526F0EA910017C2CB45655EC07', $intern_63 = ':', $intern_27 = '::', $intern_72 = '<script defer="defer">Users.onInjectionDone(\'Users\')<\/script>', $intern_20 = '<script id="', $intern_30 = '=', $intern_11 = '?', $intern_44 = 'ActiveXObject', $intern_32 = 'Bad handler "', $intern_45 = 'ChromeTab.ChromeFrame', $intern_71 = 'DOMContentLoaded', $intern_22 = 'SCRIPT', $intern_1 = 'Users', $intern_17 = 'Users.nocache.js', $intern_26 = 'Users::', $intern_19 = '__gwt_marker_Users', $intern_23 = 'base', $intern_15 = 'baseUrl', $intern_4 = 'begin', $intern_3 = 'bootstrap', $intern_43 = 'chromeframe', $intern_14 = 'clear.cache.gif', $intern_29 = 'content', $intern_9 = 'end', $intern_51 = 'gecko', $intern_52 = 'gecko1_8', $intern_5 = 'gwt.codesvr=', $intern_6 = 'gwt.hosted=', $intern_7 = 'gwt.hybrid', $intern_34 = 'gwt:onLoadErrorFn', $intern_31 = 'gwt:onPropertyErrorFn', $intern_28 = 'gwt:property', $intern_70 = 'head', $intern_55 = 'hosted.html?Users', $intern_69 = 'href', $intern_50 = 'ie6', $intern_49 = 'ie8', $intern_48 = 'ie9', $intern_36 = 'iframe', $intern_13 = 'img', $intern_37 = "javascript:''", $intern_66 = 'link', $intern_54 = 'loadExternalRefs', $intern_24 = 'meta', $intern_39 = 'moduleRequested', $intern_8 = 'moduleStartup', $intern_47 = 'msie', $intern_25 = 'name', $intern_41 = 'opera', $intern_38 = 'position:absolute;width:0;height:0;border:none', $intern_67 = 'rel', $intern_46 = 'safari', $intern_16 = 'script', $intern_56 = 'selectingPermutation', $intern_2 = 'startup', $intern_68 = 'stylesheet', $intern_18 = 'undefined', $intern_53 = 'unknown', $intern_40 = 'user.agent', $intern_42 = 'webkit';
   var $wnd = window, $doc = document, $stats = $wnd.__gwtStatsEvent?function(a){
     return $wnd.__gwtStatsEvent(a);
   }
@@ -237,33 +237,50 @@ function Users(){
     ())
       return $intern_41;
     if (function(){
-      return ua.indexOf($intern_42) != -1;
-    }
-    ())
-      return $intern_43;
-    if (function(){
-      return ua.indexOf($intern_44) != -1 && $doc.documentMode >= 9;
-    }
-    ())
-      return $intern_45;
-    if (function(){
-      return ua.indexOf($intern_44) != -1 && $doc.documentMode >= 8;
+      return ua.indexOf($intern_42) != -1 || function(){
+        if (ua.indexOf($intern_43) != -1) {
+          return true;
+        }
+        if (typeof window[$intern_44] != $intern_18) {
+          try {
+            var obj = new ActiveXObject($intern_45);
+            if (obj) {
+              obj.registerBhoIfNeeded();
+              return true;
+            }
+          }
+           catch (e) {
+          }
+        }
+        return false;
+      }
+      ();
     }
     ())
       return $intern_46;
+    if (function(){
+      return ua.indexOf($intern_47) != -1 && $doc.documentMode >= 9;
+    }
+    ())
+      return $intern_48;
+    if (function(){
+      return ua.indexOf($intern_47) != -1 && $doc.documentMode >= 8;
+    }
+    ())
+      return $intern_49;
     if (function(){
       var result = /msie ([0-9]+)\.([0-9]+)/.exec(ua);
       if (result && result.length == 3)
         return makeVersion(result) >= 6000;
     }
     ())
-      return $intern_47;
+      return $intern_50;
     if (function(){
-      return ua.indexOf($intern_48) != -1;
+      return ua.indexOf($intern_51) != -1;
     }
     ())
-      return $intern_49;
-    return $intern_50;
+      return $intern_52;
+    return $intern_53;
   }
   ;
   values[$intern_40] = {gecko1_8:0, ie6:1, ie8:2, ie9:3, opera:4, safari:5};
@@ -276,7 +293,7 @@ function Users(){
   ;
   Users.onInjectionDone = function(){
     scriptsDone = true;
-    $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_51, millis:(new Date).getTime(), type:$intern_9});
+    $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_54, millis:(new Date).getTime(), type:$intern_9});
     maybeStartModule();
   }
   ;
@@ -289,25 +306,25 @@ function Users(){
       $wnd.location.reload();
       return;
     }
-    initialHtml = $intern_52;
+    initialHtml = $intern_55;
     strongName = $intern_0;
   }
-  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_3, millis:(new Date).getTime(), type:$intern_53});
+  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_3, millis:(new Date).getTime(), type:$intern_56});
   if (!isHostedMode()) {
     try {
-      unflattenKeylistIntoAnswers([$intern_41], $intern_54);
-      unflattenKeylistIntoAnswers([$intern_43], $intern_55);
-      unflattenKeylistIntoAnswers([$intern_45], $intern_56);
-      unflattenKeylistIntoAnswers([$intern_47], $intern_57);
-      unflattenKeylistIntoAnswers([$intern_49], $intern_58);
-      unflattenKeylistIntoAnswers([$intern_46], $intern_59);
+      unflattenKeylistIntoAnswers([$intern_49], $intern_57);
+      unflattenKeylistIntoAnswers([$intern_46], $intern_58);
+      unflattenKeylistIntoAnswers([$intern_50], $intern_59);
+      unflattenKeylistIntoAnswers([$intern_52], $intern_60);
+      unflattenKeylistIntoAnswers([$intern_48], $intern_61);
+      unflattenKeylistIntoAnswers([$intern_41], $intern_62);
       strongName = answers[computePropValue($intern_40)];
-      var idx = strongName.indexOf($intern_60);
+      var idx = strongName.indexOf($intern_63);
       if (idx != -1) {
         softPermutationId = Number(strongName.substring(idx + 1));
         strongName = strongName.substring(0, idx);
       }
-      initialHtml = strongName + $intern_61;
+      initialHtml = strongName + $intern_64;
     }
      catch (e) {
       return;
@@ -317,16 +334,16 @@ function Users(){
   function onBodyDone(){
     if (!bodyDone) {
       bodyDone = true;
-      if (!__gwt_stylesLoaded[$intern_62]) {
-        var l = $doc.createElement($intern_63);
-        __gwt_stylesLoaded[$intern_62] = l;
-        l.setAttribute($intern_64, $intern_65);
-        l.setAttribute($intern_66, base + $intern_62);
-        $doc.getElementsByTagName($intern_67)[0].appendChild(l);
+      if (!__gwt_stylesLoaded[$intern_65]) {
+        var l = $doc.createElement($intern_66);
+        __gwt_stylesLoaded[$intern_65] = l;
+        l.setAttribute($intern_67, $intern_68);
+        l.setAttribute($intern_69, base + $intern_65);
+        $doc.getElementsByTagName($intern_70)[0].appendChild(l);
       }
       maybeStartModule();
       if ($doc.removeEventListener) {
-        $doc.removeEventListener($intern_68, onBodyDone, false);
+        $doc.removeEventListener($intern_71, onBodyDone, false);
       }
       if (onBodyDoneTimerId) {
         clearInterval(onBodyDoneTimerId);
@@ -335,7 +352,7 @@ function Users(){
   }
 
   if ($doc.addEventListener) {
-    $doc.addEventListener($intern_68, function(){
+    $doc.addEventListener($intern_71, function(){
       maybeInjectFrame();
       onBodyDone();
     }
@@ -349,8 +366,8 @@ function Users(){
   }
   , 50);
   $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_3, millis:(new Date).getTime(), type:$intern_9});
-  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_51, millis:(new Date).getTime(), type:$intern_4});
-  $doc.write($intern_69);
+  $stats && $stats({moduleName:$intern_1, sessionId:$sessionId, subSystem:$intern_2, evtGroup:$intern_54, millis:(new Date).getTime(), type:$intern_4});
+  $doc.write($intern_72);
 }
 
 Users();
