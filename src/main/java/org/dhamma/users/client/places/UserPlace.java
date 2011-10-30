@@ -11,7 +11,7 @@ import de.mkristian.gwt.rails.places.RestfulAction;
 public class UserPlace extends QueryableRestfulPlace<User, ActivityFactory> {
     
     public static final String NAME = "users";
-    
+
     public Activity create(ActivityFactory factory){
         return factory.create(this);
     }
@@ -34,21 +34,5 @@ public class UserPlace extends QueryableRestfulPlace<User, ActivityFactory> {
     
     public UserPlace(String id, RestfulAction restfulAction) {
         super(id, restfulAction, NAME);
-    }
-    
-    
-    public int hashCode(){
-        return super.hashCode() + (query != null ? 17 * query.hashCode() : 0);
-    }
-    
-    public boolean equals(Object other){
-        boolean result = super.equals(other);
-        if(result){
-            UserPlace place = (UserPlace) other;
-            return (query == null && place.query == null) || (query != null && query.equals(place.query)); 
-        }
-        else {
-            return result;
-        }
     }
 }

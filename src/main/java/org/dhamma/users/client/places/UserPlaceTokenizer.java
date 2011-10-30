@@ -1,16 +1,23 @@
 package org.dhamma.users.client.places;
 
-import de.mkristian.gwt.rails.places.RestfulPlaceTokenizer;
+import de.mkristian.gwt.rails.places.QueryableRestfulPlaceTokenizer;
+import de.mkristian.gwt.rails.places.RestfulAction;
 
-public class UserPlaceTokenizer extends RestfulPlaceTokenizer<UserPlace> {
+public class UserPlaceTokenizer extends QueryableRestfulPlaceTokenizer<UserPlace> {
     
-    public UserPlace getPlace(String token) {
-        Token t = toToken(token);
-        if(t.identifier == null){
-            return new UserPlace(t.action);
-        }
-        else {
-            return new UserPlace(t.id, t.action);
-        }
+    @Override
+    protected UserPlace newRestfulPlace(String query) {
+        return new UserPlace(query);
     }
+
+    @Override
+    protected UserPlace newRestfulPlace(RestfulAction action) {
+        return new UserPlace(action);
+    }
+
+    @Override
+    protected UserPlace newRestfulPlace(int id, RestfulAction action) {
+        return new UserPlace(id, action);
+    }
+
 }
