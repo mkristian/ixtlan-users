@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+  xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
+  xmlns:r="urn:import:de.mkristian.gwt.rails.editors">
+
+  <g:HTMLPanel>
+    <label>Search: </label>
+    <g:TextBox ui:field="name"/>
+    <label name="group">Group</label>
+    <r:IdentifyableListBox ui:field="group" name="group"/>
+    <label name="application">Application</label>
+    <r:IdentifyableListBox ui:field="application" name="application"/>    
+  </g:HTMLPanel>
+
+</ui:UiBinder>

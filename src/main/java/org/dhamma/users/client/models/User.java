@@ -10,6 +10,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.fusesource.restygwt.client.Json;
 import org.fusesource.restygwt.client.Json.Style;
 
+import de.mkristian.gwt.rails.caches.FilterUtils;
 import de.mkristian.gwt.rails.models.HasToDisplay;
 import de.mkristian.gwt.rails.models.Identifyable;
 import de.mkristian.gwt.rails.models.IsUser;
@@ -37,9 +38,14 @@ public class User implements HasToDisplay, Identifyable, IsUser {
   @Json(name = "group_ids")
   private final List<Integer> groupIds;
   private List<Group> groups;
-  
+
+  @Json(name = "application_ids")
+  private final List<Integer> applicationIds;
+
+  transient private String token;  
+
   public User(){
-    this(0, null, null, null, null);
+    this(0, null, null, null, null, null);
   }
   
   @JsonCreator
@@ -47,12 +53,14 @@ public class User implements HasToDisplay, Identifyable, IsUser {
           @JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
           @JsonProperty("modifiedBy") User modifiedBy,
-          @JsonProperty("groupIds") List<Integer> groupIds){
+          @JsonProperty("groupIds") List<Integer> groupIds,
+          @JsonProperty("applicationIds") List<Integer> applicationIds){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
     this.groupIds = groupIds == null ? new ArrayList<Integer>(): groupIds;
+    this.applicationIds = applicationIds == null ? new ArrayList<Integer>() : applicationIds;
   }
 
   public int getId(){
@@ -93,6 +101,11 @@ public class User implements HasToDisplay, Identifyable, IsUser {
 
   public void setName(String value){
     name = value;
+    createToken();
+  }
+
+  private void createToken() {
+      this.token = name == null ? "" : FilterUtils.normalize(name);
   }
 
   public List<Integer> getGroupIds() {
@@ -109,14 +122,16 @@ public class User implements HasToDisplay, Identifyable, IsUser {
   }
 
   private void updateGroupIds(List<Group> groups) {
-    this.groupIds.clear();
+    this.groupIds.clear();     
+    this.applicationIds.clear();
     for(Group g: groups){
         this.groupIds.add(g.getId());
+        this.applicationIds.add(g.getApplicationId());
     }
   }
 
   public User minimalClone() {
-      User clone = new User(id, null, updatedAt, null, groupIds);
+      User clone = new User(id, null, updatedAt, null, groupIds, null);
       clone.setName(name);
       clone.setLogin(login);
       clone.setEmail(email);
@@ -134,5 +149,16 @@ public class User implements HasToDisplay, Identifyable, IsUser {
 
   public String toDisplay() {
     return login;
+  }
+  
+  public String searchToken(){
+      if(this.token == null){
+          createToken();
+      }
+      return this.token;
+  }
+
+  public List<Integer> getApplicationIds() {
+      return this.applicationIds;
   }
 }

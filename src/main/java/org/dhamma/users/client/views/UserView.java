@@ -2,8 +2,10 @@ package org.dhamma.users.client.views;
 
 import java.util.List;
 
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.User;
+import org.dhamma.users.client.models.UserQuery;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -16,7 +18,6 @@ public interface UserView extends IsWidget {
 
     public interface Presenter {
         void create();
-        void load(String query);
         void save();
         void delete(User model);
         void goTo(Place place);
@@ -28,6 +29,10 @@ public interface UserView extends IsWidget {
 
     void resetGroups(List<Group> groups);
 
+    void resetApplications(List<Application> applications);
+
+    void edit(UserQuery query);
+    
     void edit(User model);
 
     User flush();
