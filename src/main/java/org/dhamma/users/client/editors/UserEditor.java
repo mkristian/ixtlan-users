@@ -59,13 +59,16 @@ public class UserEditor extends Composite implements Editor<User>{
 
     public void resetVisibility() {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
-        this.login.setEnabled(id.getValue() == null || id.getValue() == 0);
-        this.email.setEnabled(id.getValue() == null || id.getValue() == 0);
     }
     
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         resetVisibility();
-        this.name.setEnabled(enabled);
-        this.groups.setEnabled(enabled);
+        boolean all = (id.getValue() == null || id.getValue() == 0 || enabled == null) 
+                && enabled != Boolean.FALSE;
+        this.login.setEnabled(all);
+        this.email.setEnabled(all);
+        boolean others = enabled == Boolean.TRUE || enabled == null;
+        this.name.setEnabled(others);
+        this.groups.setEnabled(others);
     }
 }
