@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   def cleanup_params
     # compensate the shortcoming of the incoming json/xml
     model = params[:user] || []
+    model.delete :application_ids #not needed
     model.delete :id
     model.delete :created_at
     params[:updated_at] ||= model.delete :updated_at
@@ -43,7 +44,7 @@ class UsersController < ApplicationController
   # GET /users.xml
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.all(:include => :groups)
 
     respond_to do |format|
       format.html # index.html.erb 

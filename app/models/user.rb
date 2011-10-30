@@ -126,15 +126,38 @@ class User < ActiveRecord::Base
     pwd
   end
 
+  def root?
+    @is_root ||= groups.member? Group.ROOT
+  end
+
+  def applications
+    @applications ||= groups.collect { |g| g.application }.uniq
+  end
+
+  def application_ids
+    @application_ids ||= applications.collect { |a| a.id }
+  end
+
+  def group_ids
+    @group_ids ||= groups.collect { |g| g.id }
+  end
+
   def self.update_options
     {
       :only => [:id, :login, :name, :updated_at]
     }
   end
 
-  def self.options
+  def self.no_children_options
     {
       :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id]
+    }
+  end
+
+  def self.options
+    {
+      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
+      :methods => [:group_ids, :application_ids]
     }
   end
 
@@ -171,7 +194,7 @@ class User < ActiveRecord::Base
   unless respond_to? :old_as_json
     alias :old_as_json :as_json
     def as_json(options = nil)
-      options = self.class.options unless options
+      options = self.class.no_children_options unless options
       old_as_json(options)
     end
   end
