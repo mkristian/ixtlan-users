@@ -24,7 +24,7 @@
         <g:TextBox ui:field="email"/>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="password">Password</label>
+        <label name="password">Current Password to authorise any change</label>
         <g:PasswordTextBox ui:field="password"/>
       </g:HTMLPanel>
     </g:FlowPanel>
