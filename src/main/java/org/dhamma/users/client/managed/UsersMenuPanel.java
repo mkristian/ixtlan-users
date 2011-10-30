@@ -20,9 +20,9 @@ public class UsersMenuPanel extends MenuPanel<User> {
         // TODO profile should move into bread-crumbs
         addButton("Profile", new org.dhamma.users.client.places.ProfilePlace(RestfulActionEnum.SHOW));
         addButton("Configuration", new org.dhamma.users.client.places.ConfigurationPlace(RestfulActionEnum.SHOW));
-        addButton("Applications", new org.dhamma.users.client.places.ApplicationPlace(RestfulActionEnum.INDEX));
+        addButton("Applications", new org.dhamma.users.client.places.ApplicationPlace(RestfulActionEnum.SHOW));
         addButton("Remote permissions", new org.dhamma.users.client.places.RemotePermissionPlace(RestfulActionEnum.INDEX));
-        addButton("Groups", new org.dhamma.users.client.places.GroupPlace(RestfulActionEnum.INDEX));
+        addButton("Groups", new org.dhamma.users.client.places.GroupPlace(RestfulActionEnum.SHOW));
         addButton("Users", new org.dhamma.users.client.places.UserPlace(RestfulActionEnum.INDEX));
     }
 }
