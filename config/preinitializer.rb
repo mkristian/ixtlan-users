@@ -28,4 +28,4 @@ module Ixtlan
   end
 end
 
-CONFIG = Ixtlan::Configurator.load(File.join(File.dirname(__FILE__), 'production.yml')) || {}
+CONFIG = Ixtlan::Configurator.load(File.join(File.dirname(__FILE__), 'passwords.yml')) || {}

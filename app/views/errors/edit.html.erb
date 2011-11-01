@@ -1,0 +1,10 @@
+<h1>Editing error</h1>
+
+<%= render 'form' %>
+
+<% if allowed?(:errors, :show) %>
+<%= link_to 'Show', @error %>
+<% end %>
+<% if allowed?(:errors, :index) %>
+| <%= link_to 'Back', errors_path %>
+<% end %>
