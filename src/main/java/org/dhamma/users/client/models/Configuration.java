@@ -23,6 +23,18 @@ public class Configuration implements HasToDisplay {
   @Json(name = "modified_by")
   private final User modifiedBy;
 
+  @Json(name = "errors_keep_dumps")
+  private int errorsKeepDumps;
+
+  @Json(name = "errors_base_url")
+  private String errorsBaseUrl;
+
+  @Json(name = "errors_from_email")
+  private String errorsFromEmail;
+
+  @Json(name = "errors_to_emails")
+  private String errorsToEmails;
+
   @Json(name = "idle_session_timeout")
   private int idleSessionTimeout;
 
@@ -54,6 +66,38 @@ public class Configuration implements HasToDisplay {
     return modifiedBy;
   }
 
+  public int getErrorsKeepDumps(){
+    return errorsKeepDumps;
+  }
+
+  public void setErrorsKeepDumps(int value){
+    errorsKeepDumps = value;
+  }
+
+  public String getErrorsBaseUrl(){
+    return errorsBaseUrl;
+  }
+
+  public void setErrorsBaseUrl(String value){
+    errorsBaseUrl = value;
+  }
+
+  public String getErrorsFromEmail(){
+    return errorsFromEmail;
+  }
+
+  public void setErrorsFromEmail(String value){
+    errorsFromEmail = value;
+  }
+
+  public String getErrorsToEmails(){
+    return errorsToEmails;
+  }
+
+  public void setErrorsToEmails(String value){
+    errorsToEmails = value;
+  }
+
   public int getIdleSessionTimeout(){
     return idleSessionTimeout;
   }
@@ -71,6 +115,6 @@ public class Configuration implements HasToDisplay {
   }
 
   public String toDisplay() {
-    return idleSessionTimeout + "";
+    return errorsKeepDumps + "";
   }
 }

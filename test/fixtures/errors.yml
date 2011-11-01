@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  message: MyString
+  request: MyText
+  response: MyText
+  session: MyText
+  parameters: MyText
+  clazz: MyString
+  backtrace: MyText
+
+two:
+  message: MyString
+  request: MyText
+  response: MyText
+  session: MyText
+  parameters: MyText
+  clazz: MyString
+  backtrace: MyText

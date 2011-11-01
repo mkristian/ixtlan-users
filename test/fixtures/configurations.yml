@@ -1,9 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  errors_keep_dumps: 1
+  errors_base_url: MyString
+  errors_from_email: MyString
+  errors_to_emails: MyString
   idle_session_timeout: 1
   from_email: MyString
 
 two:
+  errors_keep_dumps: 1
+  errors_base_url: MyString
+  errors_from_email: MyString
+  errors_to_emails: MyString
   idle_session_timeout: 1
   from_email: MyString

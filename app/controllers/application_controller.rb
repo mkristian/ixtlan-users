@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  rescue_from ::Exception, :with => :internal_server_error
   protected
 
   def current_user(user = nil)

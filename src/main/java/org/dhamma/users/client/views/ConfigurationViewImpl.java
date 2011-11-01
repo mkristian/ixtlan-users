@@ -1,6 +1,10 @@
 package org.dhamma.users.client.views;
 
+
+import javax.inject.Inject;
+
 import org.dhamma.users.client.editors.ConfigurationEditor;
+import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.models.Configuration;
 import org.dhamma.users.client.places.ConfigurationPlace;
 
@@ -19,6 +23,8 @@ import com.google.inject.Singleton;
 
 import de.mkristian.gwt.rails.places.RestfulAction;
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.*;
+import de.mkristian.gwt.rails.session.SessionManager;
 
 @Singleton
 public class ConfigurationViewImpl extends Composite implements ConfigurationView {
@@ -43,9 +49,21 @@ public class ConfigurationViewImpl extends Composite implements ConfigurationVie
 
     private Presenter presenter;
 
+    private final SessionManager<User> session;
+
     public ConfigurationViewImpl() {
+        this(null);
+    }
+
+    @Inject
+    public ConfigurationViewImpl(SessionManager<User> session) {
         initWidget(BINDER.createAndBindUi(this));
         editorDriver.initialize(editor);
+        this.session = session;
+    }
+
+    private boolean isAllowed(RestfulActionEnum action){
+        return session == null || session.isAllowed(ConfigurationPlace.NAME, action);
     }
 
     @UiHandler("showButton")
@@ -62,12 +80,13 @@ public class ConfigurationViewImpl extends Composite implements ConfigurationVie
     void onClickSave(ClickEvent e) {
         presenter.save();
     }
-    public void setup(Presenter presenter, RestfulAction action) {
+
+    public void setup(Presenter presenter, RestfulAction a) {
+        RestfulActionEnum action = RestfulActionEnum.valueOf(a);
         this.presenter = presenter;
-        editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()) || 
-                action.name().equals(RestfulActionEnum.INDEX.name()));
-        saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
-        showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
+        editButton.setVisible((action == SHOW || action == INDEX) && isAllowed(EDIT));
+        saveButton.setVisible(action == EDIT);
+        showButton.setVisible(action == EDIT);
         editor.setEnabled(!action.viewOnly());
     }
 

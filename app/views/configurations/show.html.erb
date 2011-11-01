@@ -1,6 +1,26 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <b>Errors keep dumps:</b>
+  <%= @configuration.errors_keep_dumps %>
+</p>
+
+<p>
+  <b>Errors base url:</b>
+  <%= @configuration.errors_base_url %>
+</p>
+
+<p>
+  <b>Errors from email:</b>
+  <%= @configuration.errors_from_email %>
+</p>
+
+<p>
+  <b>Errors to emails:</b>
+  <%= @configuration.errors_to_emails %>
+</p>
+
+<p>
   <b>Idle session timeout:</b>
   <%= @configuration.idle_session_timeout %>
 </p>

@@ -8,38 +8,42 @@
   <g:FlowPanel>
 
     <g:FlowPanel ui:field="signature" styleName="gwt-rails-model-signature">
+      <g:Label>id: </g:Label>
+      <g:NumberLabel ui:field="id" />
       <g:Label>created at: </g:Label>
       <g:DateLabel ui:field="createdAt" predefinedFormat="DATE_TIME_MEDIUM"/>
       <g:Label>updated at: </g:Label>
       <g:DateLabel ui:field="updatedAt" predefinedFormat="DATE_TIME_MEDIUM" />
-      <g:Label>modified by: </g:Label>
-      <r:UserLabel ui:field="modifiedBy" />
     </g:FlowPanel>
 
     <g:FlowPanel styleName="gwt-rails-model-fields">
       <g:HTMLPanel>
-        <label name="errorsKeepDumps">Errors keep dumps</label>
-        <r:IntegerBox ui:field="errorsKeepDumps"/>
+        <label name="message">Message</label>
+        <g:TextBox ui:field="message"/>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="errorsBaseUrl">Errors base url</label>
-        <g:TextBox ui:field="errorsBaseUrl"/>
+        <label name="request">Request</label>
+        <pre><g:Label ui:field="request"/></pre>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="errorsFromEmail">Errors from email</label>
-        <g:TextBox ui:field="errorsFromEmail"/>
+        <label name="response">Response</label>
+        <pre><g:Label ui:field="response"/></pre>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="errorsToEmails">Errors to emails</label>
-        <g:TextBox ui:field="errorsToEmails"/>
+        <label name="session">Session</label>
+        <pre><g:Label ui:field="session"/></pre>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="idleSessionTimeout">Idle session timeout</label>
-        <r:IntegerBox ui:field="idleSessionTimeout"/>
+        <label name="parameters">Parameters</label>
+        <pre><g:Label ui:field="parameters"/></pre>
       </g:HTMLPanel>
       <g:HTMLPanel>
-        <label name="fromEmail">From email</label>
-        <g:TextBox ui:field="fromEmail"/>
+        <label name="clazz">Clazz</label>
+        <g:TextBox ui:field="clazz"/>
+      </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="backtrace">Backtrace</label>
+        <pre><g:Label ui:field="backtrace"/></pre>
       </g:HTMLPanel>
     </g:FlowPanel>
 

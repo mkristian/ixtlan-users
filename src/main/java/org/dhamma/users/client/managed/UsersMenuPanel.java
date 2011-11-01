@@ -7,7 +7,7 @@ import org.dhamma.users.client.models.User;
 
 import com.google.gwt.place.shared.PlaceController;
 
-import de.mkristian.gwt.rails.places.RestfulActionEnum;
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.*;
 import de.mkristian.gwt.rails.session.SessionManager;
 import de.mkristian.gwt.rails.views.MenuPanel;
 
@@ -18,11 +18,12 @@ public class UsersMenuPanel extends MenuPanel<User> {
     UsersMenuPanel(final PlaceController placeController, SessionManager<User> sessionManager){
         super(sessionManager, placeController);
         // TODO profile should move into bread-crumbs
-        addButton("Profile", new org.dhamma.users.client.places.ProfilePlace(RestfulActionEnum.SHOW));
-        addButton("Configuration", new org.dhamma.users.client.places.ConfigurationPlace(RestfulActionEnum.SHOW));
-        addButton("Applications", new org.dhamma.users.client.places.ApplicationPlace(RestfulActionEnum.SHOW));
-        addButton("Remote permissions", new org.dhamma.users.client.places.RemotePermissionPlace(RestfulActionEnum.INDEX));
-        addButton("Groups", new org.dhamma.users.client.places.GroupPlace(RestfulActionEnum.SHOW));
-        addButton("Users", new org.dhamma.users.client.places.UserPlace(RestfulActionEnum.INDEX));
+        addButton("Profile", new org.dhamma.users.client.places.ProfilePlace(SHOW));
+        addButton("Configuration", new org.dhamma.users.client.places.ConfigurationPlace(SHOW));
+        addButton("Errors", new org.dhamma.users.client.places.ErrorPlace(INDEX));
+        addButton("Applications", new org.dhamma.users.client.places.ApplicationPlace(INDEX), SHOW);
+        addButton("Remote permissions", new org.dhamma.users.client.places.RemotePermissionPlace(INDEX));
+        addButton("Groups", new org.dhamma.users.client.places.GroupPlace(INDEX), SHOW);
+        addButton("Users", new org.dhamma.users.client.places.UserPlace(INDEX));
     }
 }

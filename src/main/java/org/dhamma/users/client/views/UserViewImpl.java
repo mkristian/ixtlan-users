@@ -79,6 +79,10 @@ public class UserViewImpl extends Composite implements UserView {
 
     private final SessionManager<User> session;
 
+    public UserViewImpl() {
+        this(null);
+    }
+
     @Inject
     public UserViewImpl(SessionManager<User> session) {
         initWidget(BINDER.createAndBindUi(this));
@@ -138,10 +142,14 @@ public class UserViewImpl extends Composite implements UserView {
         }
     }
     
+    private boolean isAllowed(RestfulActionEnum action){
+        return session == null || session.isAllowed(UserPlace.NAME, action);
+    }
+
     public void setup(Presenter presenter, RestfulAction a) {
         RestfulActionEnum action = RestfulActionEnum.valueOf(a);
         this.presenter = presenter;
-        newButton.setVisible(action != NEW && session.isAllowed(UserPlace.NAME, NEW));
+        newButton.setVisible(action != NEW && isAllowed(NEW));
         if(action == INDEX){
             editButton.setVisible(false);
             showButton.setVisible(false);
@@ -151,10 +159,10 @@ public class UserViewImpl extends Composite implements UserView {
         }
         else {
             createButton.setVisible(action == NEW);
-            editButton.setVisible(action == SHOW && session.isAllowed(UserPlace.NAME, EDIT));
+            editButton.setVisible(action == SHOW && isAllowed(EDIT));
             showButton.setVisible(action == EDIT);
             saveButton.setVisible(action == EDIT);
-            deleteButton.setVisible(action == EDIT && session.isAllowed(UserPlace.NAME, DESTROY));
+            deleteButton.setVisible(action == EDIT && isAllowed(DESTROY));
             searchButton.setVisible(true);
             list.setVisible(false);
             model.setVisible(true);

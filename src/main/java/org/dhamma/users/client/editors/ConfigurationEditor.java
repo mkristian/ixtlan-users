@@ -28,6 +28,14 @@ public class ConfigurationEditor extends Composite implements Editor<Configurati
     @UiField DateLabel updatedAt;
     @UiField UserLabel<User> modifiedBy;
 
+    @UiField IntegerBox errorsKeepDumps;
+
+    @UiField TextBox errorsBaseUrl;
+
+    @UiField TextBox errorsFromEmail;
+
+    @UiField TextBox errorsToEmails;
+
     @UiField IntegerBox idleSessionTimeout;
 
     @UiField TextBox fromEmail;
@@ -42,6 +50,10 @@ public class ConfigurationEditor extends Composite implements Editor<Configurati
 
     public void setEnabled(boolean enabled) {
         resetVisibility();
+        this.errorsKeepDumps.setEnabled(enabled);
+        this.errorsBaseUrl.setEnabled(enabled);
+        this.errorsFromEmail.setEnabled(enabled);
+        this.errorsToEmails.setEnabled(enabled);
         this.idleSessionTimeout.setEnabled(enabled);
         this.fromEmail.setEnabled(enabled);
     }

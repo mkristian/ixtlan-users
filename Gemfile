@@ -65,11 +65,13 @@ group :production do
 end
 
 gem 'resty-generators', :path => '../../rails-resty-gwt/resty-generators'
-gem 'ixtlan-generators'#, :path => '../../ixtlan/ixtlan-generators'
+gem 'ixtlan-generators', :path => '../../ixtlan/ixtlan-generators'
 
 gem 'enforce-ssl'
 gem "ixtlan-session-timeout"
 gem "ixtlan-guard", :path => '../../ixtlan/ixtlan-guard'
 gem "ixtlan-core", :path => '../../ixtlan/ixtlan-core'
-
+gem "ixtlan-error-handler", :path => '../../ixtlan/ixtlan-error-handler'
+gem "ixtlan-audit", :path => '../../ixtlan/ixtlan-audit'
+gem 'slf4r'
 gem 'bcrypt-ruby'

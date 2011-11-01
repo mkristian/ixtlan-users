@@ -22,6 +22,7 @@ public class UsersModule extends BaseModule {
     @Override
     protected void configure() {
         super.configure();
+        bind(org.dhamma.users.client.restservices.ErrorsRestService.class).toProvider(ErrorsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.ApplicationsRestService.class).toProvider(ApplicationsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.RemotePermissionsRestService.class).toProvider(RemotePermissionsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.GroupsRestService.class).toProvider(GroupsRestServiceProvider.class);
@@ -33,6 +34,7 @@ public class UsersModule extends BaseModule {
         bind(ActivityMapper.class).to(SessionActivityPlaceActivityMapper.class).in(Singleton.class);
         bind(LoginView.class).to(LoginViewImpl.class);
         install(new GinFactoryModuleBuilder()
+            .implement(Activity.class, Names.named("errors"), org.dhamma.users.client.activities.ErrorActivity.class)
             .implement(Activity.class, Names.named("applications"), org.dhamma.users.client.activities.ApplicationActivity.class)
             .implement(Activity.class, Names.named("remote_permissions"), org.dhamma.users.client.activities.RemotePermissionActivity.class)
             .implement(Activity.class, Names.named("groups"), org.dhamma.users.client.activities.GroupActivity.class)
@@ -90,7 +92,16 @@ public class UsersModule extends BaseModule {
             return service;
         }
     }
+
+    @Singleton
+    public static class ErrorsRestServiceProvider implements Provider<org.dhamma.users.client.restservices.ErrorsRestService> {
+        private final org.dhamma.users.client.restservices.ErrorsRestService service = GWT.create(org.dhamma.users.client.restservices.ErrorsRestService.class);
+        public org.dhamma.users.client.restservices.ErrorsRestService get() {
+            return service;
+        }
+    }
 }
+
 
 
 
