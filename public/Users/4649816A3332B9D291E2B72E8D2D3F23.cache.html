@@ -4,7 +4,7 @@ var $gwt_version = "2.4.0";
 var $wnd = parent;
 var $doc = $wnd.document;
 var $moduleName, $moduleBase;
-var $strongName = 'FC9A1845B0B86F87020EC2EC11BC8DE0';
+var $strongName = '4649816A3332B9D291E2B72E8D2D3F23';
 var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null,
 $sessionId = $wnd.__gwtStatsSessionId ? $wnd.__gwtStatsSessionId : null;
 $stats && $stats({moduleName:'Users',sessionId:$sessionId,subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
@@ -29343,11 +29343,11 @@ function org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter(){
 
 _ = org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_XSRFTokenCallbackFilter__Lorg_fusesource_restygwt_client_callback_XSRFToken_2V.prototype = org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter.prototype = new java_lang_Object;
 _.filter__Lorg_fusesource_restygwt_client_Method_2Lcom_google_gwt_http_client_Response_2Lcom_google_gwt_http_client_RequestCallback_2Lcom_google_gwt_http_client_RequestCallback_2 = function org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_filter__Lorg_fusesource_restygwt_client_Method_2Lcom_google_gwt_http_client_Response_2Lcom_google_gwt_http_client_RequestCallback_2Lcom_google_gwt_http_client_RequestCallback_2(method, response, callback){
-  var old;
-  '-------------> ' + response.getStatusCode__I();
-  if ((response.getStatusCode__I() == 200 || response.getStatusCode__I() == 201) && response.getHeader__Ljava_lang_String_2Ljava_lang_String_2($intern_326) == null) {
+  var old, token;
+  token = response.getHeader__Ljava_lang_String_2Ljava_lang_String_2(this.org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_xsrf.org_fusesource_restygwt_client_callback_XSRFToken_headerKey);
+  if (token != null && response.getHeader__Ljava_lang_String_2Ljava_lang_String_2($intern_326) == null) {
     old = this.org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_xsrf.org_fusesource_restygwt_client_callback_XSRFToken_token;
-    this.org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_xsrf.org_fusesource_restygwt_client_callback_XSRFToken_token = response.getHeader__Ljava_lang_String_2Ljava_lang_String_2(this.org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_xsrf.org_fusesource_restygwt_client_callback_XSRFToken_headerKey);
+    this.org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_xsrf.org_fusesource_restygwt_client_callback_XSRFToken_token = token;
     old != null && !java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(old, this.org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_xsrf.org_fusesource_restygwt_client_callback_XSRFToken_token) && com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V(old + ' <-> ' + this.org_fusesource_restygwt_client_callback_XSRFTokenCallbackFilter_xsrf.org_fusesource_restygwt_client_callback_XSRFToken_token + ' : ' + response.getStatusCode__I());
   }
   return callback;
