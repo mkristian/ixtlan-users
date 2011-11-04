@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  after_filter :csrf
+  prepend_after_filter :csrf
 
   def csrf
     response.header['X-CSRF-Token'] = form_authenticity_token if current_user
