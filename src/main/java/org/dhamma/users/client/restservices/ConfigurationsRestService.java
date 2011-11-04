@@ -1,15 +1,15 @@
 package org.dhamma.users.client.restservices;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
+import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
 
-import org.dhamma.users.client.models.Configuration;
+import javax.ws.rs.*;
+
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 
-import de.mkristian.gwt.rails.dispatchers.RestfulDispatcherSingleton;
+import org.dhamma.users.client.models.Configuration;
+import org.dhamma.users.client.models.*;
 
 @Path("/configuration")
 @Options(dispatcher = RestfulDispatcherSingleton.class)

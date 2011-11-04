@@ -38,6 +38,8 @@ public class ConfigurationEditor extends Composite implements Editor<Configurati
 
     @UiField IntegerBox idleSessionTimeout;
 
+    @UiField IntegerBox auditsKeepLogs;
+
     @UiField TextBox fromEmail;
 
     public ConfigurationEditor() {
@@ -55,6 +57,7 @@ public class ConfigurationEditor extends Composite implements Editor<Configurati
         this.errorsFromEmail.setEnabled(enabled);
         this.errorsToEmails.setEnabled(enabled);
         this.idleSessionTimeout.setEnabled(enabled);
+        this.auditsKeepLogs.setEnabled(enabled);
         this.fromEmail.setEnabled(enabled);
     }
 }

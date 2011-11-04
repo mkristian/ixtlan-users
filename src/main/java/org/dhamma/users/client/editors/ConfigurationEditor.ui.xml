@@ -38,6 +38,10 @@
         <r:IntegerBox ui:field="idleSessionTimeout"/>
       </g:HTMLPanel>
       <g:HTMLPanel>
+        <label name="auditsKeepLogs">Audits keep logs</label>
+        <r:IntegerBox ui:field="auditsKeepLogs"/>
+      </g:HTMLPanel>
+      <g:HTMLPanel>
         <label name="fromEmail">From email</label>
         <g:TextBox ui:field="fromEmail"/>
       </g:HTMLPanel>

@@ -5,3 +5,4 @@ tmp/
 target/
 *.pom
 pwd.txt
+gwt-unitCache/

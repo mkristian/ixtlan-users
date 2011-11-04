@@ -4,7 +4,7 @@
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:t="urn:import:org.dhamma.users.client.editors">
 
-  <g:FlowPanel styleName="gwt-rails-display">
+  <g:FlowPanel styleName="gwt-rails-display users-configurations">
 
     <g:Label>Configuration</g:Label>
 

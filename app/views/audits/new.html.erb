@@ -1,0 +1,7 @@
+<h1>New audit</h1>
+
+<%= render 'form' %>
+
+<% if allowed?(:audits, :index) %>
+<%= link_to 'Back', audits_path %>
+<% end %>

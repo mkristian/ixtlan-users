@@ -38,6 +38,9 @@ public class Configuration implements HasToDisplay {
   @Json(name = "idle_session_timeout")
   private int idleSessionTimeout;
 
+  @Json(name = "audits_keep_logs")
+  private int auditsKeepLogs;
+
   @Json(name = "from_email")
   private String fromEmail;
 
@@ -104,6 +107,14 @@ public class Configuration implements HasToDisplay {
 
   public void setIdleSessionTimeout(int value){
     idleSessionTimeout = value;
+  }
+
+  public int getAuditsKeepLogs(){
+    return auditsKeepLogs;
+  }
+
+  public void setAuditsKeepLogs(int value){
+    auditsKeepLogs = value;
   }
 
   public String getFromEmail(){

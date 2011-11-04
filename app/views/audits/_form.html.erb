@@ -1,0 +1,25 @@
+<%= form_for(@audit) do |f| %>
+  <% if @audit.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@audit.errors.count, "error") %> prohibited this audit from being saved:</h2>
+
+      <ul>
+      <% @audit.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field"><!-- begin - login -->
+    <%= f.label :login %><br />
+    <%= f.text_field :login %>
+  </div><!-- end - login -->
+  <div class="field"><!-- begin - message -->
+    <%= f.label :message %><br />
+    <%= f.text_field :message %>
+  </div><!-- end - message -->
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -8,16 +8,16 @@
 # the error dumps will be cleanup after the days to keeps dump expired
 # --------------------------------------------------------------------
 Users::Application.config.configuration_manager.register("error_dumper") do |config|
-  Users::Application.config.error_dumper.dump_dir = config.errors_dir
-  Users::Application.config.error_dumper.email_from = config.errors_from
-  Users::Application.config.error_dumper.email_to = config.errors_to
-  Users::Application.config.error_dumper.keep_dumps = config.errors_keep_dump # days
+  Users::Application.config.error_dumper.base_url = config.errors_base_url
+  Users::Application.config.error_dumper.from_email = config.errors_from_email
+  Users::Application.config.error_dumper.to_emails = config.errors_to_emails
+  Users::Application.config.error_dumper.keep_dumps = config.errors_keep_dumps # days
 end
 
 # idle session timeout configuration (in minutes)
 # -----------------------------------------------
 Users::Application.config.configuration_manager.register("session_idle_timeout") do |config|
-  Users::Application.config.session_idle_timeout = config.session_idle_timeout
+  Users::Application.config.idle_session_timeout = config.idle_session_timeout
 end
 
 # audit log manager
@@ -27,5 +27,5 @@ end
 # Users::Application.config.audit_manager.username_method = :username # default: :login
 
 Users::Application.config.configuration_manager.register("audit_manager") do |config|
-  Users::Application.config.audit_manager.keep_logs = config.keep_logs # days
+  Users::Application.config.audit_manager.keep_logs = config.audits_keep_logs # days
 end

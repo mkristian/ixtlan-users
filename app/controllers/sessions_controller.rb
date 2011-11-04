@@ -4,6 +4,8 @@ class SessionsController < ApplicationController
 
   skip_before_filter :check_session, :only => :destroy
 
+  skip_after_filter :audit, :only => :ping
+
   prepend_after_filter :reset_session, :only => :destroy
 
   protected
@@ -36,22 +38,6 @@ class SessionsController < ApplicationController
     end
   end
 
-  # def current_groups
-  #   groups = current_user.groups
-
-  #   if groups.detect {|g| g.name == 'root'}
-  #     groups = Group.all
-  #   end
-
-  #   # for the log
-  #   @session = groups
-
-  #   respond_to do |format|
-  #     format.html { render :inlinetext => "not implemented" }
-  #     format.xml  { render :xml => groups.to_xml(Group.options) }
-  #     format.json  { render :json => groups.to_json(Group.options) }
-  #   end
-  # end
   def ping
     head :ok
   end
@@ -59,6 +45,10 @@ class SessionsController < ApplicationController
   def destroy
     # for the log
     @session = current_user
+    
+    def @session.to_log
+      "Session(user-id: #{id})"
+    end
 
     # reset session happens in the after filter which allows for 
     # audit log with username which happens in another after filter

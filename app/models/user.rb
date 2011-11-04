@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
     u = User.find_by_login(login) || User.find_by_email(login)
     if u
       u.reset_password_and_save
+      u # can be used for logging
     end
   end
   
@@ -74,7 +75,7 @@ class User < ActiveRecord::Base
     if @log
       @log
     else
-      self.inspect
+      "User(#{self.id})"
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111031173527) do
+ActiveRecord::Schema.define(:version => 20111101185409) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -18,6 +18,13 @@ ActiveRecord::Schema.define(:version => 20111031173527) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "modified_by_id"
+  end
+
+  create_table "audits", :force => true do |t|
+    t.string   "login"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "configurations", :force => true do |t|
@@ -30,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20111031173527) do
     t.string   "errors_base_url"
     t.string   "errors_from_email"
     t.string   "errors_to_emails"
+    t.integer  "audits_keep_logs",     :default => 90
   end
 
   create_table "errors", :force => true do |t|

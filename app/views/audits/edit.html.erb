@@ -1,0 +1,10 @@
+<h1>Editing audit</h1>
+
+<%= render 'form' %>
+
+<% if allowed?(:audits, :show) %>
+<%= link_to 'Show', @audit %>
+<% end %>
+<% if allowed?(:audits, :index) %>
+| <%= link_to 'Back', audits_path %>
+<% end %>

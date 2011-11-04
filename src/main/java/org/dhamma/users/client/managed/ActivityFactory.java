@@ -4,6 +4,7 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.inject.name.Named;
 import org.dhamma.users.client.places.LoginPlace;
 public interface ActivityFactory {
+  @Named("audits") Activity create(org.dhamma.users.client.places.AuditPlace place);
   @Named("errors") Activity create(org.dhamma.users.client.places.ErrorPlace place);
   @Named("applications") Activity create(org.dhamma.users.client.places.ApplicationPlace place);
   @Named("remote_permissions") Activity create(org.dhamma.users.client.places.RemotePermissionPlace place);

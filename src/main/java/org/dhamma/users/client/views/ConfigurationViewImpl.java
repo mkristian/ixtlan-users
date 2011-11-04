@@ -1,6 +1,5 @@
 package org.dhamma.users.client.views;
 
-
 import javax.inject.Inject;
 
 import org.dhamma.users.client.editors.ConfigurationEditor;

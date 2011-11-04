@@ -6,6 +6,7 @@ one:
   errors_from_email: MyString
   errors_to_emails: MyString
   idle_session_timeout: 1
+  audits_keep_logs: 1
   from_email: MyString
 
 two:
@@ -14,4 +15,5 @@ two:
   errors_from_email: MyString
   errors_to_emails: MyString
   idle_session_timeout: 1
+  audits_keep_logs: 1
   from_email: MyString
