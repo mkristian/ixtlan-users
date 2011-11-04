@@ -171,7 +171,7 @@ public class UserViewImpl extends Composite implements UserView {
         // false/true the usual boolean meaning, null which tells the editor to allow
         // to change ALL fields of model
         editor.setEnabled(action.viewOnly() ? Boolean.FALSE : 
-            (session.isAllowed(UserPlace.NAME, "change") ? null : Boolean.TRUE));
+            (session.isAllowed(UserPlace.NAME, "change") || action == NEW ? null : Boolean.TRUE));
     }
     
     public void edit(User model) {

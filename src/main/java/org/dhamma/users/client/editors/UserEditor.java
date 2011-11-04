@@ -63,8 +63,7 @@ public class UserEditor extends Composite implements Editor<User>{
     
     public void setEnabled(Boolean enabled) {
         resetVisibility();
-        boolean all = (id.getValue() == null || id.getValue() == 0 || enabled == null) 
-                && enabled != Boolean.FALSE;
+        boolean all = enabled == null;
         this.login.setEnabled(all);
         this.email.setEnabled(all);
         boolean others = enabled == Boolean.TRUE || enabled == null;

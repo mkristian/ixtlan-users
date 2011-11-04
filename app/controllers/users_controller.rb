@@ -113,6 +113,12 @@ class UsersController < ApplicationController
     # delete groups but keep group_ids
     params[:user].delete(:groups)
 
+    #TODO on guard side this should be part of the controller
+    unless guard.allowed?("users", "change", current_user_group_names)
+      params[:user].delete(:login)
+      params[:user].delete(:email)
+    end
+
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
