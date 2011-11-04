@@ -42,5 +42,8 @@ class ApplicationController < ActionController::Base
 
   def csrf
     response.header['X-CSRF-Token'] = form_authenticity_token if current_user
+puts response.header['X-CSRF-Token']
+puts current_user
+
   end
 end
