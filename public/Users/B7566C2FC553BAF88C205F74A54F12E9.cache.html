@@ -4,7 +4,7 @@ var $gwt_version = "2.4.0";
 var $wnd = parent;
 var $doc = $wnd.document;
 var $moduleName, $moduleBase;
-var $strongName = '17DD5FBD502EF703AEB99BA5938D3829';
+var $strongName = 'B7566C2FC553BAF88C205F74A54F12E9';
 var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null,
 $sessionId = $wnd.__gwtStatsSessionId ? $wnd.__gwtStatsSessionId : null;
 $stats && $stats({moduleName:'Users',sessionId:$sessionId,subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
@@ -2732,7 +2732,7 @@ function com_google_web_bindery_event_shared_SimpleEventBus_$doAdd__Lcom_google_
   if (!type) {
     throw new java_lang_NullPointerException_NullPointerException__Ljava_lang_String_2V('Cannot add a handler with a null type');
   }
-  if (handler == null) {
+  if (!handler) {
     throw new java_lang_NullPointerException_NullPointerException__Ljava_lang_String_2V('Cannot add a null handler');
   }
   this$static.com_google_web_bindery_event_shared_SimpleEventBus_firingDepth > 0?com_google_web_bindery_event_shared_SimpleEventBus_$defer__Lcom_google_web_bindery_event_shared_SimpleEventBus_2Lcom_google_web_bindery_event_shared_SimpleEventBus$Command_2V(this$static, new com_google_web_bindery_event_shared_SimpleEventBus$2_SimpleEventBus$2__Lcom_google_web_bindery_event_shared_SimpleEventBus_2V(this$static, type, handler)):com_google_web_bindery_event_shared_SimpleEventBus_$doAddNow__Lcom_google_web_bindery_event_shared_SimpleEventBus_2Lcom_google_web_bindery_event_shared_Event$Type_2Ljava_lang_Object_2Ljava_lang_Object_2V(this$static, type, null, handler);
@@ -6174,10 +6174,6 @@ function com_google_gwt_lang_Cast_canCast__Ljava_lang_Object_2IZ(src, dstId){
 
 function com_google_gwt_lang_Cast_canCastUnsafe__Ljava_lang_Object_2IZ(src, dstId){
   return src.java_lang_Object_castableTypeMap$ && src.java_lang_Object_castableTypeMap$[dstId];
-}
-
-function com_google_gwt_lang_Cast_charToString__CLjava_lang_String_2(x){
-  return String.fromCharCode(x);
 }
 
 function com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(src, dstId){
@@ -11607,7 +11603,6 @@ function de_mkristian_gwt_rails_session_LoginViewImpl_$onEnterLogin__Lde_mkristi
 }
 
 function de_mkristian_gwt_rails_session_LoginViewImpl_$onEnterResetPassword__Lde_mkristian_gwt_rails_session_LoginViewImpl_2Lcom_google_gwt_event_dom_client_KeyPressEvent_2V(this$static, e){
-  com_google_gwt_lang_Cast_charToString__CLjava_lang_String_2((e.com_google_gwt_event_dom_client_DomEvent_nativeEvent.which || 0) & 65535) + ' <-> ' + ((e.com_google_gwt_event_dom_client_DomEvent_nativeEvent.which || 0) & 65535) + $intern_12 + (e.com_google_gwt_event_dom_client_DomEvent_nativeEvent.keyCode || 0);
   (e.com_google_gwt_event_dom_client_DomEvent_nativeEvent.keyCode || 0) == 13 && (org_dhamma_users_client_activities_LoginActivity_$resetPassword__Lorg_dhamma_users_client_activities_LoginActivity_2Ljava_lang_String_2V(this$static.de_mkristian_gwt_rails_session_LoginViewImpl_presenter, com_google_gwt_dom_client_Element_$getPropertyString__Lcom_google_gwt_dom_client_Element_2Ljava_lang_String_2Ljava_lang_String_2(this$static.de_mkristian_gwt_rails_session_LoginViewImpl_username.com_google_gwt_user_client_ui_UIObject_element, $intern_17)) , com_google_gwt_user_client_ui_ValueBoxBase_$setText__Lcom_google_gwt_user_client_ui_ValueBoxBase_2Ljava_lang_String_2V(this$static.de_mkristian_gwt_rails_session_LoginViewImpl_username, null));
 }
 
