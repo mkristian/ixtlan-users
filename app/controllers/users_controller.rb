@@ -44,7 +44,15 @@ class UsersController < ApplicationController
   # GET /users.xml
   # GET /users.json
   def index
-    @users = User.all(:include => :groups)
+    @users = User.includes(:groups)#.joins(:groups).where("groups_users.group_id" => current_user.groups)
+
+    unless current_user.root?
+      @users.each do |u|
+        u.groups.delete_if do |g|
+          ! current_user.groups.member? g
+        end
+      end
+    end
 
     respond_to do |format|
       format.html # index.html.erb 
@@ -58,6 +66,12 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
+    
+    unless current_user.root?
+      @user.groups.delete_if do |g|
+          ! current_user.groups.member? g
+      end
+    end
 
     respond_to do |format|
       format.html # show.html.erb
