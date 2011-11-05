@@ -99,6 +99,8 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
         display.setWidget(view.asWidget());
 
+        view.edit(new UserQuery(place.query));
+
         switch(RestfulActionEnum.valueOf(place.action)){
             case EDIT: 
             case SHOW:
@@ -119,7 +121,6 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
     }
 
     public void load() {
-        view.edit(new UserQuery(place.query));
         List<User> models = cache.getOrLoadModels();
         if (models != null) {
             view.reset(models);
