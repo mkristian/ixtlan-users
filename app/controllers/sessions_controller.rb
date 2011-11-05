@@ -4,6 +4,8 @@ class SessionsController < ApplicationController
 
   skip_before_filter :check_session, :only => :destroy
 
+  skip_after_filter :csrf, :only => :destroy
+
   skip_after_filter :audit, :only => :ping
 
   prepend_after_filter :reset_session, :only => :destroy
