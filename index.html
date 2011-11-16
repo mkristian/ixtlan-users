@@ -1,1 +1,42 @@
-My GitHub Page
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ixtlan users</title>
+  </head>
+  <body>
+    <h2>security and privacy</h2>
+
+    <p>with a standard rails application I do need some extra work to get it more secure. this template tries to do that extra work for you. after a nice security is in place some we can install some gems which helps to keep person related data well protected:
+    </p>
+    <ul>
+      <li>keep the person related data on the server</li>
+      <li>expire person related data after some time</li>
+      <li>tell the browser how to cache person related date (:public, :protected, :private)</li>
+      <li>tell the proxies between the browser and the server how to cache data</li>
+      <li>expire the browser session after some idle time</li>
+      <li>guard the action an user can perform on the server (controller#action in rails speak) to allow only authorized users to access certain person data</li>
+      <li>enforce SSL for <b>all</b> communication, to protect the data over the wire and prevent session highjacking with tools like firesheep</li>
+    </ul>
+
+    <h2>rails templates</h2>
+    <p>
+      the rails templates below will setup a rails application which uses
+      <a href="https://github.com/mkristian/ixtlan-users">ixtlan-users</a> as authentication server. all the above
+      issues will be (more or less) addressed.
+    </p>
+
+    <h3>ixtlan client with erb templates</h3>
+    <blockquote>
+      <pre><code>
+$ rails new -m mkristian.github.com/ixtlan-users/ixtlan.rb
+      </code></pre>
+    </blockquote>
+   
+    <h3>ixtlan client with GWT frontend and erb templates</h3>
+    <blockquote>
+      <pre><code>
+$ rails new -m mkristian.github.com/ixtlan-users/ixtlan-gwt.rb
+      </code></pre>
+    </blockquote>
+    
+  </body>
+</html>
