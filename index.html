@@ -27,14 +27,15 @@
     <h3>ixtlan client with erb templates</h3>
     <blockquote>
       <pre><code>
-$ rails new -m mkristian.github.com/ixtlan-users/ixtlan.rb
+$ rails new my_app -m http://mkristian.github.com/ixtlan-users/ixtlan.rb
       </code></pre>
     </blockquote>
    
     <h3>ixtlan client with GWT frontend and erb templates</h3>
     <blockquote>
       <pre><code>
-$ rails new -m mkristian.github.com/ixtlan-users/ixtlan-gwt.rb
+$ gem install ruby-maven
+$ gwt new my_app com.example --menu --session -- -Dtemplate=http://mkristian.github.com/ixtlan-users/ixtlan-gwt.rb
       </code></pre>
     </blockquote>
     
