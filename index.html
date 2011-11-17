@@ -32,10 +32,27 @@ $ rails new my_app -m http://mkristian.github.com/ixtlan-users/ixtlan.rb
     </blockquote>
    
     <h3>ixtlan client with GWT frontend and erb templates</h3>
+    <p>
+    since rails version 3.0.10 rails generates jruby Gemfiles when using jruby. this leaves out the MRI part. using JRuby with this template produces for some reasons a <i>Segmentation fault</i>. but once installed JRuby is used for development and for production you can choose either JRuby or MRI !
+    </p>
     <blockquote>
+      use MRI !!!
+      <pre><code>
+$ rails _3.0.9_ new my_app -m http://mkristian.github.com/ixtlan-users/ixtlan-gwt.rb GWT_MODULE=com.example.gwt
+      </code></pre>
+    </blockquote>
+
+    <p>
+    using <b>ruby-maven</b> gem also has some <b>bugs</b> but the following works:
+    </p>
+    
+    <blockquote>
+      use MRI !!!
       <pre><code>
 $ gem install ruby-maven
-$ gwt new my_app com.example --menu --session -- -Dtemplate=http://mkristian.github.com/ixtlan-users/ixtlan-gwt.rb
+$ gwt new my_app com.example.gwt --menu --session
+$ cd my_app
+$ rake rails:template LOCATION=http://mkristian.github.com/ixtlan-users/ixtlan-gwt.rb
       </code></pre>
     </blockquote>
     
