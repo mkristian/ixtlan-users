@@ -1,4 +1,5 @@
 gem 'enforce-ssl'
+gem "ixtlan-core", '~> 0.7.2'
 gem "ixtlan-error-handler", '~> 0.2.0'
 gem "ixtlan-audit", '~> 0.2.0'
 
