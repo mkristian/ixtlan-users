@@ -11,7 +11,7 @@ end
 
 run 'bundle install'
 
-generate 'resty:setup', ENV['GWT_MODULE'] || 'com.example', '--session', '--menu'
+generate 'resty:setup', ENV['GWT_MODULE'] || 'com.example', '--session', '--menu', '--remote-users'
 
 apply 'http://mkristian.github.com/ixtlan-users/generate.rb'
 
