@@ -38,7 +38,63 @@ $ rails _3.0.11_ new my_app -m http://mkristian.github.com/ixtlan-users/ixtlan-g
       </code></pre>
     </blockquote>
 
+    <h3>start the development shell</h3>
+
     <p>
+      first you need to setup your environment so the project specific
+      binstubs can be found. either in your  terminal or add it to <i>~/.bashrc</i> or <i>~/.profile</i>.
+    </p>
+    
+    <blockquote>
+      <pre><code>
+$ export PATH=$PATH:./target/bin
+      </code></pre>
+    </blockquote>
+
+    <p>
+    beside MRI you need Java (1.6 or higher) installed. now you can go into the application directory and start the shell.
+    </p>
+    
+    <blockquote>
+      <pre><code>
+$ cd my_app
+$ gwt run
+      </code></pre>
+    </blockquote>
+
+    <h3>start the development shell with remote login</h3>
+
+    <p>
+    for this you need to start the rails server of <b>ixtlan-users</i>. then
+    you can use the <b>SSO=true</b> environment variable to launch the
+    GWT shell with remote login.
+    </p>
+
+    <h4>remote users server for authentication</h4>
+
+    <p>
+    first checkout the <a href="http://github.com/mkristian/ixtlan-users">ixtlan-users</a> and setup the application:
+    </p>
+
+    <blockquote>
+      <pre><code>
+$ git clone
+$ cd ixtlan-users
+$ bundle install
+$ rake db:migrate db:seed
+$ rails server
+      </code></pre>
+    </blockquote>
+
+    <h4>starting gwt with remote authentication</h4>
+
+    <blockquote>
+      <pre><code>
+$ SSO=true gwt run
+      </code></pre>
+    </blockquote>
+
+    <!--p>
     using <b>ruby-maven</b> gem also has some <b>bugs</b> but the following works:
     </p>
     
@@ -50,7 +106,7 @@ $ gwt new my_app com.example.gwt --menu --session
 $ cd my_app
 $ rake rails:template LOCATION=http://mkristian.github.com/ixtlan-users/ixtlan-gwt.rb
       </code></pre>
-    </blockquote>
+    </blockquote-->
     
   </body>
 </html>
