@@ -211,14 +211,14 @@
     <dependency>
       <groupId>de.mkristian.gwt</groupId>
       <artifactId>rails-gwt</artifactId>
-      <version>0.6.1-SNAPSHOT</version>
+      <version>0.7.1-SNAPSHOT</version>
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.fusesource.restygwt</groupId>
       <artifactId>restygwt</artifactId>
-      <version>1.2</version>
+      <version>1.3-SNAPSHOT</version>
       <type>jar</type>
       <scope>provided</scope>
     </dependency>

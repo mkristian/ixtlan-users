@@ -1,6 +1,6 @@
 users:
   defaults: [user-admin]
-  change: []  # virtual action (no controller method) allows overwrite email/login
+  last_changes: []  # virtual action (no controller method) allows overwrite email/login
 #  index: []
 #  show: []
 #  new: []
