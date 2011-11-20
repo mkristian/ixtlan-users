@@ -2,7 +2,12 @@ class UsersController < ApplicationController
 
   before_filter :cleanup_params
   before_filter :remote_permission, :only => :last_changes
-  skip_before_filter 'authorization',  :only => :last_changes
+  skip_before_filter :authorization,  :only => :last_changes
+
+  # TODO do not know why skip_before_filter does not work with heroku
+  def authorization
+    super if params[:action] != 'last_changes'
+  end
 
   private
 
