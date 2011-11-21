@@ -8,12 +8,12 @@
     <p>with a standard rails application I do need some extra work to get it more secure. this template tries to do that extra work for you. after a nice security is in place some we can install some gems which helps to keep person related data well protected:
     </p>
     <ul>
-      <li>keep the person related data on the server, i.e. <a href="https://github.com/mkristian/ixtlan-errors">ixtlan-errors</a> and <a href="https://github.com/mkristian/ixtlan-audit">ixtlan-audit</a></li>
-      <li>expire person related data after some time, i.e. <a href="https://github.com/mkristian/ixtlan-errors">ixtlan-errors</a> and <a href="https://github.com/mkristian/ixtlan-audit">ixtlan-audit</a></li>
+      <li>keep the person related data on the server, i.e. <a href="https://github.com/mkristian/ixtlan-error-handler">ixtlan-error-handler</a> and <a href="https://github.com/mkristian/ixtlan-audit">ixtlan-audit</a></li>
+      <li>expire person related data after some time, i.e. <a href="https://github.com/mkristian/ixtlan-error-handler">ixtlan-error-handler</a> and <a href="https://github.com/mkristian/ixtlan-audit">ixtlan-audit</a></li>
       <li>tell the browser how to cache person related date (:public, :protected, :private), see <a href="https://github.com/mkristian/ixtlan-core">ixtlan-core</a></li>
       <li>tell the browser how to protect against some attack vectors, see <a href="https://github.com/mkristian/ixtlan-core">ixtlan-core</a>)</li>
       <li>tell the proxies between the browser and the server how to cache data, see <a href="https://github.com/mkristian/ixtlan-core">ixtlan-core</a></li>
-      <li>expire the browser session after some idle time. for different user groups can have different timeouts, i.e. admins get a short timeout period and even bind their session to the remote IP and browser signature. see <a href="https://github.com/mkristian/ixtlan-session-idle-timeout">ixtlan-session-idle-timeout</a></li>
+      <li>expire the browser session after some idle time. for different user groups can have different timeouts, i.e. admins get a short timeout period and even bind their session to the remote IP and browser signature. see <a href="https://github.com/mkristian/ixtlan-session-timeout">ixtlan-session-timeout</a></li>
       <li>guard the action an user can perform on the server (controller#action in rails speak) to allow only authorized users to access certain person data. see <a href="https://github.com/mkristian/ixtlan-guard">ixtlan-guard</a></li>
       <li>enforce SSL for <b>all</b> communication, to protect the data over the wire and prevent session highjacking with tools like firesheep. see <a href="https://github.com/mkristian/enforce-ssl">enforce-ssl</a></li>
       <li>no defaults passwords</li>
