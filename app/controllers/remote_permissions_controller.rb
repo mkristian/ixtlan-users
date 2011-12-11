@@ -1,6 +1,8 @@
 class RemotePermissionsController < ApplicationController
 
-  before_filter :cleanup_params
+  before_filter :cleanup_params, :authorize_application
+
+  skip_before_filter :authorize
 
   private
 
@@ -14,7 +16,7 @@ class RemotePermissionsController < ApplicationController
 
   def stale?
     if @remote_permission.nil?
-      @remote_permission = RemotePermission.find(params[:id])
+      @remote_permission = RemotePermission.filtered_find(params[:id], @application)
       respond_to do |format|
         format.html { render :action => "edit" }
         format.xml  { render :xml => nil, :status => :conflict }
@@ -30,7 +32,7 @@ class RemotePermissionsController < ApplicationController
   # GET /remote_permissions.xml
   # GET /remote_permissions.json
   def index
-    @remote_permissions = RemotePermission.all
+    @remote_permissions = RemotePermission.filtered_all(current_user)
 
     respond_to do |format|
       format.html # index.html.erb 
@@ -43,7 +45,7 @@ class RemotePermissionsController < ApplicationController
   # GET /remote_permissions/1.xml
   # GET /remote_permissions/1.json
   def show
-    @remote_permission = RemotePermission.find(params[:id])
+    @remote_permission = RemotePermission.filtered_find(params[:id], @application)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -59,7 +61,7 @@ class RemotePermissionsController < ApplicationController
 
   # GET /remote_permissions/1/edit
   def edit
-    @remote_permission = RemotePermission.find(params[:id])
+    @remote_permission = RemotePermission.filtered_find(params[:id], @application)
   end
 
   # POST /remote_permissions
@@ -68,6 +70,7 @@ class RemotePermissionsController < ApplicationController
   def create
     @remote_permission = RemotePermission.new(params[:remote_permission])
     @remote_permission.modified_by = current_user
+    @remote_permission.application = @application
 
     respond_to do |format|
       if @remote_permission.save
@@ -86,12 +89,14 @@ class RemotePermissionsController < ApplicationController
   # PUT /remote_permissions/1.xml
   # PUT /remote_permissions/1.json
   def update
-    @remote_permission = RemotePermission.optimistic_find(params[:updated_at], params[:id])
+    @remote_permission = RemotePermission.filtered_optimistic_find(params[:updated_at], params[:id], @application)
 
     return if stale?
 
     params[:remote_permission] ||= {}
     params[:remote_permission][:modified_by] = current_user
+
+    authorize_application_param(params[:remote_permission])
 
     respond_to do |format|
       if @remote_permission.update_attributes(params[:remote_permission])
@@ -110,7 +115,7 @@ class RemotePermissionsController < ApplicationController
   # DELETE /remote_permissions/1.xml
   # DELETE /remote_permissions/1.json
   def destroy
-    @remote_permission = RemotePermission.optimistic_find(params[:updated_at], params[:id])
+    @remote_permission = RemotePermission.optimistic_find(params[:updated_at], params[:id], @application)
 
     return if stale?
 

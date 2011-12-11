@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 
   before_filter :cleanup_params
   before_filter :remote_permission, :only => :last_changes
-  skip_before_filter :authorization,  :only => :last_changes
+  skip_before_filter :authorize,  :only => :last_changes
 
   private
 
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
   # GET /users.xml
   # GET /users.json
   def index
-    @users = User.relative_all(current_user)
+    @users = User.filtered_all(current_user)
 
     respond_to do |format|
       format.html # index.html.erb 
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   # GET /users/1.xml
   # GET /users/1.json
   def show
-    @user = User.relative_find(params[:id], current_user)
+    @user = User.filtered_find(params[:id], current_user)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -73,7 +73,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.relative_find(params[:id], current_user)
+    @user = User.filtered_find(params[:id], current_user)
   end
 
   # POST /users
@@ -81,9 +81,9 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     # delete groups but keep group_ids
-    (params[:user] || []).delete(:groups)
+   # (params[:user] || []).delete(:groups)
 
-    @user = User.deep_new(params[:user], current_user)
+    @user = User.filtered_new(params[:user], current_user)
     @user.modified_by = current_user
 
     respond_to do |format|
@@ -103,15 +103,17 @@ class UsersController < ApplicationController
   # PUT /users/1.xml
   # PUT /users/1.json
   def update
-    @user = User.optimistic_find(params[:updated_at], params[:id])
+    @user = User.filtered_optimistic_find(params[:updated_at], 
+                                          params[:id], 
+                                          current_user)
 
     return if stale?
 
     params[:user] ||= {}
     params[:user][:modified_by] = current_user
     
-    # delete groups but keep group_ids
-    params[:user].delete(:groups)
+ #   # delete groups but keep group_ids
+  #  params[:user].delete(:groups)
 
     #TODO allowed? should be part of guard
     unless guard.allowed?("users", "change", current_user_group_names)
@@ -140,13 +142,13 @@ class UsersController < ApplicationController
     # end
 
     respond_to do |format|
-      if @user.relative_update_attributes(params[:user], current_user)
+      if @user.deep_update_attributes(params[:user], current_user)
         
-        unless current_user.root?
-          @user.groups.delete_if do |g|
-            ! current_user.groups.member? g
-          end
-        end
+        # unless current_user.root?
+        #   @user.groups.delete_if do |g|
+        #     ! current_user.groups.member? g
+        #   end
+        # end
 
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
         format.xml  { render :xml => @user.to_xml(User.single_options) }

@@ -121,11 +121,53 @@ describe User do
         a1 = Application.find_by_name("spec-app1") || Application.create(:name => "spec-app1", :modified_by => User.first)
         a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app")
         perm = RemotePermission.find_by_ip("1.2.3.4") || RemotePermission.create(:ip => "1.2.3.4", :token => '1234', :application => a1, :modified_by => User.first)
+        
+        @root = Group.ROOT
+        @root.modified_by = User.first
+        @root.save
+
         @g1 = Group.find_by_name("spec1") || Group.create(:name => "spec1", :modified_by => User.first, :application => a1)
         @g2 = Group.find_by_name("spec2") || Group.create(:name => "spec2", :modified_by => User.first, :application => a2)
         subject.groups << @g1
         subject.groups << @g2
         subject.save
+      end
+
+      it 'should create a valid user with group_ids' do
+        u = User.filtered_new({ :login => 'user1',
+                                :name => 'User', 
+                                :email => 'user1@example.com', 
+                                :group_ids => [@g1.id, @g2.id, @root.id]}, 
+                              subject)
+        u.modified_by = User.first
+        u.deep_save.should == true
+        u = u.reload
+        u.groups.should == [@g1, @g2]
+        u.deep_update_attributes({:group_ids => [@g1.id]}, 
+                                 subject).should == true
+        u.reload.groups.should == [@g1]
+      end
+
+      it 'should create a valid user with groups' do
+        u = User.filtered_new({ :login => 'user2',
+                                :name => 'User',
+                                :email => 'user2@example.com',
+                                :groups => [{:id => @g1.id},
+                                            {:id => @g2.id}]}, 
+                              subject)
+        u.modified_by = User.first
+        u.deep_save.should == true
+        u = u.reload
+        u.groups.should == [@g1, @g2]
+        u.deep_update_attributes({:groups => [{:id => @g1.id}, 
+                                              {:id => @root.id}]}, 
+                                 subject).should == true
+        u.reload.groups.should == [@g1]
+        subject.groups << @root
+        u.deep_update_attributes({:groups => [{:id => @g1.id}, 
+                                              {:id => @root.id}]}, 
+                                 subject).should == true
+        u.reload.groups.should == [@g1, @root]        
       end
 
       it 'should have all groups without given IP' do

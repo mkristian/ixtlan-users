@@ -2,6 +2,9 @@ class GroupsController < ApplicationController
 
   before_filter :cleanup_params
 
+  before_filter :authorize_application, :except => [:index]
+  skip_before_filter :authorize, :except => [:index]
+
   private
 
   def cleanup_params
@@ -14,7 +17,7 @@ class GroupsController < ApplicationController
 
   def stale?
     if @group.nil?
-      @group = Group.find(params[:id])
+      @group = Group.find(params[:id], @application)
       respond_to do |format|
         format.html { render :action => "edit" }
         format.xml  { render :xml => nil, :status => :conflict }
@@ -30,7 +33,7 @@ class GroupsController < ApplicationController
   # GET /groups.xml
   # GET /groups.json
   def index
-    @groups = current_user.root? ? Group.all : current_user.groups
+    @groups = Group.filtered_all(current_user)
 
     respond_to do |format|
       format.html # index.html.erb 
@@ -43,7 +46,7 @@ class GroupsController < ApplicationController
   # GET /groups/1.xml
   # GET /groups/1.json
   def show
-    @group = Group.find(params[:id])
+    @group = Group.filtered_find(params[:id], @application)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -59,7 +62,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
-    @group = Group.find(params[:id])
+    @group = Group.filtered_find(params[:id], @application)
   end
 
   # POST /groups
@@ -68,6 +71,7 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(params[:group])
     @group.modified_by = current_user
+    @group.application = @application
 
     respond_to do |format|
       if @group.save
@@ -86,12 +90,16 @@ class GroupsController < ApplicationController
   # PUT /groups/1.xml
   # PUT /groups/1.json
   def update
-    @group = Group.optimistic_find(params[:updated_at], params[:id])
+    @group = Group.filtered_optimistic_find(params[:updated_at], 
+                                            params[:id],
+                                            @application)
 
     return if stale?
 
     params[:group] ||= {}
     params[:group][:modified_by] = current_user
+    
+    authorize_application_param(params[:group])
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
@@ -110,7 +118,9 @@ class GroupsController < ApplicationController
   # DELETE /groups/1.xml
   # DELETE /groups/1.json
   def destroy
-    @group = Group.optimistic_find(params[:updated_at], params[:id])
+    @group = Group.filtered_optimistic_find(params[:updated_at], 
+                                            params[:id], 
+                                            @application)
 
     return if stale?
 

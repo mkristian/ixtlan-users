@@ -2,14 +2,32 @@ class ApplicationsController < ApplicationController
 
   before_filter :cleanup_params
 
+  before_filter :authorize_application, :except => [:index, :new, :create]
+
+  skip_before_filter :authorize, :except => [:index, :new, :create]
+
   private
+
+  def authorize_application
+    #TODO super(params[:id])
+    if params[:id]
+      @application = 
+        if params[:updated_at]
+          Application.optimistic_find(params[:updated_at], params[:id])
+        else
+          Application.find(params[:id])
+        end
+      authorize_app(@application)
+      @application
+    end
+  end
 
   def cleanup_params
     # compensate the shortcoming of the incoming json/xml
     model = params[:application] || []
     model.delete :id
     model.delete :created_at
-    params[:updated_at] = model.delete :updated_at
+    params[:updated_at] ||= model.delete :updated_at
   end
 
   def stale?
@@ -43,7 +61,7 @@ class ApplicationsController < ApplicationController
   # GET /applications/1.xml
   # GET /applications/1.json
   def show
-    @application = Application.find(params[:id])
+    # @application = Application.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -59,7 +77,7 @@ class ApplicationsController < ApplicationController
 
   # GET /applications/1/edit
   def edit
-    @application = Application.find(params[:id])
+#    @application = Application.find(params[:id])
   end
 
   # POST /applications
@@ -68,6 +86,8 @@ class ApplicationsController < ApplicationController
   def create
     @application = Application.new(params[:application])
     @application.modified_by = current_user
+
+    authorize_app(@application)
 
     respond_to do |format|
       if @application.save
@@ -86,7 +106,7 @@ class ApplicationsController < ApplicationController
   # PUT /applications/1.xml
   # PUT /applications/1.json
   def update
-    @application = Application.optimistic_find(params[:updated_at], params[:id])
+    # @application = Application.optimistic_find(params[:updated_at], params[:id])
 
     return if stale?
 
@@ -110,7 +130,7 @@ class ApplicationsController < ApplicationController
   # DELETE /applications/1.xml
   # DELETE /applications/1.json
   def destroy
-    @application = Application.optimistic_find(params[:updated_at], params[:id])
+    # @application = Application.optimistic_find(params[:updated_at], params[:id])
 
     return if stale?
 

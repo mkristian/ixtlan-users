@@ -26,4 +26,16 @@ class Application < ActiveRecord::Base
       }
     }
   end
+
+  def self.filtered_all(current_user, *args)
+    apps = current_user.root_group_applications
+    if apps.member?(Application.ALL)
+      self.all(*args)
+    else
+      a1 = current_user.applications
+      a2 = current_user.root_group_applications
+      # union
+      a1 | a2
+    end
+  end
 end

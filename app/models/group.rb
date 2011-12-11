@@ -41,4 +41,36 @@ class Group < ActiveRecord::Base
       }
     }
   end
+
+  def applications(user)
+    ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application }
+  end
+
+  def self.filtered_find(id, current_application)
+    permitted(find(id), current_application)
+  end
+
+  def permitted(group, current_application)
+    if current_application == Application.ALL || current_application == group.application
+      group
+    else
+      raise ActiveRecord::NotFound.new("application mismatch")
+    end
+  end
+  private :permitted
+
+  def self.filtered_optimistic_find(updated_at, id, current_application)
+    permitted(old_optimistic_find(updated_at, id), current_application)
+  end
+
+  def self.filtered_all(current_user)
+    apps = current_user.root_group_applications
+    if apps.size == 0
+      current_user.groups
+    elsif apps.member?(Application.ALL)
+      self.all
+    else
+      self.where(:application => apps)
+    end
+  end
 end

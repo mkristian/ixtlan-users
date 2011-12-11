@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'bcrypt'
 require 'ixtlan/users/manager'
 
@@ -57,13 +58,14 @@ class User < ActiveRecord::Base
     result
   end
 
-  def self.relative_all(current_user)
+  def self.filtered_all(current_user)
     users = includes(:groups)#.joins(:groups).where("groups_users.group_id" => current_user.groups)
 
-    unless current_user.root?
+    apps = current_user.root_group_applications
+    if ! apps.empty? && ! apps.member?(Application.ALL)
       users.each do |u|
         u.groups.delete_if do |g|
-          ! current_user.groups.member? g
+          ! apps.member?(g.application)
         end
       end
     end
@@ -71,26 +73,34 @@ class User < ActiveRecord::Base
     users
   end
 
-  def self.relative_find(id, current_user)
-    user = find(params[:id])
- 
-    unless current_user.root?
+  def self.filtered_find(id, current_user)
+    filtered(find(id), current_user)
+  end
+    
+  
+  def self.filtered(user, current_user)
+    apps = current_user.root_group_applications
+    if ! apps.empty? && ! apps.member?(Application.ALL)
       user.groups.delete_if do |g|
-        ! current_user.groups.member? g
+        ! apps.member?(g.application)
       end
     end
  
-   user
+    user
   end
 
-  def self.deep_new(params, current_user)
-    user_manager = Ixtlan::Users::Manager.new(current_user)   
-    unless current_user.root?
-#    params[:group_ids] = user_manager.allowed_group_ids(params)
-      user_manager.group_params = { :groups => params.delete(:groups) || [] }
-    end
+  def self.filtered_optimistic_find(updated_at, id, current_user)
+    filtered(optimistic_find(updated_at, id), current_user)
+  end
+
+  def self.filtered_new(params, current_user)   
+    manager = Ixtlan::Users::Manager.new(current_user)
+    group_params = manager.group_params(nil, 
+                                        :groups => params.delete(:groups),
+                                        :group_ids => params.delete(:group_ids))
+    params[:group_ids] = group_params[:group_ids]
     user = self.new(params)
-    user.user_manager(user_manager)
+    user.user_manager(manager) if manager
     user
   end
   
@@ -99,23 +109,34 @@ class User < ActiveRecord::Base
   end
 
   def deep_update_attributes(params, current_user)
-    group_params = params.delete(:groups) || []
     user_manager = Ixtlan::Users::Manager.new(current_user)
-    unless current_user.root?
-      # the new set of groups of the given user
-      params[:group_ids] = user_manager.new_group_ids(user, params)
-    end
-    update_attributes(params) && user_manager.update(self, 
-                                                     :groups => group_params || [])
+    groups = params.delete(:groups)
+    group_ids = params.delete(:group_ids)
+    group_params = user_manager.group_params(self, 
+                                             :groups => groups, 
+                                             :group_ids => group_ids)
+    params[:group_ids] = group_params[:group_ids]
+    update_attributes(params) && user_manager.update(self, groups)
   end
   
-  protected
-        
-  
+  private
+
+  def reset_password
+    # only alpha pwd
+    @password = generate_password
+    if self.hashed
+      self.hashed2 = Password.create(@password)
+    else
+      self.hashed = Password.create(@password)
+    end
+    @password
+  end
+
   public
 
   def user_manager(manager = nil)
-    @__user_manager ||= manager if manager
+    @user_manager ||= manager if manager
+    @user_manager
   end
 
   def filter_groups(token)
@@ -192,6 +213,14 @@ class User < ActiveRecord::Base
 
   def root?
     @is_root ||= groups.member? Group.ROOT
+  end
+
+  def user_admin?
+    @is_user_admin ||= groups.member? Group.USER_ADMIN
+  end
+
+  def root_group_applications
+    @root_group_apps ||= groups.member?(Group.ROOT) ? Group.ROOT.applications(self) : []
   end
 
   def applications
