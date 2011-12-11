@@ -32,6 +32,6 @@ profile("mac") do |mac|
 end
 
 #repository(:snapshots).url "http://mojo.saumya.de"
-#properties['jruby.plugins.version'] ='0.28.5-SNAPSHOT'
-properties['jruby.version'] = '1.6.4'
+properties['jruby.plugins.version'] ='0.28.7-SNAPSHOT'
+properties['jruby.version'] = '1.6.5'
 # vim: syntax=Ruby

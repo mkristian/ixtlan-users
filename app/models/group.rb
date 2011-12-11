@@ -3,6 +3,8 @@ class Group < ActiveRecord::Base
   belongs_to :modified_by, :class_name => "User"
   validates :modified_by_id, :presence => true
 
+  attr_accessor :applications
+
   def self.ROOT
     find_by_id(1) || new(:name => 'root', :application => Application.THIS)
   end

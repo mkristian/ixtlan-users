@@ -99,7 +99,7 @@ describe User do
 
     it 'should send password email on password reset' do
       index = ActionMailer::Base.deliveries.size
-      pwd = User.reset_password(subject.login)
+      pwd = User.reset_password(subject.login).password
       pwd.should_not be_nil
       ActionMailer::Base.deliveries[index].body.raw_source.should =~ /#{pwd}/
       passwd = subject.reset_password_and_save
@@ -110,9 +110,17 @@ describe User do
     describe 'and groups' do
       
       before do
+        this = Application.THIS
+        this.modified_by = User.first
+        this.save
+
+        all = Application.ALL
+        all.modified_by = User.first
+        all.save
+
         a1 = Application.find_by_name("spec-app1") || Application.create(:name => "spec-app1", :modified_by => User.first)
         a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app")
-        perm = RemotePermission.find_by_ip("1.2.3.4") || RemotePermission.create(:ip => "1.2.3.4", :application => a1, :modified_by => User.first)
+        perm = RemotePermission.find_by_ip("1.2.3.4") || RemotePermission.create(:ip => "1.2.3.4", :token => '1234', :application => a1, :modified_by => User.first)
         @g1 = Group.find_by_name("spec1") || Group.create(:name => "spec1", :modified_by => User.first, :application => a1)
         @g2 = Group.find_by_name("spec2") || Group.create(:name => "spec2", :modified_by => User.first, :application => a2)
         subject.groups << @g1
@@ -126,12 +134,12 @@ describe User do
       end
 
       it 'should have selected groups with given IP' do
-        u = User.authenticate(subject.login, @pwd, '1.2.3.4')
+        u = User.authenticate(subject.login, @pwd, '1234')
         u.groups.should == [@g1]
       end
 
       it 'should have no groups with unknown IP' do
-        u = User.authenticate(subject.login, @pwd, '8.8.8.8')
+        u = User.authenticate(subject.login, @pwd, '8888')
         u.groups.should == []
       end
 

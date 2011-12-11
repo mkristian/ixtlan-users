@@ -1,4 +1,5 @@
 require 'bcrypt'
+require 'ixtlan/users/manager'
 
 class User < ActiveRecord::Base
   include BCrypt
@@ -55,7 +56,68 @@ class User < ActiveRecord::Base
     result.filter_groups(token) if result.valid?
     result
   end
+
+  def self.relative_all(current_user)
+    users = includes(:groups)#.joins(:groups).where("groups_users.group_id" => current_user.groups)
+
+    unless current_user.root?
+      users.each do |u|
+        u.groups.delete_if do |g|
+          ! current_user.groups.member? g
+        end
+      end
+    end
+    
+    users
+  end
+
+  def self.relative_find(id, current_user)
+    user = find(params[:id])
+ 
+    unless current_user.root?
+      user.groups.delete_if do |g|
+        ! current_user.groups.member? g
+      end
+    end
+ 
+   user
+  end
+
+  def self.deep_new(params, current_user)
+    user_manager = Ixtlan::Users::Manager.new(current_user)   
+    unless current_user.root?
+#    params[:group_ids] = user_manager.allowed_group_ids(params)
+      user_manager.group_params = { :groups => params.delete(:groups) || [] }
+    end
+    user = self.new(params)
+    user.user_manager(user_manager)
+    user
+  end
   
+  def deep_save
+    save && (user_manager ? user_manager.update(self) : true)
+  end
+
+  def deep_update_attributes(params, current_user)
+    group_params = params.delete(:groups) || []
+    user_manager = Ixtlan::Users::Manager.new(current_user)
+    unless current_user.root?
+      # the new set of groups of the given user
+      params[:group_ids] = user_manager.new_group_ids(user, params)
+    end
+    update_attributes(params) && user_manager.update(self, 
+                                                     :groups => group_params || [])
+  end
+  
+  protected
+        
+  
+  public
+
+  def user_manager(manager = nil)
+    @__user_manager ||= manager if manager
+  end
+
   def filter_groups(token)
     if token
       perm = RemotePermission.find_by_token(token)
@@ -88,12 +150,13 @@ class User < ActiveRecord::Base
   def reset_password_and_save
     pwd = reset_password
     is_new = new_record?
-    if save
+    if deep_save
       if is_new
         UserMailer.send_new_user(self).deliver
       else
         UserMailer.send_password(self).deliver
       end
+      @password = pwd
       pwd
     end
   end

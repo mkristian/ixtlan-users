@@ -22,6 +22,7 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
@@ -142,6 +143,8 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
             public void onSuccess(Method method, User response) {
                 notice.finishLoading();
+                notice.info("sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
+                GWT.log("sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
                 eventBus.fireEvent(new UserEvent(response, Action.CREATE));
                 goTo(new UserPlace(response.getId(), RestfulActionEnum.EDIT));
             }
