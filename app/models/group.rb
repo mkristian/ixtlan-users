@@ -24,7 +24,8 @@ class Group < ActiveRecord::Base
         :application => {
           :only => [:id, :name]
         }
-      }
+      },
+      :methods => [:application_ids]
     }
   end
 
@@ -42,25 +43,36 @@ class Group < ActiveRecord::Base
     }
   end
 
-  def applications(user)
-    ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application }
+  def applications(user = nil)
+    if self == Group.ROOT
+      @applications = ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application } if user
+      @applications || []
+    end
   end
 
-  def self.filtered_find(id, current_application)
-    permitted(find(id), current_application)
+  def application_ids(user = nil)
+    if self == Group.ROOT
+      @application_ids = ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application_id } if user
+      @application_ids || []
+    end
   end
 
-  def permitted(group, current_application)
+  private
+  def self.permitted(group, current_application)
     if current_application == Application.ALL || current_application == group.application
       group
     else
       raise ActiveRecord::NotFound.new("application mismatch")
     end
   end
-  private :permitted
+
+  public
+  def self.filtered_find(id, current_application)
+    permitted(find(id), current_application)
+  end
 
   def self.filtered_optimistic_find(updated_at, id, current_application)
-    permitted(old_optimistic_find(updated_at, id), current_application)
+    permitted(optimistic_find(updated_at, id), current_application)
   end
 
   def self.filtered_all(current_user)
@@ -70,7 +82,7 @@ class Group < ActiveRecord::Base
     elsif apps.member?(Application.ALL)
       self.all
     else
-      self.where(:application => apps)
+      self.where(:application_id => apps)
     end
   end
 end

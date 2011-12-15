@@ -18,7 +18,7 @@ module Ixtlan
         @association ||= []
       end
 
-      def group_params(user, params = nil)
+      def group_ids(user, params = nil)
         params ||= {}
         @groups = params.delete(:groups)
         if @groups
@@ -29,7 +29,7 @@ module Ixtlan
           group_ids = new_group_ids(user, :group_ids => group_ids)
           # adjust the groups to the allowed groups
           @groups.delete_if do |g| 
-            group_ids.member?((g[:group] || g)[:id].to_i)
+            !group_ids.member?((g[:group] || g)[:id].to_i)
           end
         else
           group_ids = (params.delete(:group_ids) || []).collect { |g| g.to_i }
@@ -39,7 +39,9 @@ module Ixtlan
             { :id => g.id }
           end
         end
-        { :group_ids => group_ids, :groups => @groups }
+        # TODO since we have already @groups as state we could return 
+        # only the groupids
+        group_ids
       end
 
       def update(user, groups = nil)

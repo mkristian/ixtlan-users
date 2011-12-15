@@ -1,7 +1,9 @@
 package org.dhamma.users.client.models;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -33,8 +35,14 @@ public class Group implements HasToDisplay, Identifyable {
   private int applicationId;
   private Application application;
 
+  @Json(name = "application_ids")
+  private final List<Integer> applicationIds;
+  private List<Application> applications;
+
+  private final boolean hasApplications;
+
   public Group(){
-    this(0, null, null, null, 0);
+    this(0, null, null, null, 0, null);
   }
   
   @JsonCreator
@@ -42,12 +50,15 @@ public class Group implements HasToDisplay, Identifyable {
           @JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
           @JsonProperty("modifiedBy") User modifiedBy,
-          @JsonProperty("applicationId") int applicationId){
+          @JsonProperty("applicationId") int applicationId,
+          @JsonProperty("applicationIds") List<Integer> applicationIds){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
     this.applicationId = applicationId;
+    this.hasApplications = applicationIds != null;
+    this.applicationIds = applicationIds == null ? new ArrayList<Integer>() : applicationIds;
   }
 
   public int getId(){
@@ -95,8 +106,34 @@ public class Group implements HasToDisplay, Identifyable {
     return applicationId;
   }
 
+  public boolean hasApplications() {
+    return hasApplications;
+  }
+
+  public List<Application> getApplications() {
+    return applications;
+  }
+
+  public List<Integer> getApplicationIds() {
+    return applicationIds;
+  }
+
+  public void setApplications(List<Application> applications) {
+    this.applications = applications;
+    updateApplicationIds(applications);
+  }
+
+  private void updateApplicationIds(List<Application> applications) {
+    this.applicationIds.clear();
+    if (applications != null){
+        for(Application a: applications){
+            this.applicationIds.add(a.getId());
+        }
+    }
+  }
+
   public Group minimalClone() {
-      Group clone = new Group(id, null, updatedAt, null, applicationId);
+      Group clone = new Group(id, null, updatedAt, null, applicationId, applicationIds);
       clone.setName(this.name);
       clone.setDescription(this.description);
       return clone;
@@ -113,5 +150,11 @@ public class Group implements HasToDisplay, Identifyable {
 
   public String toDisplay() {
     return name + (application == null ? "" : "@" + application.getName());
+  }
+
+  public void setApplicationIds(List<Integer> applicationIds) {
+      this.applications = null;
+      this.applicationIds.clear();
+      this.applicationIds.addAll(applicationIds);
   }
 }

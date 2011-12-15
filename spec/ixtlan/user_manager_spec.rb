@@ -142,10 +142,10 @@ describe Ixtlan::Users::Manager do
                       }]).should == true
       ApplicationsGroupsUser.all(:conditions => ["user_id = ? and group_id = ?", @user.id, @g1.id]).size.should == 1
       subject.update(@user, 
-                     [{
-                        :id => @g1.id,
-                        :application_ids => [@a2.id]
-                      }]).should == true
+                     [{ :group => {
+                          :id => @g1.id,
+                          :application_ids => [@a2.id]
+                        }}]).should == true
       ApplicationsGroupsUser.all(:conditions => ["user_id = ? and group_id = ?", @user.id, @g1.id]).size.should == 1
       subject.update(@user, 
                      [{

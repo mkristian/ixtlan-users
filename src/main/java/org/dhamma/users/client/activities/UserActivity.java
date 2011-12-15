@@ -144,7 +144,7 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
             public void onSuccess(Method method, User response) {
                 notice.finishLoading();
                 notice.info("sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
-                GWT.log("sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
+                GWT.log("TODO notice: sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
                 eventBus.fireEvent(new UserEvent(response, Action.CREATE));
                 goTo(new UserPlace(response.getId(), RestfulActionEnum.EDIT));
             }
@@ -175,6 +175,7 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
     public void save() {
         User model = view.flush();
+        GWT.log(model.getGroups().toString());
         service.update(model.minimalClone(), new MethodCallback<User>() {
 
             public void onFailure(Method method, Throwable exception) {

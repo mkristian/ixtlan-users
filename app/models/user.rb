@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'bcrypt'
-require 'ixtlan/users/manager'
+require 'manager'
 
 class User < ActiveRecord::Base
   include BCrypt
@@ -94,11 +94,11 @@ class User < ActiveRecord::Base
   end
 
   def self.filtered_new(params, current_user)   
-    manager = Ixtlan::Users::Manager.new(current_user)
-    group_params = manager.group_params(nil, 
-                                        :groups => params.delete(:groups),
-                                        :group_ids => params.delete(:group_ids))
-    params[:group_ids] = group_params[:group_ids]
+    manager = Manager.new(current_user)
+    group_ids = manager.group_ids(nil, 
+                                  :groups => params.delete(:groups),
+                                  :group_ids => params.delete(:group_ids))
+    params[:group_ids] = group_ids
     user = self.new(params)
     user.user_manager(manager) if manager
     user
@@ -109,14 +109,15 @@ class User < ActiveRecord::Base
   end
 
   def deep_update_attributes(params, current_user)
-    user_manager = Ixtlan::Users::Manager.new(current_user)
+    user_manager = Manager.new(current_user)
     groups = params.delete(:groups)
     group_ids = params.delete(:group_ids)
-    group_params = user_manager.group_params(self, 
-                                             :groups => groups, 
-                                             :group_ids => group_ids)
-    params[:group_ids] = group_params[:group_ids]
-    update_attributes(params) && user_manager.update(self, groups)
+    group_ids = user_manager.group_ids(self, 
+                                       :groups => groups, 
+                                       :group_ids => group_ids)
+
+    params[:group_ids] = group_ids
+    update_attributes(params) && user_manager.update(self)
   end
   
   private
@@ -267,7 +268,8 @@ class User < ActiveRecord::Base
             :application => {
               :only => [:id, :name]
             }
-          }
+          },
+          :methods => [:applications]
         }
       }
     }
@@ -289,6 +291,26 @@ class User < ActiveRecord::Base
     def as_json(options = nil)
       options = self.class.no_children_options unless options
       old_as_json(options)
+    end
+  end
+
+  unless respond_to? :old_to_json
+    alias :old_to_json :to_json
+    def to_json(options = nil)
+      setup_groups(options)
+      old_to_json(options)
+    end
+
+    def setup_groups(options = {})
+      methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
+      groups.each { |g| g.applications(self) } if methods.member? :applications
+      groups.each { |g| g.application_ids(self) } if methods.member? :application_ids
+    end
+
+    alias :old_to_xml :to_xml
+    def to_xml(options = nil) 
+      setup_groups(options)
+      old_to_json(options)
     end
   end
 

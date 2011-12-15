@@ -3,7 +3,8 @@
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
-  xmlns:r="urn:import:de.mkristian.gwt.rails.editors">
+  xmlns:r="urn:import:de.mkristian.gwt.rails.editors"
+  xmlns:c="urn:import:org.dhamma.users.client.editors">
 
   <g:FlowPanel>
 
@@ -33,7 +34,7 @@
       </g:HTMLPanel>      
       <g:HTMLPanel>
         <label name="groups">Groups</label>
-        <r:IdentifyableCheckBoxes ui:field="groups"/>
+        <c:GroupCheckBoxes ui:field="groups"/>
       </g:HTMLPanel>
       
     </g:FlowPanel>

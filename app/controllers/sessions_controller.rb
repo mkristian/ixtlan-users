@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
 
-  skip_before_filter :authorization
+  skip_before_filter :authorize
 
   skip_before_filter :check_session, :only => :destroy
 
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
     if @session.valid?
       current_user(@session.user)
       @session.idle_session_timeout = Rails.application.config.idle_session_timeout
-      @session.permissions = guard.permissions(current_user_group_names)
+      @session.permissions = guard.permissions(current_user_groups)
 
       # TODO make html login
       respond_to do |format|

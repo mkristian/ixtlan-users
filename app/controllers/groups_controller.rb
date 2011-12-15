@@ -12,6 +12,7 @@ class GroupsController < ApplicationController
     model = params[:group] || []
     model.delete :id
     model.delete :created_at
+    model.delete :application_ids
     params[:updated_at] = model.delete :updated_at
   end
 

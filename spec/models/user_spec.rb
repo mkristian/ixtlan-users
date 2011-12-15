@@ -164,8 +164,8 @@ describe User do
                                  subject).should == true
         u.reload.groups.should == [@g1]
         subject.groups << @root
-        u.deep_update_attributes({:groups => [{:id => @g1.id}, 
-                                              {:id => @root.id}]}, 
+        u.deep_update_attributes({:groups => [{:group => {:id => @g1.id}}, 
+                                              {:group => {:id => @root.id}}]}, 
                                  subject).should == true
         u.reload.groups.should == [@g1, @root]        
       end

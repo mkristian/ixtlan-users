@@ -35,8 +35,8 @@ public class User implements HasToDisplay, Identifyable, IsUser {
 
   private String name;
 
-  @Json(name = "group_ids")
-  private final List<Integer> groupIds;
+  //@Json(name = "group_ids")
+  //private final List<Integer> groupIds;
   private List<Group> groups;
 
   @Json(name = "application_ids")
@@ -45,7 +45,7 @@ public class User implements HasToDisplay, Identifyable, IsUser {
   transient private String token;  
 
   public User(){
-    this(0, null, null, null, null, null);
+    this(0, null, null, null, null);//, null);
   }
   
   @JsonCreator
@@ -53,13 +53,13 @@ public class User implements HasToDisplay, Identifyable, IsUser {
           @JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
           @JsonProperty("modifiedBy") User modifiedBy,
-          @JsonProperty("groupIds") List<Integer> groupIds,
+  //        @JsonProperty("groupIds") List<Integer> groupIds,
           @JsonProperty("applicationIds") List<Integer> applicationIds){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
-    this.groupIds = groupIds == null ? new ArrayList<Integer>(): groupIds;
+//    this.groupIds = groupIds == null ? new ArrayList<Integer>(): groupIds;
     this.applicationIds = applicationIds == null ? new ArrayList<Integer>() : applicationIds;
   }
 
@@ -108,9 +108,9 @@ public class User implements HasToDisplay, Identifyable, IsUser {
       this.token = name == null ? "" : FilterUtils.normalize(name);
   }
 
-  public List<Integer> getGroupIds() {
-    return groupIds;
-  }
+//  public List<Integer> getGroupIds() {
+//    return groupIds;
+//  }
 
   public List<Group> getGroups() {
     return groups;
@@ -118,20 +118,25 @@ public class User implements HasToDisplay, Identifyable, IsUser {
 
   public void setGroups(List<Group> groups) {
     this.groups = groups;
-    updateGroupIds(groups);
+    updateIds(groups);
   }
 
-  private void updateGroupIds(List<Group> groups) {
-    this.groupIds.clear();     
+  private void updateIds(List<Group> groups) {
+//    this.groupIds.clear();     
     this.applicationIds.clear();
     for(Group g: groups){
-        this.groupIds.add(g.getId());
+//        this.groupIds.add(g.getId());
         this.applicationIds.add(g.getApplicationId());
     }
   }
 
   public User minimalClone() {
-      User clone = new User(id, null, updatedAt, null, groupIds, null);
+      User clone = new User(id, null, updatedAt, null, null);//groupIds, null);
+      List<Group> minimalGroups = new ArrayList<Group>(groups.size());
+      for(Group g: groups){
+          minimalGroups.add(g.minimalClone());
+      }
+      clone.setGroups(minimalGroups);
       clone.setName(name);
       clone.setLogin(login);
       clone.setEmail(email);

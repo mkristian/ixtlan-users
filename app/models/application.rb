@@ -35,7 +35,7 @@ class Application < ActiveRecord::Base
       a1 = current_user.applications
       a2 = current_user.root_group_applications
       # union
-      a1 | a2
+      (a1 | a2) - (a2.member?(Application.ALL) ? [] : [Application.THIS])
     end
   end
 end

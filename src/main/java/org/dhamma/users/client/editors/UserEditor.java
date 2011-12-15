@@ -3,6 +3,7 @@ package org.dhamma.users.client.editors;
 import java.util.Arrays;
 import java.util.List;
 
+import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.User;
 
@@ -17,7 +18,6 @@ import com.google.gwt.user.client.ui.NumberLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.mkristian.gwt.rails.editors.IdentifyableCheckBoxes;
 import de.mkristian.gwt.rails.editors.UserLabel;
 
 public class UserEditor extends Composite implements Editor<User>{
@@ -39,7 +39,7 @@ public class UserEditor extends Composite implements Editor<User>{
 
     @UiField TextBox name;
 
-    @UiField IdentifyableCheckBoxes<Group> groups;
+    @UiField GroupCheckBoxes groups;
     
     public UserEditor() {
         initWidget(BINDER.createAndBindUi(this));
@@ -69,5 +69,9 @@ public class UserEditor extends Composite implements Editor<User>{
         boolean others = enabled == Boolean.TRUE || enabled == null;
         this.name.setEnabled(others);
         this.groups.setEnabled(others);
+    }
+
+    public void resetApplications(List<Application> applications) {
+        groups.resetApplications(applications);
     }
 }

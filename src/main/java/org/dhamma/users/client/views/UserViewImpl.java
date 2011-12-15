@@ -262,6 +262,7 @@ public class UserViewImpl extends Composite implements UserView {
     }
 
     public void resetApplications(List<Application> applications) {
+        this.editor.resetApplications(applications);
         this.queryEditor.resetApplications(applications);
     }
 }

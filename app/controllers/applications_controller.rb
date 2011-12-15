@@ -48,7 +48,7 @@ class ApplicationsController < ApplicationController
   # GET /applications.xml
   # GET /applications.json
   def index
-    @applications = current_user.root? ? Application.all : current_user.applications
+    @applications = Application.filtered_all(current_user)
 
     respond_to do |format|
       format.html # index.html.erb 

@@ -1,8 +1,9 @@
 class RemotePermissionsController < ApplicationController
 
-  before_filter :cleanup_params, :authorize_application
+  before_filter :cleanup_params
 
-  skip_before_filter :authorize
+  before_filter :authorize_application, :except => [:index]
+  skip_before_filter :authorize, :except => [:index]
 
   private
 
