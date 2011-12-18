@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111101285409) do
+ActiveRecord::Schema.define(:version => 20111218144106) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -70,6 +70,13 @@ ActiveRecord::Schema.define(:version => 20111101285409) do
   create_table "groups_users", :id => false, :force => true do |t|
     t.integer "group_id"
     t.integer "user_id"
+  end
+
+  create_table "regions", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "modified_by_id"
   end
 
   create_table "remote_permissions", :force => true do |t|

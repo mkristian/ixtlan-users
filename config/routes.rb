@@ -1,5 +1,7 @@
 Users::Application.routes.draw do
 
+  resources :regions
+
   resources :audits
 
   resources :errors
