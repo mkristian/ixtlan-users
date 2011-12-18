@@ -2,6 +2,9 @@ class ErrorsController < ApplicationController
 
   before_filter :cleanup_params
 
+  before_filter :authorize_root_on_this
+  skip_before_filter :authorize
+
   private
 
   def cleanup_params

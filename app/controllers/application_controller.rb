@@ -1,12 +1,18 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  rescue_from ::Exception, :with => :internal_server_error
+  #rescue_from ::Exception, :with => :internal_server_error
 
   protected
 
+  def authorize_root_on_this
+     unless current_user.root_group_applications.member?(Application.THIS)
+       raise Ixtlan::Guard::PermissionDenied.new("only root of this application is allowed")
+     end
+  end
+
   def authorize_application(id = params[:application_id])
-#    @application = Application.find(params[:application_id])
+#    @application = Application.find(id)
     @application = current_user.root_group_applications.first
     authorize_app(@application)
     @application
