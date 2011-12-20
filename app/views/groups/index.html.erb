@@ -5,6 +5,7 @@
     <th>Name</th>
     <th>Description</th>
     <th>Application</th>
+    <th>Has regions</th>
     <th></th>
     <th></th>
     <th></th>
@@ -15,6 +16,7 @@
     <td><%= group.name %></td>
     <td><%= group.description %></td>
     <td><%= group.application %></td>
+    <td><%= group.has_regions %></td>
 <% if allowed?(:groups, :show) %>
     <td><%= link_to 'Show', group %></td>
 <% end %>

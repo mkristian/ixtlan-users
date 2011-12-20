@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
+import org.dhamma.users.client.models.Region;
 import org.dhamma.users.client.models.User;
 
 import com.google.gwt.core.client.GWT;
@@ -73,5 +74,9 @@ public class UserEditor extends Composite implements Editor<User>{
 
     public void resetApplications(List<Application> applications) {
         groups.resetApplications(applications);
+    }
+
+    public void resetRegions(List<Region> regions) {
+        groups.resetRegions(regions);
     }
 }

@@ -41,6 +41,8 @@ public class GroupEditor extends Composite implements Editor<Group>{
 
     @UiField IdentifyableListBox<Application> application;
 
+    @UiField CheckBox hasRegions;
+
     public GroupEditor() {
         initWidget(BINDER.createAndBindUi(this));
     }
@@ -72,5 +74,6 @@ public class GroupEditor extends Composite implements Editor<Group>{
         this.name.setEnabled(enabled);
         this.description.setEnabled(enabled);
         this.application.setEnabled(enabled);
+        this.hasRegions.setEnabled(enabled);
     }
 }

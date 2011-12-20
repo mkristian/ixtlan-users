@@ -40,10 +40,21 @@ public class Group implements HasToDisplay, Identifyable {
   private List<Application> applications;
 
   private final boolean hasApplications;
+  
+  @Json(name = "has_regions")
+  private boolean hasRegions;
+
+  @Json(name = "region_ids")
+  private final List<Integer> regionIds;
+  private List<Region> regions;
 
   public Group(){
-    this(0, null, null, null, 0, null);
+      this(0, null, null, null, 0, null, null);
   }
+
+  public Group(int id){
+      this(id, null, null, null, 0, null, null);
+    }
   
   @JsonCreator
   public Group(@JsonProperty("id") int id, 
@@ -51,7 +62,8 @@ public class Group implements HasToDisplay, Identifyable {
           @JsonProperty("updatedAt") Date updatedAt,
           @JsonProperty("modifiedBy") User modifiedBy,
           @JsonProperty("applicationId") int applicationId,
-          @JsonProperty("applicationIds") List<Integer> applicationIds){
+          @JsonProperty("applicationIds") List<Integer> applicationIds,
+          @JsonProperty("regionIds") List<Integer> regionIds){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -59,6 +71,7 @@ public class Group implements HasToDisplay, Identifyable {
     this.applicationId = applicationId;
     this.hasApplications = applicationIds != null;
     this.applicationIds = applicationIds == null ? new ArrayList<Integer>() : applicationIds;
+    this.regionIds = regionIds == null ? new ArrayList<Integer>() : regionIds;
   }
 
   public int getId(){
@@ -131,11 +144,46 @@ public class Group implements HasToDisplay, Identifyable {
         }
     }
   }
+  
+  public boolean hasRegions(){
+      return hasRegions;
+  }
+
+  public boolean getHasRegions(){
+      return hasRegions;
+  }
+
+  public void setHasRegions(boolean value){
+      hasRegions = value;
+  }
+
+  public List<Region> getRegions() {
+    return regions;
+  }
+
+  public List<Integer> getRegionIds() {
+    return regionIds;
+  }
+
+  public void setRegions(List<Region> regions) {
+    this.regions = regions;
+    updateRegionIds(regions);
+  }
+
+  private void updateRegionIds(List<Region> regions) {
+    this.regionIds.clear();
+    if (regions != null){
+        for(Region a: regions){
+            this.regionIds.add(a.getId());
+        }
+    }
+  }
 
   public Group minimalClone() {
-      Group clone = new Group(id, null, updatedAt, null, applicationId, applicationIds);
+      Group clone = new Group(id, null, updatedAt, null, applicationId, applicationIds, regionIds);
       clone.setName(this.name);
       clone.setDescription(this.description);
+      clone.setHasRegions(this.hasRegions);
       return clone;
   }
 
@@ -156,5 +204,15 @@ public class Group implements HasToDisplay, Identifyable {
       this.applications = null;
       this.applicationIds.clear();
       this.applicationIds.addAll(applicationIds);
+  }
+
+  public boolean hasAssociations() {
+    return hasApplications || hasRegions;
+  }
+
+  public void setRegionIds(List<Integer> regionIds) {
+    this.regions = null;
+    this.regionIds.clear();
+    this.regionIds.addAll(regionIds);
   }
 }

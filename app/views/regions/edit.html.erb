@@ -1,0 +1,10 @@
+<h1>Editing region</h1>
+
+<%= render 'form' %>
+
+<% if allowed?(:regions, :show) %>
+<%= link_to 'Show', @region %>
+<% end %>
+<% if allowed?(:regions, :index) %>
+| <%= link_to 'Back', regions_path %>
+<% end %>

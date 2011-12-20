@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @region.name %>
+</p>
+
+
+<% if allowed?(:regions, :update) %>
+<%= link_to 'Edit', edit_region_path(@region) %>
+<% end %>
+<% if allowed?(:regions, :index) %>
+ | <%= link_to 'Back', regions_path %>
+<% end %>

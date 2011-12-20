@@ -30,7 +30,11 @@ public class Application implements HasToDisplay, Identifyable {
   private String url;
 
   public Application(){
-    this(0, null, null, null);
+      this(0, null, null, null);
+  }
+
+  public Application(int id) {
+      this(id, null, null, null);
   }
   
   @JsonCreator

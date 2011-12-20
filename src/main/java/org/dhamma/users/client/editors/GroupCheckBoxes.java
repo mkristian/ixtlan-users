@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
+import org.dhamma.users.client.models.Region;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -28,13 +28,15 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
 
     private final Map<Integer, GroupPanel> panels = new HashMap<Integer, GroupPanel>();
     private List<Application> apps = new ArrayList<Application>();
+    private List<Region> regions = new ArrayList<Region>();
     
     static class GroupPanel extends FlowPanel implements CheckBoxItem {
         private final ListBox applications = new ListBox(true);
+        private final ListBox regions = new ListBox(true);
         private final CheckBoxItem box;
         private Group group;
         
-        GroupPanel(CheckBoxItem box, Group group, List<Application> apps){
+        GroupPanel(CheckBoxItem box, Group group, List<Application> apps, List<Region> regions){
             this.group = group;
             this.box = box;
             box.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -45,18 +47,32 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
             });
             
             add(box);
-            add(new Label("applications"));
-            add(applications);
-            if(apps != null && !apps.isEmpty()){
-                applications.clear();
-                for(Application a: apps){
-                    applications.addItem(a.toDisplay(), a.getId() + "");
+            if (group.hasApplications()) {
+                add(new Label("applications"));
+                add(applications);
+                if (apps != null && !apps.isEmpty()) {
+                    applications.clear();
+                    for (Application a : apps) {
+                        applications.addItem(a.toDisplay(), a.getId() + "");
+                    }
+                } else {
+                    applications.addItem("loading . . .");
                 }
+                applications.setEnabled(false);
             }
-            else {
-                applications.addItem("loading . . .");
+            if (group.hasRegions()) {
+                add(new Label("regions"));
+                add(this.regions);
+                if (regions != null && !regions.isEmpty()) {
+                    regions.clear();
+                    for (Region a : regions) {
+                        this.regions.addItem(a.toDisplay(), a.getId() + "");
+                    }
+                } else {
+                    this.regions.addItem("loading . . .");
+                }
+                this.regions.setEnabled(false);
             }
-            applications.setEnabled(false);
         }
         
         void resetApplications(List<Application> apps){
@@ -93,6 +109,41 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
                 applications.setItemSelected(index, applicationIds.contains(id));
             }
         }
+        
+        void resetRegions(List<Region> regions){
+            if(regions != null && !regions.isEmpty()){
+                this.regions.clear();
+                for(Region a: regions){
+                    this.regions.addItem(a.toDisplay(), a.getId() + "");
+                }
+                for(int index = 0; index < this.regions.getItemCount(); index++){
+                    int id = Integer.parseInt(this.regions.getValue(index));
+                    this.regions.setItemSelected(index, group.getRegionIds().contains(id));
+                }
+            }
+            adjustListBox(box.getValue());
+        }
+
+        public List<Integer> getSelectedRegionIds() {
+            if (regions.getItemCount() == 0){
+                return group.getApplicationIds();
+            }
+            List<Integer> result = new ArrayList<Integer>(regions.getItemCount());
+            for(int index = 0; index < regions.getItemCount(); index++){
+                if(regions.isItemSelected(index)){
+                    int id = Integer.parseInt(regions.getValue(index));
+                    result.add(id);
+                }
+            }
+            return result;
+        }
+
+        public void setRegionIds(List<Integer> regionIds) {
+            for(int index = 0; index < regions.getItemCount(); index++){
+                int id = Integer.parseInt(regions.getValue(index));
+                regions.setItemSelected(index, regionIds.contains(id));
+            }
+        }
 
         public Boolean getValue() {
             return box.getValue();
@@ -105,9 +156,13 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
         
         private void adjustListBox(boolean value) {
             applications.setEnabled(value);
+            regions.setEnabled(value);
             if (!value) {
                 for(int index = 0; index < applications.getItemCount(); index++){
                     applications.setItemSelected(index, false);
+                }
+                for(int index = 0; index < regions.getItemCount(); index++){
+                    regions.setItemSelected(index, false);
                 }
             }
         }
@@ -140,8 +195,8 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
     @Override
     protected CheckBoxItem newItem(Group group, Object key) {
         CheckBoxItem box = super.newItem(group, key);
-        if (group.hasApplications()){
-            GroupPanel panel = new GroupPanel(box, group, apps);
+        if (group.hasAssociations()){
+            GroupPanel panel = new GroupPanel(box, group, apps, regions);
             panels.put(group.getId(), panel);
             return panel;
         }
@@ -158,6 +213,15 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
             }
         }
     }
+    
+    public void resetRegions(List<Region> regions){
+        this.regions = regions;
+        if (regions != null){
+            for(GroupPanel panel: panels.values()){
+                panel.resetRegions(regions);
+            }
+        }
+    }
 
     @Override
     public void setValue(List<Group> groups, boolean fireEvents) {
@@ -166,7 +230,6 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
 
         if (groups != null) {
             for(Group g: groups){
-                GWT.log(g.getApplicationIds().toString());
                 GroupPanel panel = panels.get(g.getId());
                 if (panel != null) {
                     panel.setGroup(g);
@@ -184,7 +247,12 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
         for(Group g: groups){
             GroupPanel panel = panels.get(g.getId());
             if (panel != null) {
-                g.setApplicationIds(panel.getSelectedApplicationIds());
+                if (g.hasApplications()){
+                    g.setApplicationIds(panel.getSelectedApplicationIds());
+                }
+                if (g.hasRegions()){
+                    g.setRegionIds(panel.getSelectedRegionIds());
+                }
             }
         }
         return groups;

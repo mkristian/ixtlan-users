@@ -68,8 +68,8 @@ public class UserQuery extends AbstractQuery<User> {
         if (query != null){
             String[] parts = query.split("[" + SEPARATOR + "]", -1);
             setName(parts[0]);
-            setGroup(new Group(Integer.parseInt(parts[1]), null, null, null, 0, null));
-            setApplication(new Application(Integer.parseInt(parts[2]), null, null, null));
+            setGroup(new Group(Integer.parseInt(parts[1])));
+            setApplication(new Application(Integer.parseInt(parts[2])));
         }
     }
 }

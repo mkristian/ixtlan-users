@@ -14,6 +14,7 @@ import org.dhamma.users.client.editors.UserEditor;
 import org.dhamma.users.client.editors.UserQueryEditor;
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
+import org.dhamma.users.client.models.Region;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.models.UserQuery;
 import org.dhamma.users.client.places.UserPlace;
@@ -264,5 +265,9 @@ public class UserViewImpl extends Composite implements UserView {
     public void resetApplications(List<Application> applications) {
         this.editor.resetApplications(applications);
         this.queryEditor.resetApplications(applications);
+    }
+
+    public void resetRegions(List<Region> regions) {
+        this.editor.resetRegions(regions);
     }
 }

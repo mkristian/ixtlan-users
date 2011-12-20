@@ -15,6 +15,11 @@
   <%= @group.application %>
 </p>
 
+<p>
+  <b>Has regions:</b>
+  <%= @group.has_regions %>
+</p>
+
 
 <% if allowed?(:groups, :update) %>
 <%= link_to 'Edit', edit_group_path(@group) %>

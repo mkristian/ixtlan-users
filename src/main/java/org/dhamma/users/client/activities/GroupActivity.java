@@ -86,7 +86,7 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
         display.setWidget(view.asWidget());
 
         switch(RestfulActionEnum.valueOf(place.action)){
-            case EDIT: 
+            case EDIT:
             case SHOW:
                 load(place.id);
                 break;

@@ -1,0 +1,9 @@
+regions:
+  defaults: [] 
+  index: [user-admin]
+#  show: []
+#  new: []
+#  create: []
+#  edit: []
+#  update: []
+#  destroy: []

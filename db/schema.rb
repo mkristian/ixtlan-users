@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111218144106) do
+ActiveRecord::Schema.define(:version => 20111218144109) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -65,11 +65,18 @@ ActiveRecord::Schema.define(:version => 20111218144106) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "modified_by_id"
+    t.boolean  "has_regions",    :default => false
   end
 
   create_table "groups_users", :id => false, :force => true do |t|
     t.integer "group_id"
     t.integer "user_id"
+  end
+
+  create_table "groups_users_regions", :id => false, :force => true do |t|
+    t.integer "group_id"
+    t.integer "user_id"
+    t.integer "region_id"
   end
 
   create_table "regions", :force => true do |t|

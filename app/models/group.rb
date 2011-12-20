@@ -3,7 +3,7 @@ class Group < ActiveRecord::Base
   belongs_to :modified_by, :class_name => "User"
   validates :modified_by_id, :presence => true
 
-  attr_accessor :applications
+  attr_accessor :applications,:regions
 
   def self.ROOT
     find_by_id(1) || new(:name => 'root', :application => Application.THIS)
@@ -25,7 +25,7 @@ class Group < ActiveRecord::Base
           :only => [:id, :name]
         }
       },
-      :methods => [:application_ids]
+      :methods => [:application_ids, :region_ids]
     }
   end
 
@@ -55,6 +55,11 @@ class Group < ActiveRecord::Base
       @application_ids = ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application_id } if user
       @application_ids || []
     end
+  end
+
+  def region_ids(user = nil)
+    @region_ids = GroupsUsersRegion.where(:user_id => user.id, :group_id => id).collect { |item| item.region_id } if user
+    @region_ids || []
   end
 
   private
