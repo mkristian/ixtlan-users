@@ -10,6 +10,7 @@ class UsersController < ApplicationController
     # compensate the shortcoming of the incoming json/xml
     model = params[:user] || []
     model.delete :application_ids #not needed
+    model.delete :applications #not needed
     model.delete :id
     model.delete :created_at
     params[:updated_at] ||= model.delete :updated_at

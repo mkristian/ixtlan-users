@@ -43,6 +43,13 @@ class Group < ActiveRecord::Base
     }
   end
 
+  def regions(user = nil)
+    if has_regions
+      @regions = GroupsRegionsUser.where(:user_id => user.id, :group_id => id).collect { |item| item.region } if user
+      @regions || []
+    end
+  end
+
   def applications(user = nil)
     if self == Group.ROOT
       @applications = ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application } if user

@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.places.LoginPlace;
 import org.dhamma.users.client.restservices.SessionRestService;
-
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 

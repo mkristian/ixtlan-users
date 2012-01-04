@@ -2,6 +2,7 @@ package org.dhamma.users.client.models;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -35,17 +36,16 @@ public class User implements HasToDisplay, Identifyable, IsUser {
 
   private String name;
 
-  //@Json(name = "group_ids")
-  //private final List<Integer> groupIds;
   private List<Group> groups;
 
   @Json(name = "application_ids")
   private final List<Integer> applicationIds;
+  public final List<Application> applications;
 
   transient private String token;  
 
   public User(){
-    this(0, null, null, null, null);//, null);
+    this(0, null, null, null, null,null);
   }
   
   @JsonCreator
@@ -53,14 +53,14 @@ public class User implements HasToDisplay, Identifyable, IsUser {
           @JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
           @JsonProperty("modifiedBy") User modifiedBy,
-  //        @JsonProperty("groupIds") List<Integer> groupIds,
-          @JsonProperty("applicationIds") List<Integer> applicationIds){
+          @JsonProperty("applicationIds") List<Integer> applicationIds, 
+          @JsonProperty("applications") List<Application> applications){
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
-//    this.groupIds = groupIds == null ? new ArrayList<Integer>(): groupIds;
     this.applicationIds = applicationIds == null ? new ArrayList<Integer>() : applicationIds;
+    this.applications = applications == null ? null : Collections.unmodifiableList(applications);
   }
 
   public int getId(){
@@ -108,30 +108,20 @@ public class User implements HasToDisplay, Identifyable, IsUser {
       this.token = name == null ? "" : FilterUtils.normalize(name);
   }
 
-//  public List<Integer> getGroupIds() {
-//    return groupIds;
-//  }
-
   public List<Group> getGroups() {
     return groups;
   }
 
   public void setGroups(List<Group> groups) {
     this.groups = groups;
-    updateIds(groups);
-  }
-
-  private void updateIds(List<Group> groups) {
-//    this.groupIds.clear();     
     this.applicationIds.clear();
     for(Group g: groups){
-//        this.groupIds.add(g.getId());
         this.applicationIds.add(g.getApplicationId());
     }
   }
 
   public User minimalClone() {
-      User clone = new User(id, null, updatedAt, null, null);//groupIds, null);
+      User clone = new User(id, null, updatedAt, null, null, null);
       List<Group> minimalGroups = new ArrayList<Group>(groups.size());
       for(Group g: groups){
           minimalGroups.add(g.minimalClone());
@@ -163,7 +153,7 @@ public class User implements HasToDisplay, Identifyable, IsUser {
       return this.token;
   }
 
-  public List<Integer> getApplicationIds() {
+  List<Integer> getApplicationIds() {
       return this.applicationIds;
   }
 }

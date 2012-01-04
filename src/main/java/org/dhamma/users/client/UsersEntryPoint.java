@@ -31,30 +31,34 @@ public class UsersEntryPoint implements EntryPoint {
     }
 
     static public class UsersApplication extends Application {
-        private final Notice notice;
-        private final BreadCrumbsPanel breadCrumbs;
-        private final UsersMenuPanel menu;
+        private final Panel notice;
+        private final Panel breadCrumbs;
+        private final Panel menu;
+        private final Panel links;
         private RootPanel root;
 
         @Inject
         UsersApplication(final Notice notice,
-                                           final BreadCrumbsPanel breadCrumbs,
-                                           final UsersMenuPanel menu,
-                                           final ActivityManager activityManager){
+                final BreadCrumbsPanel breadCrumbs,
+                final UsersMenuPanel menu,
+                final ApplicationLinksPanel links,
+                final ActivityManager activityManager){
             super(activityManager);
             this.notice = notice;
             this.breadCrumbs = breadCrumbs;
-	    this.menu = menu;
+            this.menu = menu;
+            this.links = links;
         }
 
-        protected Panel getApplicationPanel(){
+        protected void initApplicationPanel(Panel panel) {
             if (this.root == null) {
                 this.root = RootPanel.get();
                 this.root.add(notice);
                 this.root.add(breadCrumbs);
                 this.root.add(menu);
+                this.root.add(panel);
+                this.root.add(links);
             }
-            return this.root;
         }
     }
 
@@ -71,7 +75,7 @@ public class UsersEntryPoint implements EntryPoint {
         // setup display
         injector.getApplication().run();
      
-        // Goes to the place represented on URL else default place
+        // go to the place represented on URL else default place
         injector.getPlaceHistoryHandler().handleCurrentHistory();
     }
 }

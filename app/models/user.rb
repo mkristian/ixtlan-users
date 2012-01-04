@@ -54,7 +54,10 @@ class User < ActiveRecord::Base
         result.log = "login not found: #{login}"
       end
     end
-    result.filter_groups(token) if result.valid?
+    if result.valid?
+      result.applications #memorize apps
+      result.filter_groups(token)
+    end
     result
   end
 
@@ -225,7 +228,14 @@ class User < ActiveRecord::Base
   end
 
   def applications
-    @applications ||= groups.collect { |g| g.application }.uniq
+    @applications ||= 
+      begin
+        if root_group_applications.member? Application.ALL
+          Application.all.select { |a| not a.url.blank? }
+        else
+          groups.collect { |g| g.application }.uniq
+        end
+      end
   end
 
   def application_ids
@@ -244,7 +254,8 @@ class User < ActiveRecord::Base
 
   def self.no_children_options
     {
-      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id]
+      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
+      :methods => [ :applications ]
     }
   end
 
@@ -275,14 +286,20 @@ class User < ActiveRecord::Base
     }
   end
 
+  def a
+   Application.first
+  end
+
   def self.remote_options
     {
-      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id], 
+      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
       :include => {
         :groups => {
-          :only => [:id, :name]
+          :only => [:id, :name],
+          :methods => [:regions]
         }
-      }
+      },
+      :methods => [ :applications ],
     }
   end
 
@@ -290,6 +307,7 @@ class User < ActiveRecord::Base
     alias :old_as_json :as_json
     def as_json(options = nil)
       options = self.class.no_children_options unless options
+      setup_groups(options)
       old_as_json(options)
     end
   end
@@ -305,12 +323,13 @@ class User < ActiveRecord::Base
       methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
       groups.each { |g| g.applications(self) } if methods.member? :applications
       groups.each { |g| g.application_ids(self) } if methods.member? :application_ids
+      groups.each { |g| g.regions(self) } if methods.member? :regions
     end
 
     alias :old_to_xml :to_xml
     def to_xml(options = nil) 
       setup_groups(options)
-      old_to_json(options)
+      old_to_xml(options)
     end
   end
 

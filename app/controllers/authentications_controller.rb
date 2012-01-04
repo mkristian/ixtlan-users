@@ -1,6 +1,6 @@
 class AuthenticationsController < ApplicationController
 
-  skip_before_filter :authorization
+  skip_before_filter :authorize
   before_filter :remote_permission
 
   protected
@@ -34,8 +34,11 @@ class AuthenticationsController < ApplicationController
   def reset_password
     auth = params[:authentication] || params
     @authentication = auth[:email] || auth[:login]
+    def @authentication.to_log
+      "login/email: #{to_s}"
+    end
     pwd = User.reset_password(@authentication)
-
+    
     if pwd
       render :inline => "password sent"
     else

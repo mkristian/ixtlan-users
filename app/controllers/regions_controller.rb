@@ -1,6 +1,8 @@
 class RegionsController < ApplicationController
 
   before_filter :cleanup_params
+  before_filter :remote_permission, :only => :last_changes
+  skip_before_filter :authorize,  :only => :last_changes
 
   private
 
@@ -9,7 +11,7 @@ class RegionsController < ApplicationController
     model = params[:region] || []
     model.delete :id
     model.delete :created_at
-    params[:updated_at] = model.delete :updated_at
+    params[:updated_at] ||= model.delete :updated_at
   end
 
   def stale?
@@ -25,6 +27,17 @@ class RegionsController < ApplicationController
   end
 
   public
+
+  # GET /regions/last_changes.xml
+  # GET /regions/last_changes.json
+  def last_changes
+    @regions = Region.all_changed_after(params[:updated_at])
+
+    respond_to do |format|
+      format.xml  { render :xml => @regions.to_xml(Region.update_options) }
+      format.json  { render :json => @regions.to_json(Region.update_options) }
+    end
+  end
 
   # GET /regions
   # GET /regions.xml

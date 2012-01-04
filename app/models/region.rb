@@ -2,6 +2,14 @@ class Region < ActiveRecord::Base
   belongs_to :modified_by, :class_name => "User"
   validates :modified_by_id, :presence => true
 
+  def self.all_changed_after(from)
+    unless from.blank?
+      Region.all(:conditions => ["updated_at > ?", from])
+    else
+      Region.all
+    end
+  end
+
   def self.options
     {
       :except => [:created_at, :updated_at, :modified_by_id]
@@ -17,5 +25,18 @@ class Region < ActiveRecord::Base
         }
       }
     }
+  end
+
+  def self.update_options
+    {
+      :only => [:id, :name, :updated_at]
+    }
+  end
+
+  unless respond_to? :old_as_json
+    alias :old_as_json :as_json
+    def as_json(options = nil)
+      old_as_json(options || self.class.options)
+    end
   end
 end

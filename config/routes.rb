@@ -1,12 +1,14 @@
 Users::Application.routes.draw do
 
-  resources :regions
+  resources :regions do
+    collection do
+      get :last_changes
+    end
+  end
 
   resources :audits
 
   resources :errors
-
-  resources :users
 
   resources :applications
 

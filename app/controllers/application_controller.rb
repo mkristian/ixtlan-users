@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
   def authorize_application(id = params[:application_id])
 #    @application = Application.find(id)
     @application = current_user.root_group_applications.first
-p @application
     authorize_app(@application)
     @application
   end
@@ -32,9 +31,6 @@ p @application
 
   def authorize_app(application)
     authorize(application) do |group, app|
-p group
-p app
-p group.applications(current_user)
       apps = group.applications(current_user)
       apps.member?(app) || apps.member?(Application.ALL)
     end

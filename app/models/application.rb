@@ -38,4 +38,21 @@ class Application < ActiveRecord::Base
       (a1 | a2) - (a2.member?(Application.ALL) ? [] : [Application.THIS])
     end
   end
+
+  unless respond_to? :old_as_json
+    alias :old_as_json :as_json
+    def as_json(options = nil)
+      old_as_json(options || self.class.options)
+    end
+  end
+
+  unless respond_to? :old_to_xml
+    alias :old_to_xml :to_xml
+    def to_xml(options = nil)
+      #hacky di hack
+      groups = (options[:include]||{}).delete(:groups)
+      old_to_xml(options || self.class.options)
+      options[:include][:groups]= groups if groups
+    end
+  end
 end
