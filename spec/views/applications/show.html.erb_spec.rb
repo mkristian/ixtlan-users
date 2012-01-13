@@ -1,11 +1,10 @@
 require 'spec_helper'
 
-describe "groups/show.html.erb" do
+describe "applications/show.html.erb" do
   before(:each) do
-    @group = assign(:group, stub_model(Group,
+    @application = assign(:application, stub_model(Application,
       :name => "Name",
-      :description => "MyText",
-      :application => nil
+      :url => "Url"
     ))
   end
 
@@ -14,8 +13,6 @@ describe "groups/show.html.erb" do
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     rendered.should match(/Name/)
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    rendered.should match(/MyText/)
-    # Run the generator again with the --webrat flag if you want to use webrat matchers
-    rendered.should match(//)
+    rendered.should match(/Url/)
   end
 end

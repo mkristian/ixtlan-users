@@ -5,8 +5,7 @@ describe "groups/edit.html.erb" do
     @group = assign(:group, stub_model(Group,
       :name => "MyString",
       :description => "MyText",
-      :application => nil,
-      :has_regions => false
+      :application => nil
     ))
   end
 
@@ -18,7 +17,6 @@ describe "groups/edit.html.erb" do
       assert_select "input#group_name", :name => "group[name]"
       assert_select "textarea#group_description", :name => "group[description]"
       assert_select "input#group_application", :name => "group[application]"
-      assert_select "input#group_has_regions", :name => "group[has_regions]"
     end
   end
 end
