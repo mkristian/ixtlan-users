@@ -2,10 +2,12 @@ class RemotePermission < ActiveRecord::Base
   belongs_to :application
   belongs_to :modified_by, :class_name => "User"
   validates :modified_by_id, :presence => true
-
+  validates :ip, :presence => false, :length => {:maximum => 16}, :allow_nil => true, :format => /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
+  validates :token, :presence => true, :length => { :minumum => 8, :maximum => 32 }, :format => /^[a-zA-Z0-9 ]+$/
+ 
   def self.options
     {
-      :except => [:created_at, :updated_at, :modified_by_id],
+      :except => [:created_at, :modified_by_id],
       :include => {
         :application => {
           :only => [:id, :name]

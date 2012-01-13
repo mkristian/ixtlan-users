@@ -26,6 +26,7 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
@@ -35,6 +36,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.DisplayErrors;
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
@@ -45,6 +47,7 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
     private final UserPlace place;
     private final UsersRestService service;
     private final Notice notice;
+    private final DisplayErrors errors;
     private final PlaceController placeController;
     private final UserView view;
     private final GroupsCache groupsCache;
@@ -54,11 +57,12 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
     private EventBus eventBus;
        
     @Inject
-    public UserActivity(@Assisted UserPlace place, final Notice notice, final UserView view,
+    public UserActivity(@Assisted UserPlace place, final Notice notice, DisplayErrors errors, final UserView view,
             UsersRestService service, PlaceController placeController,
             UsersCache cache, GroupsCache groupsCache, ApplicationsCache applicationsCache, RegionsCache regionsCache) {
         this.place = place;
         this.notice = notice;
+        this.errors = errors;
         this.view = view;
         this.service = service;
         this.placeController = placeController;  
@@ -109,6 +113,7 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
             public void onModelEvent(ModelEvent<Region> event) {
                 view.resetRegions(event.getModels());
+                GWT.log("regions" + event.getModels() + regionsCache.getOrLoadModels());
             }
             
         });
@@ -149,12 +154,15 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
     }
 
     public void create() {
-       User model = view.flush();
+        User model = view.flush();
         service.create(model.minimalClone(), new MethodCallback<User>() {
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error creating User", exception);
+                switch (errors.showMessages(method, exception)) {
+                case GENERAL:
+                    notice.error("error creating User", exception);
+                }
             }
 
             public void onSuccess(Method method, final User response) {
@@ -199,7 +207,12 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving User", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                        //TODO
+                case GENERAL:
+                    notice.error("error saving User", exception);
+                }
             }
 
             public void onSuccess(Method method, User response) {
@@ -216,7 +229,12 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error deleting User", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                        //TODO
+                case GENERAL:
+                    notice.error("error deleting User", exception);
+                }
             }
 
             public void onSuccess(Method method, Void response) {

@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>rails</groupId>
   <artifactId>ixtlan-users</artifactId>
@@ -171,11 +170,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
-      <artifactId>resty-generators</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
       <artifactId>ixtlan-generators</artifactId>
       <type>gem</type>
     </dependency>
@@ -295,6 +289,18 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <groupId>rubygems</groupId>
         <artifactId>slf4r</artifactId>
         <version>0.4.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>resty-generators</artifactId>
+        <version>0.7.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-generators</artifactId>
+        <version>0.1.4</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -449,12 +455,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>ixtlan-generators</artifactId>
-        <version>0.1.4</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
         <artifactId>ixtlan-session-timeout</artifactId>
         <version>0.4.0</version>
         <type>gem</type>
@@ -505,12 +505,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <groupId>rubygems</groupId>
         <artifactId>thor</artifactId>
         <version>0.14.6</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>resty-generators</artifactId>
-        <version>0.7.2</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -585,12 +579,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
             <groupId>rubygems</groupId>
             <artifactId>jdbc-sqlite3</artifactId>
             <version>[0.0.0,)</version>
-            <type>gem</type>
-          </dependency>
-          <dependency>
-            <groupId>rubygems</groupId>
-            <artifactId>resty-generators</artifactId>
-            <version>[0.7.0,0.7.99999]</version>
             <type>gem</type>
           </dependency>
           <dependency>
@@ -785,11 +773,13 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>rspec-rails</artifactId>
+          <version>[2.7.0,2.7.99999]</version>
           <type>gem</type>
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>rspec</artifactId>
+          <version>[2.7.0,2.7.99999]</version>
           <type>gem</type>
         </dependency>
       </dependencies>

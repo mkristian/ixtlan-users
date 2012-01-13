@@ -17,6 +17,7 @@ import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.Region;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.models.UserQuery;
+import org.dhamma.users.client.places.AtPlace;
 import org.dhamma.users.client.places.UserPlace;
 import org.dhamma.users.client.places.UserPlaceTokenizer;
 
@@ -59,6 +60,7 @@ public class UserViewImpl extends Composite implements UserView {
     @UiField Button newButton;
     @UiField Button editButton;
     @UiField Button showButton;
+    @UiField Button showAtButton;
 
     @UiField Button createButton;
     @UiField Button saveButton;
@@ -100,6 +102,11 @@ public class UserViewImpl extends Composite implements UserView {
     @UiHandler("showButton")
     void onClickShow(ClickEvent e) {
         presenter.goTo(new UserPlace(editor.id.getValue(), RestfulActionEnum.SHOW));
+    }
+
+    @UiHandler("showAtButton")
+    void onClickShowAt(ClickEvent e) {
+        presenter.goTo(new AtPlace(editor.id.getValue(), RestfulActionEnum.SHOW));
     }
 
     @UiHandler("editButton")
@@ -154,6 +161,7 @@ public class UserViewImpl extends Composite implements UserView {
         if(action == INDEX){
             editButton.setVisible(false);
             showButton.setVisible(false);
+            showAtButton.setVisible(false);
             searchButton.setVisible(false);
             list.setVisible(true);
             model.setVisible(false);
@@ -162,6 +170,7 @@ public class UserViewImpl extends Composite implements UserView {
             createButton.setVisible(action == NEW);
             editButton.setVisible(action == SHOW && isAllowed(EDIT));
             showButton.setVisible(action == EDIT);
+            showAtButton.setVisible(action != NEW);
             saveButton.setVisible(action == EDIT);
             deleteButton.setVisible(action == EDIT && isAllowed(DESTROY));
             searchButton.setVisible(true);
@@ -176,8 +185,10 @@ public class UserViewImpl extends Composite implements UserView {
     }
     
     public void edit(User model) {
+        this.editor.reset();
         this.editorDriver.edit(model);
-        this.editor.resetVisibility();
+        this.editor.resetVisibility(false);
+        showAtButton.setVisible(model.isAt());
     }
 
     public User flush() {
@@ -211,7 +222,7 @@ public class UserViewImpl extends Composite implements UserView {
         return button;
     }
 
-    public void reset(List<User> models) {  
+    public void reset(List<User> models) {
         this.users = models;
         doSearch();
     }
@@ -268,6 +279,8 @@ public class UserViewImpl extends Composite implements UserView {
     }
 
     public void resetRegions(List<Region> regions) {
+        GWT.log("regions: " + regions);
+
         this.editor.resetRegions(regions);
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.dhamma.users.client.events.RemotePermissionEvent;
 import org.dhamma.users.client.events.RemotePermissionEventHandler;
 import org.dhamma.users.client.caches.RemotePermissionsCache;
+
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.RemotePermission;
 import org.dhamma.users.client.places.RemotePermissionPlace;
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.DisplayErrors;
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
@@ -35,6 +37,7 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
     private final RemotePermissionPlace place;
     private final RemotePermissionsRestService service;
     private final Notice notice;
+    private final DisplayErrors errors;
     private final PlaceController placeController;
     private final RemotePermissionView view;
     private final RemotePermissionsCache cache;
@@ -42,11 +45,12 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
     private EventBus eventBus;
     
     @Inject
-    public RemotePermissionActivity(@Assisted RemotePermissionPlace place, final Notice notice, final RemotePermissionView view,
-            RemotePermissionsRestService service, PlaceController placeController,
+    public RemotePermissionActivity(@Assisted RemotePermissionPlace place, final Notice notice, DisplayErrors errors,
+            final RemotePermissionView view, RemotePermissionsRestService service, PlaceController placeController,
             RemotePermissionsCache cache, ApplicationsCache applicationsCache) {
         this.place = place;
         this.notice = notice;
+        this.errors = errors;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
@@ -86,7 +90,7 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
         display.setWidget(view.asWidget());
 
         switch(RestfulActionEnum.valueOf(place.action)){
-            case EDIT: 
+            case EDIT:
             case SHOW:
                 load(place.id);
                 break;
@@ -121,7 +125,10 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error creating Remote permission", exception);
+                switch (errors.showMessages(method, exception)) {
+                case GENERAL:
+                    notice.error("error creating Remote permission", exception);
+                }
             }
 
             public void onSuccess(Method method, RemotePermission response) {
@@ -160,7 +167,12 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving Remote permission", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error saving Remote permission", exception);
+                }
             }
 
             public void onSuccess(Method method, RemotePermission response) {
@@ -177,7 +189,12 @@ public class RemotePermissionActivity extends AbstractActivity implements Remote
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error deleting Remote permission", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error deleting Remote permission", exception);
+                }
             }
 
             public void onSuccess(Method method, Void response) {

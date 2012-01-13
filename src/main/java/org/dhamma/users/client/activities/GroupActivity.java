@@ -5,6 +5,7 @@ import java.util.List;
 import org.dhamma.users.client.events.GroupEvent;
 import org.dhamma.users.client.events.GroupEventHandler;
 import org.dhamma.users.client.caches.GroupsCache;
+
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.places.GroupPlace;
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.DisplayErrors;
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
@@ -35,6 +37,7 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
     private final GroupPlace place;
     private final GroupsRestService service;
     private final Notice notice;
+    private final DisplayErrors errors;
     private final PlaceController placeController;
     private final GroupView view;
     private final GroupsCache cache;
@@ -42,11 +45,12 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
     private EventBus eventBus;
     
     @Inject
-    public GroupActivity(@Assisted GroupPlace place, final Notice notice, final GroupView view,
-            GroupsRestService service, PlaceController placeController,
+    public GroupActivity(@Assisted GroupPlace place, final Notice notice, DisplayErrors errors,
+            final GroupView view, GroupsRestService service, PlaceController placeController,
             GroupsCache cache, ApplicationsCache applicationsCache) {
         this.place = place;
         this.notice = notice;
+        this.errors = errors;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
@@ -121,7 +125,10 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error creating Group", exception);
+                switch (errors.showMessages(method, exception)) {
+                case GENERAL:
+                    notice.error("error creating Group", exception);
+                }
             }
 
             public void onSuccess(Method method, Group response) {
@@ -160,7 +167,12 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving Group", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error saving Group", exception);
+                }
             }
 
             public void onSuccess(Method method, Group response) {
@@ -177,7 +189,12 @@ public class GroupActivity extends AbstractActivity implements GroupView.Present
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error deleting Group", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error deleting Group", exception);
+                }
             }
 
             public void onSuccess(Method method, Void response) {

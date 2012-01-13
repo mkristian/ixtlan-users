@@ -1,6 +1,7 @@
 class Region < ActiveRecord::Base
   belongs_to :modified_by, :class_name => "User"
   validates :modified_by_id, :presence => true
+  validates :name, :presence => true, :format => /^[a-zA-Z0-9 \-]+$/, :length => { :maximum => 32 }
 
   def self.all_changed_after(from)
     unless from.blank?
@@ -12,7 +13,7 @@ class Region < ActiveRecord::Base
 
   def self.options
     {
-      :except => [:created_at, :updated_at, :modified_by_id]
+      :except => [:created_at, :modified_by_id]
     }
   end
 

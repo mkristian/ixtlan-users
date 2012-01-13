@@ -5,6 +5,7 @@ import java.util.List;
 import org.dhamma.users.client.events.RegionEvent;
 import org.dhamma.users.client.events.RegionEventHandler;
 import org.dhamma.users.client.caches.RegionsCache;
+
 import org.dhamma.users.client.models.Region;
 import org.dhamma.users.client.places.RegionPlace;
 import org.dhamma.users.client.restservices.RegionsRestService;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.DisplayErrors;
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
@@ -31,17 +33,19 @@ public class RegionActivity extends AbstractActivity implements RegionView.Prese
     private final RegionPlace place;
     private final RegionsRestService service;
     private final Notice notice;
+    private final DisplayErrors errors;
     private final PlaceController placeController;
     private final RegionView view;
     private final RegionsCache cache;
     private EventBus eventBus;
     
     @Inject
-    public RegionActivity(@Assisted RegionPlace place, final Notice notice, final RegionView view,
-            RegionsRestService service, PlaceController placeController,
+    public RegionActivity(@Assisted RegionPlace place, final Notice notice, DisplayErrors errors,
+            final RegionView view, RegionsRestService service, PlaceController placeController,
             RegionsCache cache) {
         this.place = place;
         this.notice = notice;
+        this.errors = errors;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
@@ -105,7 +109,10 @@ public class RegionActivity extends AbstractActivity implements RegionView.Prese
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error creating Region", exception);
+                switch (errors.showMessages(method, exception)) {
+                case GENERAL:
+                    notice.error("error creating Region", exception);
+                }
             }
 
             public void onSuccess(Method method, Region response) {
@@ -144,7 +151,12 @@ public class RegionActivity extends AbstractActivity implements RegionView.Prese
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving Region", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error saving Region", exception);
+                }
             }
 
             public void onSuccess(Method method, Region response) {
@@ -161,7 +173,12 @@ public class RegionActivity extends AbstractActivity implements RegionView.Prese
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error deleting Region", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error deleting Region", exception);
+                }
             }
 
             public void onSuccess(Method method, Void response) {

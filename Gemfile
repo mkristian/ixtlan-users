@@ -64,7 +64,7 @@ group :production do
   gem 'pg', :platforms => :ruby
 end
 
-gem 'resty-generators', '~> 0.7.0'#, :path => '../../rails-resty-gwt/resty-generators'
+gem 'resty-generators', '~> 0.7.0', :path => '../../rails-resty-gwt/resty-generators'
 gem 'ixtlan-generators', '~> 0.1.3'#, :path => '../../ixtlan/ixtlan-generators'
 
 gem 'enforce-ssl'

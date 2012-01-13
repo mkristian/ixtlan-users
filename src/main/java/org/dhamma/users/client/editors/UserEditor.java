@@ -1,6 +1,7 @@
 package org.dhamma.users.client.editors;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.dhamma.users.client.models.Application;
@@ -15,6 +16,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DateLabel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.NumberLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -22,6 +24,8 @@ import com.google.gwt.user.client.ui.Widget;
 import de.mkristian.gwt.rails.editors.UserLabel;
 
 public class UserEditor extends Composite implements Editor<User>{
+    
+    List<Group> EMPTY_GROUPS = Collections.emptyList();
     
     interface Binder extends UiBinder<Widget, UserEditor> {}
 
@@ -40,6 +44,10 @@ public class UserEditor extends Composite implements Editor<User>{
 
     @UiField TextBox name;
 
+    @UiField TextBox atToken;
+    
+    @UiField HTMLPanel groupsPanel;
+    
     @UiField GroupCheckBoxes groups;
     
     public UserEditor() {
@@ -58,17 +66,25 @@ public class UserEditor extends Composite implements Editor<User>{
         }
     }
 
-    public void resetVisibility() {
+    public void reset(){
+        groups.setValue(EMPTY_GROUPS);
+    }
+    public void resetVisibility(boolean isAt) {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
+        this.groups.setVisible(!isAt);
+        this.groupsPanel.setVisible(!isAt);
     }
     
     public void setEnabled(Boolean enabled) {
-        resetVisibility();
+        resetVisibility(!this.groups.isVisible());
+        
         boolean all = enabled == null;
         this.login.setEnabled(all);
         this.email.setEnabled(all);
+        
         boolean others = enabled == Boolean.TRUE || enabled == null;
         this.name.setEnabled(others);
+        this.atToken.setEnabled(others);
         this.groups.setEnabled(others);
     }
 

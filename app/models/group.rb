@@ -1,7 +1,10 @@
 class Group < ActiveRecord::Base
   belongs_to :application
   belongs_to :modified_by, :class_name => "User"
+  validates :application_id, :presence => true
   validates :modified_by_id, :presence => true
+  validates :name, :presence => true, :format => /^[a-zA-Z0-9_\-]+$/, :length => {:maximum => 32 }
+  validates :description, :length => { :maximum => 255 }#, :format => /^[[:print:]]+$/, :allow_nil => true
 
   attr_accessor :applications,:regions
 
@@ -19,7 +22,7 @@ class Group < ActiveRecord::Base
 
   def self.options
     {
-      :except => [:created_at, :updated_at, :modified_by_id],
+      :except => [:created_at, :modified_by_id],
       :include => {
         :application => {
           :only => [:id, :name]

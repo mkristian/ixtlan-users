@@ -1,4 +1,4 @@
-class CreateGroupsUsersRegions < ActiveRecord::Migration
+class CreateGroupsRegionsUsers < ActiveRecord::Migration
  def self.up
    create_table :groups_regions_users, :id => false do |t|
       t.integer :group_id

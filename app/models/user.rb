@@ -7,10 +7,27 @@ class User < ActiveRecord::Base
 
   belongs_to :modified_by, :class_name => "User"
 
+  has_and_belongs_to_many :groups
+
   # skip validation for the first user via rake db:seed
   validates :modified_by_id, :presence => true, :unless => Proc.new { |user| user.id == 1 }
 
-  has_and_belongs_to_many :groups
+  validates :login, :presence => true, :uniqueness => true, :format => /^[a-z0-9_\-.]+$/, :length => { :minmum => 4,:maximum => 32 }
+
+  # TODO some format and is missing
+  validates :email, :presence => true, :uniqueness => true, :length => { :maximum => 128 }
+  validates :name, :presence => true, :length => { :maximum => 128 }, :format => /^[[:print:]]+$/
+
+  validate :validate_everything_else
+
+  def validate_everything_else
+    if groups.member?(Group.AT) && at_token.blank?
+      errors.add(:at_token, 'AT token can not be blank')
+    end
+    if !groups.member?(Group.AT) && !at_token.blank?
+      errors.add(:groups, 'with given AT token the user must be member of the AT group')
+    end  
+  end
 
   def self.reset_password(login)
     u = User.find_by_login(login) || User.find_by_email(login)
@@ -64,6 +81,12 @@ class User < ActiveRecord::Base
   def self.filtered_all(current_user)
     users = includes(:groups)#.joins(:groups).where("groups_users.group_id" => current_user.groups)
 
+    # restict user list to AT unless current_user is user_admin
+    # TODO maybe that should be part of the guard, i.e. 'all_users' action
+    if !current_user.groups.member?(Group.USER_ADMIN) && current_user.groups.member?(Group.AT)
+      users.delete_if { |user| !user.groups.member?(Group.AT) }
+    end
+
     apps = current_user.root_group_applications
     if ! apps.empty? && ! apps.member?(Application.ALL)
       users.each do |u|
@@ -79,9 +102,14 @@ class User < ActiveRecord::Base
   def self.filtered_find(id, current_user)
     filtered(find(id), current_user)
   end
-    
-  
-  def self.filtered(user, current_user)
+
+  def self.filtered(user, current_user) 
+    # restict user to AT unless current_user is user_admin
+    # TODO maybe that should be part of the guard, i.e. 'all_users' action
+   if !current_user.groups.member?(Group.USER_ADMIN) && current_user.groups.member?(Group.AT)
+      raise ActiveRecord::NotFound("no AT user with id #{user.id}") unless user.groups.member?(Group.AT)
+    end
+
     apps = current_user.root_group_applications
     if ! apps.empty? && ! apps.member?(Application.ALL)
       user.groups.delete_if do |g|
@@ -186,11 +214,19 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.all_changed_after(from)
+  def self.all_changed_after(from, at_only = false)
     unless from.blank?
-      User.all(:conditions => ["updated_at > ?", from])
+      if at_only
+        User.joins(:groups).where('group.id = ? AND updated_at > ?', Group.AT.id, from)
+      else
+        User.all(:conditions => ["updated_at > ?", from])
+      end
     else
-      User.all
+      if at_only
+        User.joins(:groups).where('group.id' => Group.AT.id)
+      else
+        User.all
+      end
     end
   end
 
@@ -261,7 +297,7 @@ class User < ActiveRecord::Base
 
   def self.options
     {
-      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
+      :except => [:hashed, :hashed2, :created_at, :modified_by_id],
       :methods => [:group_ids, :application_ids]
     }
   end
@@ -284,10 +320,6 @@ class User < ActiveRecord::Base
         }
       }
     }
-  end
-
-  def a
-   Application.first
   end
 
   def self.remote_options

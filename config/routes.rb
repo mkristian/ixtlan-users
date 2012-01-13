@@ -1,5 +1,9 @@
 Users::Application.routes.draw do
 
+  resources :regions
+
+  resources :ats
+
   resources :regions do
     collection do
       get :last_changes

@@ -33,6 +33,10 @@
         <g:TextBox ui:field="name"/>
       </g:HTMLPanel>      
       <g:HTMLPanel>
+        <label name="atToken">AT token</label>
+        <g:TextBox ui:field="atToken"/>
+      </g:HTMLPanel>
+      <g:HTMLPanel ui:field="groupsPanel">
         <label name="groups">Groups</label>
         <c:GroupCheckBoxes ui:field="groups"/>
       </g:HTMLPanel>

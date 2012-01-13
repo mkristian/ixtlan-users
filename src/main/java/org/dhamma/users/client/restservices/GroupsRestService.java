@@ -12,7 +12,6 @@ import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 
 import org.dhamma.users.client.models.Group;
-import org.dhamma.users.client.models.*;
 
 @Options(dispatcher = DefaultDispatcherSingleton.class)
 public interface GroupsRestService extends RestService {
