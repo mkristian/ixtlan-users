@@ -1,0 +1,2 @@
+module AtsHelper
+end

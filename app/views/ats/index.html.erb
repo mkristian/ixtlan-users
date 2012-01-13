@@ -1,0 +1,41 @@
+<h1>Listing ats</h1>
+
+<table>
+  <tr>
+    <th>Login</th>
+    <th>Email</th>
+    <th>Name</th>
+    <th>Hashed</th>
+    <th>Hashed2</th>
+    <th>At token</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @ats.each do |at| %>
+  <tr>
+    <td><%= at.login %></td>
+    <td><%= at.email %></td>
+    <td><%= at.name %></td>
+    <td><%= at.hashed %></td>
+    <td><%= at.hashed2 %></td>
+    <td><%= at.at_token %></td>
+<% if allowed?(:ats, :show) %>
+    <td><%= link_to 'Show', at %></td>
+<% end %>
+<% if allowed?(:ats, :update) %>
+    <td><%= link_to 'Edit', edit_at_path(at) %></td>
+<% end %>
+<% if allowed?(:ats, :destroy) %>
+    <td><%= link_to 'Destroy', at_path(at) + "?at[updated_at]=#{at.updated_at.utc.strftime('%Y-%m-%d %H:%M:%S') + ("%06d" % at.updated_at.utc)}", :confirm => 'Are you sure?', :method => :delete %></td>
+<% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% if allowed?(:ats, :create) %>
+<%= link_to 'New At', new_at_path %>
+<% end %>

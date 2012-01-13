@@ -1,0 +1,2 @@
+class At < User
+end

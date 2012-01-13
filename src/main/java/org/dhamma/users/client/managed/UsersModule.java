@@ -22,6 +22,7 @@ public class UsersModule extends BaseModule {
     @Override
     protected void configure() {
         super.configure();
+        bind(org.dhamma.users.client.restservices.AtsRestService.class).toProvider(AtsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.RegionsRestService.class).toProvider(RegionsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.AuditsRestService.class).toProvider(AuditsRestServiceProvider.class);
         bind(org.dhamma.users.client.restservices.ErrorsRestService.class).toProvider(ErrorsRestServiceProvider.class);
@@ -36,6 +37,7 @@ public class UsersModule extends BaseModule {
         bind(ActivityMapper.class).to(SessionActivityPlaceActivityMapper.class).in(Singleton.class);
         bind(LoginView.class).to(LoginViewImpl.class);
         install(new GinFactoryModuleBuilder()
+            .implement(Activity.class, Names.named("ats"), org.dhamma.users.client.activities.AtActivity.class)
             .implement(Activity.class, Names.named("regions"), org.dhamma.users.client.activities.RegionActivity.class)
             .implement(Activity.class, Names.named("audits"), org.dhamma.users.client.activities.AuditActivity.class)
             .implement(Activity.class, Names.named("errors"), org.dhamma.users.client.activities.ErrorActivity.class)
@@ -120,7 +122,16 @@ public class UsersModule extends BaseModule {
             return service;
         }
     }
+
+    @Singleton
+    public static class AtsRestServiceProvider implements Provider<org.dhamma.users.client.restservices.AtsRestService> {
+        private final org.dhamma.users.client.restservices.AtsRestService service = GWT.create(org.dhamma.users.client.restservices.AtsRestService.class);
+        public org.dhamma.users.client.restservices.AtsRestService get() {
+            return service;
+        }
+    }
 }
+
 
 
 

@@ -17,6 +17,7 @@ public class UsersMenuPanel extends MenuPanel<User> {
     @Inject
     UsersMenuPanel(final PlaceController placeController, SessionManager<User> sessionManager){
         super(sessionManager, placeController);
+        addButton("Ats", new org.dhamma.users.client.places.AtPlace(INDEX));
         addButton("Regions", new org.dhamma.users.client.places.RegionPlace(INDEX));
         addButton("Audits", new org.dhamma.users.client.places.AuditPlace(INDEX));
         // TODO profile should move into bread-crumbs

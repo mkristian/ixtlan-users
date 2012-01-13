@@ -18,6 +18,7 @@ public class UsersPlaceHistoryMapper extends RestfulPlaceHistoryMapper {
     
     @Inject
     public UsersPlaceHistoryMapper(SessionManager<User> manager){
+        register("ats", new org.dhamma.users.client.places.AtPlaceTokenizer());
         register("regions", new org.dhamma.users.client.places.RegionPlaceTokenizer());
         register("audits", new org.dhamma.users.client.places.AuditPlaceTokenizer());
         register("errors", new org.dhamma.users.client.places.ErrorPlaceTokenizer());
