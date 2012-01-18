@@ -44,6 +44,12 @@ public class Configuration implements HasToDisplay {
   @Json(name = "from_email")
   private String fromEmail;
 
+  @Json(name = "profile_url")
+  private String profileUrl;
+
+  @Json(name = "ats_url")
+  private String atsUrl;
+
   public Configuration(){
     this(null, null, null);
   }
@@ -123,6 +129,22 @@ public class Configuration implements HasToDisplay {
 
   public void setFromEmail(String value){
     fromEmail = value;
+  }
+
+  public String getProfileUrl(){
+    return profileUrl;
+  }
+
+  public void setProfileUrl(String value){
+    profileUrl = value;
+  }
+
+  public String getAtsUrl(){
+    return atsUrl;
+  }
+
+  public void setAtsUrl(String value){
+    atsUrl = value;
   }
 
   public String toDisplay() {

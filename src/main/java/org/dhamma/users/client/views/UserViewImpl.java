@@ -41,7 +41,7 @@ import de.mkristian.gwt.rails.events.QueryEvent;
 import de.mkristian.gwt.rails.places.RestfulAction;
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
 import de.mkristian.gwt.rails.session.SessionManager;
-import de.mkristian.gwt.rails.views.ModelButton;
+import de.mkristian.gwt.rails.views.GeneralModelButton;
 
 @Singleton
 public class UserViewImpl extends Composite implements UserView {
@@ -205,19 +205,20 @@ public class UserViewImpl extends Composite implements UserView {
         
         @SuppressWarnings("unchecked")
         public void onClick(ClickEvent event) {
-            ModelButton<User> button = (ModelButton<User>)event.getSource();
+            GeneralModelButton<User, RestfulActionEnum> button = (GeneralModelButton<User, RestfulActionEnum>)event.getSource();
             switch(button.action){
                 case DESTROY:
                     presenter.delete(button.model);
                     break;
                 default:
+                    
                     presenter.goTo(new UserPlace(button.model, button.action));
             }
         }
     };
 
     private Button newButton(RestfulActionEnum action, User model){
-        ModelButton<User> button = new ModelButton<User>(action, model);
+        GeneralModelButton<User, RestfulActionEnum> button = new GeneralModelButton<User, RestfulActionEnum>(action, model);
         button.addClickHandler(clickHandler);
         return button;
     }
@@ -253,9 +254,14 @@ public class UserViewImpl extends Composite implements UserView {
 
         list.setText(row, 3, model.getName() + "");
 
-        list.setWidget(row, 4, newButton(RestfulActionEnum.SHOW, model));
-        list.setWidget(row, 5, newButton(RestfulActionEnum.EDIT, model));
-        list.setWidget(row, 6, newButton(RestfulActionEnum.DESTROY, model));
+        list.setWidget(row, 4, newButton(SHOW, model));
+        if (isAllowed(EDIT)) {
+            list.setWidget(row, 5, newButton(EDIT, model));
+            // assume if edit is not allowed so is destroy !
+            if (isAllowed(DESTROY)) {
+                list.setWidget(row, 6, newButton(DESTROY, model));
+            }
+        }
     }
 
     public void removeFromList(User model) {

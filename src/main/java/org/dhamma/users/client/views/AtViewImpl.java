@@ -230,6 +230,8 @@ public class AtViewImpl extends Composite implements AtView {
         list.setText(row, 4, model.getAtToken() + "");
 
         list.setWidget(row, 5, newButton(SHOW, model));
-        list.setWidget(row, 6, newButton(EDIT, model));
+        if (isAllowed(EDIT)) {
+            list.setWidget(row, 6, newButton(EDIT, model));
+        }
      }
 }

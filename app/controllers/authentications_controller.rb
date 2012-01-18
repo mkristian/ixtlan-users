@@ -13,14 +13,12 @@ class AuthenticationsController < ApplicationController
   public
 
   def create
-    user = User.authenticate(params[:authentication][:login],
-                             params[:authentication][:password],
-                             x_service_token)
-      
-    # for the log
-    @authentication = user
+    # for the log use authentication as name
+    @authentication = User.authenticate(params[:authentication][:login],
+                                        params[:authentication][:password],
+                                        x_service_token)
 
-    if user.valid?
+    if @authentication.valid?
 
       respond_to do |format|
         format.xml  { render :xml => user.to_xml(User.remote_options) }

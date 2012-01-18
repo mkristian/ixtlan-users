@@ -29,15 +29,15 @@ describe Ixtlan::Users::Manager do
     @a1 = Application.find_by_name("spec-app1") || Application.create(:name => "spec-app1", :modified_by => User.first)
     @a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app")
     @a3 = Application.find_by_name("spec-app3") || Application.create(:name => "spec-app3", :modified_by => User.first, :url => "http://example.com/app")
-    
     @g1 = Group.find_by_name("spec1") || Group.create(:name => "spec1", :modified_by => User.first, :application => @a1)
     @g2 = Group.find_by_name("spec2") || Group.create(:name => "spec2", :modified_by => User.first, :application => @a2)
     @user.groups << @g1
     @user.groups << @g2
+    @user.at_token = 'asd' if @user.at?
     @user.save
 
-    @no_user = User.find_by_login("no") || User.create(:login => "no", :modified_by => User.first)
-    @current_user = User.find_by_login("current") || User.create(:login => "current", :modified_by => User.first)
+    @no_user = User.find_by_login("no") || User.create(:login => "no", :email => 'no@example.com', :name => 'no', :modified_by => User.first)
+    @current_user = User.find_by_login("current") || User.create(:login => "current", :email => 'current@example.com', :name => 'current', :modified_by => User.first)
     @current_user.groups << @g1
     @current_user.save
     ApplicationsGroupsUser.create(:user_id => @user.id,
@@ -50,14 +50,14 @@ describe Ixtlan::Users::Manager do
                                   :group_id => @g1.id,
                                   :application_id => @a3.id)
 
-    @root_user = User.find_by_login("root") || User.create(:login => "root", :modified_by => User.first)
+    @root_user = User.find_by_login("root") || User.create(:login => "root", :email => 'root@example.com', :name => 'root', :modified_by => User.first)
     @root_user.groups << root
     @root_user.save
     ApplicationsGroupsUser.create(:user_id => @root_user.id,
                                   :group_id => root.id,
                                   :application_id => all.id)
 
-    @app_user = User.find_by_login("app") || User.create(:login => "app", :modified_by => User.first)
+    @app_user = User.find_by_login("app") || User.create(:login => "app", :email => 'app@example.com', :name => 'app user', :modified_by => User.first)
     @app_user.groups << root
     @app_user.save
     ApplicationsGroupsUser.create(:user_id => @app_user.id,
@@ -166,7 +166,7 @@ describe Ixtlan::Users::Manager do
       # remove groups @g1 and @g2 is not allowed to be set
       subject.new_group_ids(@user, :group_ids => []).should == [@g2.id]
       subject.new_group_ids(@user, :group_ids => [@g2.id]).should == [@g2.id]
-      subject.new_group_ids(@user, :group_ids => [@g1.id]).sort { |m,n| m.id <=> n.id }.should == [@g1.id, @g2.id]
+      subject.new_group_ids(@user, :group_ids => [@g1.id]).sort.should == [@g1.id, @g2.id]
     end
 
     it 'should update any groups of applications' do

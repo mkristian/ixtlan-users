@@ -1,6 +1,6 @@
 regions:
   defaults: [] 
-  index: [user-admin]
+  index: ['*']
 #  show: []
 #  new: []
 #  create: []

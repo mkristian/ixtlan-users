@@ -123,10 +123,13 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
         view.edit(new UserQuery(place.query));
 
-        switch(RestfulActionEnum.valueOf(place.action)){
-            case EDIT: 
+        switch(UserRestfulActionEnum.valueOf(place.action)){
+            case EDIT:
             case SHOW:
                 load(place.id);
+                break;
+            case AT:
+                loadAt(place.id);
                 break;
             case NEW:
                 view.edit(new User());
@@ -185,6 +188,27 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
         view.edit(model);
         if (model == null || model.getCreatedAt() == null) {
             service.show(id, new MethodCallback<User>() {
+
+                public void onFailure(Method method, Throwable exception) {
+                    notice.finishLoading();
+                    notice.error("error loading User", exception);
+                }
+
+                public void onSuccess(Method method, User response) {
+                    notice.finishLoading();
+                    eventBus.fireEvent(new UserEvent(response, Action.LOAD));
+                    view.edit(response);
+                }
+            });
+            notice.loading();
+        }
+    }
+
+    public void loadAt(int id) {
+        User model = cache.getModel(id);
+        view.edit(model);
+        if (model == null || model.getCreatedAt() == null) {
+            service.showAt(id, new MethodCallback<User>() {
 
                 public void onFailure(Method method, Throwable exception) {
                     notice.finishLoading();

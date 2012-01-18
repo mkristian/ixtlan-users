@@ -67,6 +67,19 @@ class UsersController < ApplicationController
     end
   end
 
+  # GET /users/1/at
+  # GET /users/1/at.xml
+  # GET /users/1/at.json
+  def at
+    @user = User.filtered_find(params[:id], current_user)
+    raise ActiveRecord::NotFound.new("not an AT with id #{@user.id}") unless @user.at?
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @user.to_xml(User.single_options) }
+      format.json  { render :json => @user.to_json(User.single_options) }
+    end
+  end
+
   # GET /users/new
   def new
     @user = User.new
@@ -139,10 +152,7 @@ class UsersController < ApplicationController
 
     return if stale?
 
-    # @user.reset_password
-
     if @user.reset_password_and_save
-      #UserMailer.send_password(@user)
       respond_to do |format|
         format.html { redirect_to(@user, :notice => 'Password reset was successful.') }
         format.xml  { head :ok }

@@ -9,6 +9,7 @@ import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
 import org.dhamma.users.client.models.Region;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -75,6 +76,10 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
             }
         }
         
+        boolean hasRegions(){
+            return this.regions.getItemCount() > 0;
+        }
+        
         void resetApplications(List<Application> apps){
             if(apps != null && !apps.isEmpty()){
                 applications.clear();
@@ -125,6 +130,7 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
         }
 
         public List<Integer> getSelectedRegionIds() {
+            GWT.log("get selected region ids");
             if (regions.getItemCount() == 0){
                 return group.getApplicationIds();
             }
@@ -135,6 +141,7 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
                     result.add(id);
                 }
             }
+            GWT.log("get selected region ids" + result);
             return result;
         }
 
@@ -189,6 +196,7 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
         public void setGroup(Group g) {
             this.group = g;
             setApplicationIds(g.getApplicationIds());
+            setRegionIds(g.getRegionIds());
         }
     }
     
@@ -244,15 +252,19 @@ public class GroupCheckBoxes extends ValueCheckBoxes<Group> {
     @Override
     public List<Group> getValue() {
         List<Group> groups = super.getValue();
+        GWT.log("get valle" + groups);
         for(Group g: groups){
             GroupPanel panel = panels.get(g.getId());
             if (panel != null) {
+                GWT.log("get valle" + g.hasRegions());
                 if (g.hasApplications()){
                     g.setApplicationIds(panel.getSelectedApplicationIds());
                 }
-                if (g.hasRegions()){
+                if (panel.hasRegions()){
                     g.setRegionIds(panel.getSelectedRegionIds());
                 }
+                GWT.log("get valle" + g.getRegionIds());
+
             }
         }
         return groups;

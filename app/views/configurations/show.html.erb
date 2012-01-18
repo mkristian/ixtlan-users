@@ -35,6 +35,16 @@
   <%= @configuration.from_email %>
 </p>
 
+<p>
+  <b>Profile url:</b>
+  <%= @configuration.profile_url %>
+</p>
+
+<p>
+  <b>Ats url:</b>
+  <%= @configuration.ats_url %>
+</p>
+
 
 <% if allowed?(:configurations, :update) %>
 <%= link_to 'Edit', edit_configuration_path %>

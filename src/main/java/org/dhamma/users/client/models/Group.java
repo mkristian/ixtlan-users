@@ -72,6 +72,7 @@ public class Group implements HasToDisplay, Identifyable {
     this.hasApplications = applicationIds != null;
     this.applicationIds = applicationIds == null ? new ArrayList<Integer>() : applicationIds;
     this.regionIds = regionIds == null ? new ArrayList<Integer>() : regionIds;
+    this.hasRegions = regionIds != null;
   }
 
   public int getId(){

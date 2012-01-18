@@ -1,8 +1,9 @@
 users:
   defaults: [user-admin]
   change: []  # virtual action (no controller method) allows overwrite email/login
-#  index: []
-#  show: []
+  index: [user-admin, at]
+  show: [user-admin]
+  at: [at]
 #  new: []
 #  create: []
 #  edit: []

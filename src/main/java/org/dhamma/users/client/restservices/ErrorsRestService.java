@@ -6,13 +6,11 @@ import java.util.List;
 
 import javax.ws.rs.*;
 
-import org.fusesource.restygwt.client.Attribute;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 
 import org.dhamma.users.client.models.Error;
-import org.dhamma.users.client.models.*;
 
 @Options(dispatcher = DefaultDispatcherSingleton.class)
 public interface ErrorsRestService extends RestService {

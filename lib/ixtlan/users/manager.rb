@@ -35,8 +35,9 @@ module Ixtlan
           group_ids = (params.delete(:group_ids) || []).collect { |g| g.to_i }
           group_ids = new_group_ids(user, :group_ids => group_ids)
           # adjust the groups to the allowed groups
-          @groups = group_ids.collect do |g| 
-            { :id => g.id }
+          @groups = group_ids.collect do |g|
+            #TODO fixnum or group - are realy both possible ?
+            { :id => g.is_a?(Fixnum) ? g : g.id }
           end
         end
         # TODO since we have already @groups as state we could return 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111228144109) do
+ActiveRecord::Schema.define(:version => 20111228144120) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20111228144109) do
     t.string   "errors_from_email"
     t.string   "errors_to_emails"
     t.integer  "audits_keep_logs",     :default => 90
+    t.string   "profile_url"
+    t.string   "ats_url"
   end
 
   create_table "errors", :force => true do |t|

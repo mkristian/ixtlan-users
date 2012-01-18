@@ -42,6 +42,10 @@ public class ConfigurationEditor extends Composite implements Editor<Configurati
 
     @UiField TextBox fromEmail;
 
+    @UiField TextBox profileUrl;
+
+    @UiField TextBox atsUrl;
+
     public ConfigurationEditor() {
         initWidget(BINDER.createAndBindUi(this));
     }
@@ -59,5 +63,7 @@ public class ConfigurationEditor extends Composite implements Editor<Configurati
         this.idleSessionTimeout.setEnabled(enabled);
         this.auditsKeepLogs.setEnabled(enabled);
         this.fromEmail.setEnabled(enabled);
+        this.profileUrl.setEnabled(enabled);
+        this.atsUrl.setEnabled(enabled);
     }
 }

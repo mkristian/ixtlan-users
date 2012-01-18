@@ -38,6 +38,9 @@ Users::Application.routes.draw do
     collection do
       get :last_changes
     end
+    member do
+      get :at
+    end
   end
 
   resource :authentications do

@@ -1,5 +1,5 @@
 ats:
-  defaults: [] 
+  defaults: [at] 
 #  index: []
 #  show: []
 #  new: []

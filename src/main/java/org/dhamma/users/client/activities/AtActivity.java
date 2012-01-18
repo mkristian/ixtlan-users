@@ -14,7 +14,6 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.activity.shared.AbstractActivity;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
@@ -101,12 +100,11 @@ public class AtActivity extends AbstractActivity implements AtView.Presenter{
         final User model = cache.getModel(id);
         view.edit(model);
         if (model != null && model.getCreatedAt() != null && !model.isAt()){
-            GWT.log(model.toString());
             notice.warn("nothing to see !!");
         }
         else if (model == null || model.getCreatedAt() == null) {
             notice.loading();
-            service.show(id, new MethodCallback<User>() {
+            service.showAt(id, new MethodCallback<User>() {
     
                 public void onFailure(Method method, Throwable exception) {
                     notice.finishLoading();

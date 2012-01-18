@@ -21,9 +21,9 @@ public class ApplicationLinksPanel extends LinksPanel<User> {
     @Override
     protected void initUser(User user) {
         for(Application app: user.applications){
-            addLink(app.getName().equals("THIS") ? 
-                    "users" : 
-                    app.getName(), app.getUrl());
+            if (!app.getName().equals("ATs") && !app.getName().equals("THIS") && !app.getName().endsWith("ALL")){
+                addLink(app.getName(), app.getUrl());
+            }
         }
     }
 

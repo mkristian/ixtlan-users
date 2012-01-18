@@ -206,8 +206,9 @@ class User < ActiveRecord::Base
     if deep_save
       if is_new
         UserMailer.send_new_user(self).deliver
-      else
         UserMailer.send_password(self).deliver
+      else
+        UserMailer.send_reset_password(self).deliver
       end
       @password = pwd
       pwd
@@ -259,6 +260,10 @@ class User < ActiveRecord::Base
     @is_user_admin ||= groups.member? Group.USER_ADMIN
   end
 
+  def at?
+    @is_at ||= groups.member? Group.AT
+  end
+
   def root_group_applications
     @root_group_apps ||= groups.member?(Group.ROOT) ? Group.ROOT.applications(self) : []
   end
@@ -266,11 +271,16 @@ class User < ActiveRecord::Base
   def applications
     @applications ||= 
       begin
-        if root_group_applications.member? Application.ALL
-          Application.all.select { |a| not a.url.blank? }
-        else
-          groups.collect { |g| g.application }.uniq
+        apps = 
+          if root_group_applications.member? Application.ALL
+            Application.all.select { |a| not a.url.blank? }
+          else
+            groups.collect { |g| g.application }.uniq
+          end
+        if at?
+          apps << Application.ATS
         end
+        apps
       end
   end
 
@@ -316,7 +326,7 @@ class User < ActiveRecord::Base
               :only => [:id, :name]
             }
           },
-          :methods => [:applications]
+          :methods => [:applications, :regions]
         }
       }
     }
@@ -353,6 +363,7 @@ class User < ActiveRecord::Base
 
     def setup_groups(options = {})
       methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
+     
       groups.each { |g| g.applications(self) } if methods.member? :applications
       groups.each { |g| g.application_ids(self) } if methods.member? :application_ids
       groups.each { |g| g.regions(self) } if methods.member? :regions
