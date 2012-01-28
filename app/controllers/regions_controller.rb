@@ -6,6 +6,11 @@ class RegionsController < ApplicationController
 
   private
 
+  # TODO why needed for rspecs 
+  def authorize
+    super unless params[:action] == "last_changes"
+  end
+
   def cleanup_params
     # compensate the shortcoming of the incoming json/xml
     model = params[:region] || []

@@ -3,6 +3,8 @@ require 'spec_helper'
 describe User do
   subject do
     u = User.first
+    user = User.find_by_login('someone')
+    user.delete if user
     user = User.new :login => 'someone', :name => 'me', :email => 'me@example.com'
     if u.nil?
       user.id = 1
@@ -118,15 +120,15 @@ describe User do
         all.save
 
         a1 = Application.find_by_name("spec-app1") || Application.create(:name => "spec-app1", :modified_by => User.first)
-        a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app2")
+        @a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app")
         perm = RemotePermission.find_by_ip("1.2.3.4") || RemotePermission.create(:ip => "1.2.3.4", :token => '1234', :application => a1, :modified_by => User.first)
-        
+
         @root = Group.ROOT
         @root.modified_by = User.first
         @root.save
 
         @g1 = Group.find_by_name("spec1") || Group.create(:name => "spec1", :modified_by => User.first, :application => a1)
-        @g2 = Group.find_by_name("spec2") || Group.create(:name => "spec2", :modified_by => User.first, :application => a2)
+        @g2 = Group.find_by_name("spec2") || Group.create(:name => "spec2", :modified_by => User.first, :application => @a2)
         subject.groups << @g1
         subject.groups << @g2
         subject.at_token = 'asd'
@@ -137,7 +139,7 @@ describe User do
         u = User.filtered_new({ :login => 'user1',
                                 :name => 'User', 
                                 :email => 'user1@example.com',
-                                :at_token => 'asd',
+                                #:at_token => 'asd',
                                 :group_ids => [@g1.id, @g2.id, @root.id]}, 
                               subject)
         u.modified_by = User.first
@@ -153,7 +155,6 @@ describe User do
         u = User.filtered_new({ :login => 'user2',
                                 :name => 'User',
                                 :email => 'user2@example.com',
-                                :at_token => 'asd',
                                 :groups => [{:id => @g1.id},
                                             {:id => @g2.id}]}, 
                               subject)
@@ -189,7 +190,7 @@ describe User do
       end
 
       it 'should give a list of application url' do
-        subject.application_urls.should == ["application spec-app1 has no configure url", "http://example.com/app2"]
+        subject.application_urls.should == ["application spec-app1 has no configure url", @a2.url]
       end
 
 

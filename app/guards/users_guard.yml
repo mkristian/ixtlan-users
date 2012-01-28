@@ -1,9 +1,11 @@
 users:
   defaults: [user-admin]
-  change: []  # virtual action (no controller method) allows overwrite email/login
-  index: [user-admin, at]
-  show: [user-admin]
+  index: [user-admin, at, app-admin]
+  show: [user-admin, app-admin]
   at: [at]
+  # virtual action (no controller method).
+  change: [] # it allows overwrite email/login
+  show_at_token: [at] # allow to see the at-token
 #  new: []
 #  create: []
 #  edit: []

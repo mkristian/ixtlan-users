@@ -81,13 +81,21 @@ class User < ActiveRecord::Base
   def self.filtered_all(current_user)
     users = includes(:groups)#.joins(:groups).where("groups_users.group_id" => current_user.groups)
 
+    apps = current_user.allowed_applications
+
     # restict user list to AT unless current_user is user_admin
     # TODO maybe that should be part of the guard, i.e. 'all_users' action
-    if !current_user.groups.member?(Group.USER_ADMIN) && current_user.groups.member?(Group.AT)
-      users.delete_if { |user| !user.groups.member?(Group.AT) }
+    if !current_user.groups.member?(Group.USER_ADMIN)
+      if current_user.groups.member?(Group.AT)
+        users.delete_if { |user| !user.groups.member?(Group.AT) }
+      elsif current_user.groups.member?(Group.APP_ADMIN)
+        users.delete_if do |user| 
+          g = user.groups.detect { |g| apps.member?(g.application) }
+          g.nil?
+        end
+      end
     end
 
-    apps = current_user.root_group_applications
     if ! apps.empty? && ! apps.member?(Application.ALL)
       users.each do |u|
         u.groups.delete_if do |g|
@@ -104,19 +112,30 @@ class User < ActiveRecord::Base
   end
 
   def self.filtered(user, current_user) 
-    # restict user to AT unless current_user is user_admin
-    # TODO maybe that should be part of the guard, i.e. 'all_users' action
-   if !current_user.groups.member?(Group.USER_ADMIN) && current_user.groups.member?(Group.AT)
-      raise ActiveRecord::NotFound("no AT user with id #{user.id}") unless user.groups.member?(Group.AT)
-    end
+    unless current_user.root?
+      # restrict user to AT unless current_user is user_admin
+      # TODO maybe that should be part of the guard, i.e. 'all_users' action
+      if !current_user.groups.member?(Group.USER_ADMIN) && current_user.groups.member?(Group.AT)
+        raise ActiveRecord::RecordNotFound("no AT user with id #{user.id}") unless user.groups.member?(Group.AT)
+      end
 
-    apps = current_user.root_group_applications
-    if ! apps.empty? && ! apps.member?(Application.ALL)
-      user.groups.delete_if do |g|
-        ! apps.member?(g.application)
+      if current_user.groups.member?(Group.APP_ADMIN)
+        apps = Group.APP_ADMIN.applications(current_user)
+        if current_user.groups.member?(Group.USER_ADMIN)
+          user.groups.delete_if do |g|
+            ! (current_user.groups.member?(g) || apps.member?(g.application))
+          end
+        else
+          user.groups.delete_if do |g|
+            ! apps.member?(g.application)
+          end
+        end
+      elsif current_user.groups.member?(Group.USER_ADMIN)
+        user.groups.delete_if do |g|
+          ! current_user.groups.member?(g)
+        end
       end
     end
- 
     user
   end
 
@@ -218,7 +237,7 @@ class User < ActiveRecord::Base
   def self.all_changed_after(from, at_only = false)
     unless from.blank?
       if at_only
-        User.joins(:groups).where('group.id = ? AND updated_at > ?', Group.AT.id, from)
+        User.joins(:groups).where('groups.id = ? AND users.updated_at > ?', Group.AT.id, from)
       else
         User.all(:conditions => ["updated_at > ?", from])
       end
@@ -253,7 +272,7 @@ class User < ActiveRecord::Base
   end
 
   def root?
-    @is_root ||= groups.member? Group.ROOT
+    @is_root ||= allowed_applications.member? Application.ALL
   end
 
   def user_admin?
@@ -264,15 +283,15 @@ class User < ActiveRecord::Base
     @is_at ||= groups.member? Group.AT
   end
 
-  def root_group_applications
-    @root_group_apps ||= groups.member?(Group.ROOT) ? Group.ROOT.applications(self) : []
+  def allowed_applications
+    @allowed_apps ||= (Group.ROOT.applications(self) | Group.APP_ADMIN.applications(self))
   end
 
   def applications
     @applications ||= 
       begin
         apps = 
-          if root_group_applications.member? Application.ALL
+          if allowed_applications.member? Application.ALL
             Application.all.select { |a| not a.url.blank? }
           else
             groups.collect { |g| g.application }.uniq
@@ -295,6 +314,12 @@ class User < ActiveRecord::Base
   def self.update_options
     {
       :only => [:id, :login, :name, :updated_at]
+    }
+  end
+
+  def self.at_update_options
+    {
+      :only => [:id, :name, :at_token, :updated_at], :root => 'at'
     }
   end
 
@@ -334,7 +359,7 @@ class User < ActiveRecord::Base
 
   def self.remote_options
     {
-      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
+      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id, :at_token, :email],
       :include => {
         :groups => {
           :only => [:id, :name],

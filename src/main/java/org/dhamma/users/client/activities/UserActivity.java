@@ -26,9 +26,6 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.activity.shared.AbstractActivity;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
@@ -99,12 +96,13 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
         this.eventBus.addHandler(UserEvent.TYPE, new UserEventHandler() {
 
             public void onModelEvent(ModelEvent<User> event) {
-                notice.finishLoading();
+		notice.finishLoading();
                 if (event.getModels() != null) {
                     view.reset(event.getModels());
-                } else if (event.getModel() == null) {
+                }
+		else if (event.getModel() == null) {
                     // TODO maybe error message ?
-                    notice.error("error loading list of User");
+		    notice.error("error loading list of User");
                 }
             }
         });
@@ -113,7 +111,6 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
             public void onModelEvent(ModelEvent<Region> event) {
                 view.resetRegions(event.getModels());
-                GWT.log("regions" + event.getModels() + regionsCache.getOrLoadModels());
             }
             
         });
@@ -165,17 +162,15 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
                 switch (errors.showMessages(method, exception)) {
                 case GENERAL:
                     notice.error("error creating User", exception);
+		    break;
+		default:
+                    notice.error("some error creating User", exception);
                 }
             }
 
             public void onSuccess(Method method, final User response) {
-                notice.finishLoading();           
-                Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-                    
-                    public void execute() {
-                        notice.info("sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
-                    }
-                });
+                notice.finishLoading();
+                notice.info("sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
                 eventBus.fireEvent(new UserEvent(response, Action.CREATE));
                 goTo(new UserPlace(response.getId(), RestfulActionEnum.EDIT));
             }

@@ -3,7 +3,7 @@ class Application < ActiveRecord::Base
   validates :modified_by_id, :presence => true
   validates :name, :presence => true, :format => /^[a-zA-Z0-9 \-]+$/, :length => { :maximum => 32 }
   #TODO is the url required ? and why not ?
-  validates :url, :format => /^https?\:\/\/[a-z0-9\-\.]+\.[a-z0-9]{1,3}(\:[0-9]+)?(\/\S*)?$/, :length => { :maximum => 64 }, :allow_nil => true
+  validates :url, :format => /^https?\:\/\/[a-z0-9\-\.]+(\.[a-z0-9]+)*(\:[0-9]+)?(\/\S*)?$/, :length => { :maximum => 64 }, :allow_nil => true
 
   def self.THIS
     find_by_id(1) || new(:name => 'THIS')
@@ -29,6 +29,12 @@ class Application < ActiveRecord::Base
       :except => [:created_at, :modified_by_id]
     }
   end
+  
+  def self.reduced_options
+    {
+      :except => [:created_at, :updated_at, :modified_by_id]
+    }
+  end
 
   def self.single_options
     {
@@ -42,12 +48,12 @@ class Application < ActiveRecord::Base
   end
 
   def self.filtered_all(current_user, *args)
-    apps = current_user.root_group_applications
+    apps = current_user.allowed_applications
     if apps.member?(Application.ALL)
       self.all(*args)
     else
       a1 = current_user.applications
-      a2 = current_user.root_group_applications
+      a2 = current_user.allowed_applications
       # a1 | a2 ==  a1 union a2
       all = (a1 | a2) - (a2.member?(Application.ALL) ? [Application.ATS] : [Application.ATS, Application.THIS])
       # the above seems not to work !!
@@ -59,7 +65,7 @@ class Application < ActiveRecord::Base
   unless respond_to? :old_as_json
     alias :old_as_json :as_json
     def as_json(options = nil)
-      old_as_json(options || self.class.options)
+      old_as_json(options || self.class.reduced_options)
     end
   end
 
@@ -68,8 +74,12 @@ class Application < ActiveRecord::Base
     def to_xml(options = nil)
       #hacky di hack
       groups = (options[:include]||{}).delete(:groups)
-      old_to_xml(options || self.class.options)
+      old_to_xml(options || self.class.reduced_options)
       options[:include][:groups]= groups if groups
     end
+  end
+
+  def to_s
+    "Application(#{name})"
   end
 end

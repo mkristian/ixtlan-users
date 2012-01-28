@@ -49,7 +49,7 @@ class RemotePermission < ActiveRecord::Base
   end
 
   def self.filtered_all(current_user, *args)
-    apps = current_user.root_group_applications
+    apps = current_user.allowed_applications
     if apps.member?(Application.ALL)
       self.all(*args)
     else

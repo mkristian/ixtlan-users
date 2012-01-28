@@ -5,6 +5,9 @@ describe Ixtlan::Users::Manager do
 
   before do
     u = User.first
+
+    @user = User.find_by_login('someone')
+    @user.delete if @user
     @user = User.new :login => 'someone', :name => 'me', :email => 'me@example.com'
     if u.nil?
       @user.id = 1
@@ -38,7 +41,7 @@ describe Ixtlan::Users::Manager do
 
     @no_user = User.find_by_login("no") || User.create(:login => "no", :email => 'no@example.com', :name => 'no', :modified_by => User.first)
     @current_user = User.find_by_login("current") || User.create(:login => "current", :email => 'current@example.com', :name => 'current', :modified_by => User.first)
-    @current_user.groups << @g1
+    @current_user.groups << @g1 unless @current_user.groups.member? @g1
     @current_user.save
     ApplicationsGroupsUser.create(:user_id => @user.id,
                                   :group_id => @g1.id,
@@ -83,7 +86,7 @@ describe Ixtlan::Users::Manager do
 
     it 'should allow some groups' do
       subject.allowed_group_ids(:group_ids => [1,2,3,5, @g1.id]).should == [@g1.id]
-      subject.new_group_ids(@user, :group_ids => [1,2,3,5]).sort.should == @user.groups.collect {|g| g.id}.sort
+      subject.new_group_ids(@user, :group_ids => [1,2,3,5, @g1.id]).sort.should == @user.groups.collect {|g| g.id}.sort
       subject.new_group_ids(@user, :group_ids => []).should == @user.groups.collect {|g| g.id} - [@g1.id]
       subject.update(@user).should == true
     end

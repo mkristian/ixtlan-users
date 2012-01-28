@@ -4,9 +4,11 @@ class CreateGroupsRegionsUsers < ActiveRecord::Migration
       t.integer :group_id
       t.integer :region_id
       t.integer :user_id
-    end
+    end 
+    add_index :groups_regions_users, [:group_id, :region_id, :user_id], :unique => true
   end
-  def self.down
+  def self.down    
+    drop_index :groups_regions_users
     drop_table :groups_regions_users
   end
 end

@@ -16,8 +16,12 @@ class Group < ActiveRecord::Base
     find_by_id(2) || new(:name => 'user-admin', :application => Application.THIS)
   end
 
+  def self.APP_ADMIN
+    find_by_id(3) || new(:name => 'app-admin', :application => Application.THIS)
+  end
+
   def self.AT
-    find_by_id(3) || new(:name => 'at', :application => Application.ALL)
+    find_by_id(4) || new(:name => 'at', :application => Application.ALL)
   end
 
   def self.options
@@ -54,14 +58,16 @@ class Group < ActiveRecord::Base
   end
 
   def applications(user = nil)
-    if self == Group.ROOT
-      @applications = ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application } if user
-      @applications || []
+    if self == Group.ROOT || self == Group.APP_ADMIN
+      @applications = (ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application } || []) if user
+      @applications
+    else
+      []
     end
   end
 
   def application_ids(user = nil)
-    if self == Group.ROOT
+    if self == Group.ROOT || self == Group.APP_ADMIN
       @application_ids = ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application_id } if user
       @application_ids || []
     end
@@ -77,7 +83,7 @@ class Group < ActiveRecord::Base
     if current_application == Application.ALL || current_application == group.application
       group
     else
-      raise ActiveRecord::NotFound.new("application mismatch")
+      raise ActiveRecord::RecordNotFound.new("application mismatch")
     end
   end
 
@@ -91,7 +97,7 @@ class Group < ActiveRecord::Base
   end
 
   def self.filtered_all(current_user)
-    apps = current_user.root_group_applications
+    apps = current_user.allowed_applications
     if apps.size == 0
       current_user.groups
     elsif apps.member?(Application.ALL)

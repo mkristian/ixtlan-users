@@ -44,6 +44,8 @@ public class UserEditor extends Composite implements Editor<User>{
 
     @UiField TextBox name;
 
+    @UiField HTMLPanel atTokenPanel;
+    
     @UiField TextBox atToken;
     
     @UiField HTMLPanel groupsPanel;
@@ -69,14 +71,31 @@ public class UserEditor extends Composite implements Editor<User>{
     public void reset(){
         groups.setValue(EMPTY_GROUPS);
     }
-    public void resetVisibility(boolean isAt) {
+    
+    public enum Display { IS_AT_DISPLAY, SHOW_AT, HIDE_AT, OMIT  }
+    public void resetVisibility(Display display) {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
-        this.groups.setVisible(!isAt);
-        this.groupsPanel.setVisible(!isAt);
+        switch(display){
+            case IS_AT_DISPLAY:         
+                this.groups.setVisible(false);
+                this.groupsPanel.setVisible(false);
+                this.atTokenPanel.setVisible(true);
+                break;
+            case SHOW_AT:
+                this.atTokenPanel.setVisible(true);
+                break;
+            case HIDE_AT:
+                this.atTokenPanel.setVisible(false);
+                break;
+            case OMIT:
+                // leave it as is
+        }
     }
     
     public void setEnabled(Boolean enabled) {
-        resetVisibility(!this.groups.isVisible());
+        resetVisibility(this.groups.isVisible() ? 
+                    Display.OMIT : 
+                    Display.IS_AT_DISPLAY);
         
         boolean all = enabled == null;
         this.login.setEnabled(all);

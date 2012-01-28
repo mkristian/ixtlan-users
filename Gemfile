@@ -76,6 +76,10 @@ gem "ixtlan-audit", '~> 0.2.0'#, :path => '../../ixtlan/ixtlan-audit'
 #gem 'slf4r', '~> 0.4.2'
 gem 'bcrypt-ruby'
 
-gem 'rspec-rails', '~> 2.7.0', :group => :development
-gem 'rspec', '~> 2.7.0', :group => :development
+#gem 'rspec', '~> 2.7.0', :group => :development
 gem 'json', '1.6.1'
+
+group :development, :test do
+  gem 'rspec-rails', '~> 2.7.0'
+  gem 'capybara'
+end

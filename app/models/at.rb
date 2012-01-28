@@ -1,2 +1,0 @@
-class At < User
-end

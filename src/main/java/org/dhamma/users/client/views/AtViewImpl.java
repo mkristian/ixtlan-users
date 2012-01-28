@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.dhamma.users.client.caches.UsersCache;
 import org.dhamma.users.client.editors.AtQueryEditor;
 import org.dhamma.users.client.editors.UserEditor;
+import org.dhamma.users.client.editors.UserEditor.Display;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.models.UserQuery;
 import org.dhamma.users.client.places.AtPlace;
@@ -102,18 +103,20 @@ public class AtViewImpl extends Composite implements AtView {
             editButton.setVisible(false);
             list.setVisible(true);
             model.setVisible(false);
+            searchButton.setVisible(false);
         }
         else {
             editButton.setVisible(isAllowed(EDIT));
             list.setVisible(false);
             model.setVisible(true);
+            searchButton.setVisible(true);
         }
         editor.setEnabled(!action.viewOnly());
     }
 
     public void edit(User model) {
         this.editorDriver.edit(model);
-        this.editor.resetVisibility(true);
+        this.editor.resetVisibility(Display.IS_AT_DISPLAY);
         setupOther(model);
     }
 

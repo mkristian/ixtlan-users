@@ -32,7 +32,7 @@
         <label name="name">Name</label>
         <g:TextBox ui:field="name"/>
       </g:HTMLPanel>      
-      <g:HTMLPanel>
+      <g:HTMLPanel ui:field="atTokenPanel">
         <label name="atToken">AT token</label>
         <g:TextBox ui:field="atToken"/>
       </g:HTMLPanel>

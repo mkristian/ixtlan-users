@@ -187,8 +187,11 @@ public class UserViewImpl extends Composite implements UserView {
     public void edit(User model) {
         this.editor.reset();
         this.editorDriver.edit(model);
-        this.editor.resetVisibility(false);
-        showAtButton.setVisible(model.isAt());
+        boolean showAtToken = session.isAllowed(UserPlace.NAME, "show_at_token");
+        this.editor.resetVisibility(showAtToken ? 
+                UserEditor.Display.SHOW_AT : 
+                UserEditor.Display.HIDE_AT);
+        showAtButton.setVisible(model.isAt() && showAtToken);
     }
 
     public User flush() {

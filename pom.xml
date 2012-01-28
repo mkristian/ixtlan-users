@@ -354,7 +354,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rack</artifactId>
-        <version>1.2.4</version>
+        <version>1.2.5</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -427,6 +427,54 @@
         <groupId>rubygems</groupId>
         <artifactId>bcrypt-ruby</artifactId>
         <version>3.0.1</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>capybara</artifactId>
+        <version>1.1.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>nokogiri</artifactId>
+        <version>1.5.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>selenium-webdriver</artifactId>
+        <version>2.17.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>childprocess</artifactId>
+        <version>0.3.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ffi</artifactId>
+        <version>1.0.11</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>multi_json</artifactId>
+        <version>1.0.4</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>rubyzip</artifactId>
+        <version>0.9.5</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>xpath</artifactId>
+        <version>0.1.4</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -504,7 +552,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rdoc</artifactId>
-        <version>3.11</version>
+        <version>3.12</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -637,6 +685,12 @@
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
+            <artifactId>json</artifactId>
+            <version>1.6.1</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
             <artifactId>rspec-rails</artifactId>
             <version>2.7.0</version>
             <type>gem</type>
@@ -673,8 +727,50 @@
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
-            <artifactId>json</artifactId>
-            <version>1.6.1</version>
+            <artifactId>capybara</artifactId>
+            <version>1.1.2</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>nokogiri</artifactId>
+            <version>1.5.0</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>selenium-webdriver</artifactId>
+            <version>2.17.0</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>childprocess</artifactId>
+            <version>0.3.0</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>ffi</artifactId>
+            <version>1.0.11</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>multi_json</artifactId>
+            <version>1.0.4</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>rubyzip</artifactId>
+            <version>0.9.5</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>xpath</artifactId>
+            <version>0.1.4</version>
             <type>gem</type>
           </dependency>
           <dependency>
@@ -785,13 +881,152 @@
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>rspec-rails</artifactId>
-          <version>[2.7.0,2.7.99999]</version>
           <type>gem</type>
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>rspec</artifactId>
-          <version>[2.7.0,2.7.99999]</version>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec-core</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec-expectations</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>diff-lcs</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec-mocks</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>capybara</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>nokogiri</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>selenium-webdriver</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>childprocess</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>ffi</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>multi_json</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rubyzip</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>xpath</artifactId>
+          <type>gem</type>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>test</id>
+      <activation>
+        <property>
+          <name>rails.env</name>
+          <value>test</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec-rails</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec-core</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec-expectations</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>diff-lcs</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rspec-mocks</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>capybara</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>nokogiri</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>selenium-webdriver</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>childprocess</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>ffi</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>multi_json</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>rubyzip</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>xpath</artifactId>
           <type>gem</type>
         </dependency>
       </dependencies>
@@ -814,15 +1049,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-    <profile>
-      <id>test</id>
-      <activation>
-        <property>
-          <name>rails.env</name>
-          <value>test</value>
-        </property>
-      </activation>
     </profile>
     <profile>
       <id>production</id>

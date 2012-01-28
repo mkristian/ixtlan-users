@@ -5,8 +5,10 @@ class CreateApplicationsGroupsUsers < ActiveRecord::Migration
       t.integer :group_id
       t.integer :user_id
     end
+    add_index :applications_groups_users, [:application_id, :group_id, :user_id], :unique => true
   end
   def self.down
+    drop_index :applications_groups_users
     drop_table :applications_groups_users
   end
 end
