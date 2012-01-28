@@ -72,7 +72,7 @@ module Ixtlan
       end
 
       def allowed_group_ids(params)    
-        if allowed_applications.member?(Application.ALL)
+        if current_user.root?
           # all are allowed
           requested_group_ids(params)
         elsif allowed_applications.empty?
@@ -85,7 +85,7 @@ module Ixtlan
       end
       
       def new_group_ids(user, params)
-        if allowed_applications.member?(Application.ALL)
+        if current_user.root?
           requested_group_ids(params)
         else
           if user

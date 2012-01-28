@@ -98,10 +98,10 @@ class Group < ActiveRecord::Base
 
   def self.filtered_all(current_user)
     apps = current_user.allowed_applications
-    if apps.size == 0
-      current_user.groups
-    elsif apps.member?(Application.ALL)
+    if current_user.root?
       self.all
+    elsif apps.size == 0
+      current_user.groups
     else
       self.where(:application_id => apps)
     end

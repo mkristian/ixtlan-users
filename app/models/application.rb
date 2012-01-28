@@ -48,13 +48,13 @@ class Application < ActiveRecord::Base
   end
 
   def self.filtered_all(current_user, *args)
-    apps = current_user.allowed_applications
-    if apps.member?(Application.ALL)
+    if current_user.root?
       self.all(*args)
     else
       a1 = current_user.applications
       a2 = current_user.allowed_applications
       # a1 | a2 ==  a1 union a2
+      # TODO is not (a1 | a2) enough ?
       all = (a1 | a2) - (a2.member?(Application.ALL) ? [Application.ATS] : [Application.ATS, Application.THIS])
       # the above seems not to work !!
       all.delete_if { |a| a.id == Application.ATS.id }

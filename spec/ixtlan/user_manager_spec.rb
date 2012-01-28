@@ -165,6 +165,7 @@ describe Ixtlan::Users::Manager do
     end
 
     it 'should allow any groups of applications' do
+      pending "not sure if this comes back as root_dev"
       subject.allowed_group_ids(:group_ids => [@g1.id, @g2.id]).should == [@g1.id]
       # remove groups @g1 and @g2 is not allowed to be set
       subject.new_group_ids(@user, :group_ids => []).should == [@g2.id]
@@ -173,6 +174,7 @@ describe Ixtlan::Users::Manager do
     end
 
     it 'should update any groups of applications' do
+      pending "not sure if this comes back as root_dev"
       subject.update(@user, 
                      [{
                         :id => @g1.id,

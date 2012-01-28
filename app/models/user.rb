@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    if ! apps.empty? && ! apps.member?(Application.ALL)
+    if ! apps.empty? && ! current_user.root?
       users.each do |u|
         u.groups.delete_if do |g|
           ! apps.member?(g.application)
@@ -272,7 +272,11 @@ class User < ActiveRecord::Base
   end
 
   def root?
-    @is_root ||= allowed_applications.member? Application.ALL
+    @is_root ||= groups.member? Group.ROOT
+  end
+
+  def app_admin?
+    @is_app_admin ||= groups.member? Group.APP_ADMIN
   end
 
   def user_admin?
@@ -284,21 +288,14 @@ class User < ActiveRecord::Base
   end
 
   def allowed_applications
-    @allowed_apps ||= (Group.ROOT.applications(self) | Group.APP_ADMIN.applications(self))
+    @allowed_apps ||= Group.APP_ADMIN.applications(self)
   end
 
   def applications
     @applications ||= 
       begin
-        apps = 
-          if allowed_applications.member? Application.ALL
-            Application.all.select { |a| not a.url.blank? }
-          else
-            groups.collect { |g| g.application }.uniq
-          end
-        if at?
-          apps << Application.ATS
-        end
+        apps = groups.collect { |g| g.application }.uniq
+        apps << Application.ATS if at?
         apps
       end
   end
