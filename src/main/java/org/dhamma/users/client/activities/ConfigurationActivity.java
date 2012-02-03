@@ -1,6 +1,7 @@
 package org.dhamma.users.client.activities;
 
 import org.dhamma.users.client.events.ConfigurationEvent;
+
 import org.dhamma.users.client.models.Configuration;
 import org.dhamma.users.client.places.ConfigurationPlace;
 import org.dhamma.users.client.restservices.ConfigurationsRestService;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.DisplayErrors;
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
 
@@ -24,14 +26,16 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
 
     private final ConfigurationsRestService service;
     private final Notice notice;
+    private final DisplayErrors errors;
     private final PlaceController placeController;
     private final ConfigurationView view;
     private EventBus eventBus;
     
     @Inject
-    public ConfigurationActivity(@Assisted ConfigurationPlace place, final Notice notice, final ConfigurationView view,
-            ConfigurationsRestService service, PlaceController placeController) {
+    public ConfigurationActivity(@Assisted ConfigurationPlace place, final Notice notice, DisplayErrors errors,
+            final ConfigurationView view, ConfigurationsRestService service, PlaceController placeController) {
         this.notice = notice;
+        this.errors = errors;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
@@ -75,7 +79,12 @@ public class ConfigurationActivity extends AbstractActivity implements Configura
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving Configuration", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error saving Configuration", exception);
+                }
             }
 
             public void onSuccess(Method method, Configuration response) {

@@ -1,7 +1,10 @@
 hello <%= @user.name %>,
 
-login url: <%= @urls.join ',' %>
+profile url: <%= @profile_url %>
+<% @urls.each do |app, url| -%>
+<%= app %> url: <%= url %>
+<% end -%>
 username : <%= @user.login %>
-password : <%= @password %>
+password : will be sent in a separate email
 
 enjoy !

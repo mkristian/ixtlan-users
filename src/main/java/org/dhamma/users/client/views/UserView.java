@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
+import org.dhamma.users.client.models.Region;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.models.UserQuery;
 
@@ -31,6 +32,8 @@ public interface UserView extends IsWidget {
 
     void resetApplications(List<Application> applications);
 
+    void resetRegions(List<Region> regions);
+    
     void edit(UserQuery query);
     
     void edit(User model);

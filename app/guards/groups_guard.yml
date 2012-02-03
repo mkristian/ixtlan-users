@@ -1,6 +1,6 @@
 groups:
-  defaults: [] 
-  index: [user-admin]
+  defaults: [app-admin] 
+  index: [user-admin, app-admin]
 #  show: []
 #  new: []
 #  create: []

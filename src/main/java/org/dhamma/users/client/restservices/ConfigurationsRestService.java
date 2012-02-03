@@ -9,7 +9,6 @@ import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
 
 import org.dhamma.users.client.models.Configuration;
-import org.dhamma.users.client.models.*;
 
 @Path("/configuration")
 @Options(dispatcher = RestfulDispatcherSingleton.class)

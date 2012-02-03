@@ -1,5 +1,6 @@
 package org.dhamma.users.client.caches;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,6 +34,32 @@ public class UsersCache extends AbstractModelCache<User>{
                 UsersCache.this.onModelEvent(event);
             }
         });
+    }
+
+    public List<User> getOrLoadAts(){
+        List<User> result = super.getOrLoadModels();
+        if (result != null){
+            Iterator<User> iter = result.iterator();
+            while(iter.hasNext()){
+                if (!iter.next().isAt()){
+                    iter.remove();
+                }
+            }
+        }
+        return result;
+    }
+    
+    public User otherAt(User at){
+        List<User> ats = getOrLoadAts();
+        if (ats != null && at != null && at.getAtToken() != null){
+            for(User secondAt : ats){
+                if (at.getId() != secondAt.getId() && at.getAtToken().equals(secondAt.getAtToken())){
+                    return secondAt;
+                }
+            }
+            return new User();
+        }
+        return null;
     }
     
     protected void loadModels() {

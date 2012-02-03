@@ -1,10 +1,11 @@
 applications:
   defaults: [] 
-  index: [user-admin]
-#  index: []
-#  show: []
+  index:
+    - user-admin
+    - app-admin
+  show: [app-admin]
 #  new: []
 #  create: []
-#  edit: []
-#  update: []
+  edit: [app-admin]
+  update: [app-admin]
 #  destroy: []

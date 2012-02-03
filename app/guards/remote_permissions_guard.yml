@@ -1,5 +1,5 @@
 remote_permissions:
-  defaults: [] 
+  defaults: [app-admin] 
 #  index: []
 #  show: []
 #  new: []

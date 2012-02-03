@@ -13,27 +13,36 @@ u.modified_by = u
 u.save
 
 this = Application.THIS
-this.url = "http://localhost/users.html"
+this.url = "http://localhost:3000/Users.html"
 this.modified_by = u
 this.save
 
 all = Application.ALL
-all.url = ''
 all.modified_by = u
 all.save
 
 root = Group.ROOT
 root.modified_by = u
+root.application = this
 root.save
 
 u.groups << root
+# allow the root group for root user to act on all applications
+ApplicationsGroupsUser.create(:application => all, :group => root, :user => u)
 
 user_admin = Group.USER_ADMIN
 user_admin.modified_by = u
+user_admin.application = this
 user_admin.save
+
+app_admin = Group.APP_ADMIN
+app_admin.modified_by = u
+app_admin.application = this
+app_admin.save
 
 at = Group.AT
 at.modified_by = u
+at.application = all
 at.save
 
 unless ENV['email'] || ENV['login']

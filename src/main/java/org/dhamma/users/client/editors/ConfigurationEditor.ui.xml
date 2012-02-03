@@ -45,6 +45,14 @@
         <label name="fromEmail">From email</label>
         <g:TextBox ui:field="fromEmail"/>
       </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="profileUrl">Profile url</label>
+        <g:TextBox ui:field="profileUrl"/>
+      </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="atsUrl">Ats url</label>
+        <g:TextBox ui:field="atsUrl"/>
+      </g:HTMLPanel>
     </g:FlowPanel>
 
   </g:FlowPanel>

@@ -94,3 +94,14 @@
   height: 6em;
 }
 
+.users-links > div
+{
+  display: inline;
+  border-left: solid darkblue 1px;
+  border-right: solid darkblue 1px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin: 0;
+  margin-left: -1px;
+  font-size: 0.9em;
+}

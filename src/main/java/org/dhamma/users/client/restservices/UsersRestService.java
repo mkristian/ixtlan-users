@@ -22,6 +22,9 @@ public interface UsersRestService extends RestService {
   @GET @Path("/users/{id}")
   void show(@PathParam("id") int id, MethodCallback<User> callback);
 
+  @GET @Path("/users/{id}/at")
+  void showAt(@PathParam("id") int id, MethodCallback<User> callback);
+
   @POST @Path("/users")
   void create(User value, MethodCallback<User> callback);
 

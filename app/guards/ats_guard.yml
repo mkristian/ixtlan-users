@@ -1,0 +1,9 @@
+ats:
+  defaults: [at] 
+#  index: []
+#  show: []
+#  new: []
+#  create: []
+#  edit: []
+#  update: []
+#  destroy: []

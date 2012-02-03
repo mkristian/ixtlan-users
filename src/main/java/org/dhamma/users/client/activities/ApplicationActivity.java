@@ -5,6 +5,7 @@ import java.util.List;
 import org.dhamma.users.client.events.ApplicationEvent;
 import org.dhamma.users.client.events.ApplicationEventHandler;
 import org.dhamma.users.client.caches.ApplicationsCache;
+
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.places.ApplicationPlace;
 import org.dhamma.users.client.restservices.ApplicationsRestService;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.DisplayErrors;
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
@@ -31,17 +33,19 @@ public class ApplicationActivity extends AbstractActivity implements Application
     private final ApplicationPlace place;
     private final ApplicationsRestService service;
     private final Notice notice;
+    private final DisplayErrors errors;
     private final PlaceController placeController;
     private final ApplicationView view;
     private final ApplicationsCache cache;
     private EventBus eventBus;
     
     @Inject
-    public ApplicationActivity(@Assisted ApplicationPlace place, final Notice notice, final ApplicationView view,
-            ApplicationsRestService service, PlaceController placeController,
+    public ApplicationActivity(@Assisted ApplicationPlace place, final Notice notice, DisplayErrors errors,
+            final ApplicationView view, ApplicationsRestService service, PlaceController placeController,
             ApplicationsCache cache) {
         this.place = place;
         this.notice = notice;
+        this.errors = errors;
         this.view = view;
         this.service = service;
         this.placeController = placeController;
@@ -70,7 +74,7 @@ public class ApplicationActivity extends AbstractActivity implements Application
         display.setWidget(view.asWidget());
 
         switch(RestfulActionEnum.valueOf(place.action)){
-            case EDIT: 
+            case EDIT:
             case SHOW:
                 load(place.id);
                 break;
@@ -105,7 +109,10 @@ public class ApplicationActivity extends AbstractActivity implements Application
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error creating Application", exception);
+                switch (errors.showMessages(method, exception)) {
+                case GENERAL:
+                    notice.error("error creating Application", exception);
+                }
             }
 
             public void onSuccess(Method method, Application response) {
@@ -144,7 +151,12 @@ public class ApplicationActivity extends AbstractActivity implements Application
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving Application", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error saving Application", exception);
+                }
             }
 
             public void onSuccess(Method method, Application response) {
@@ -161,7 +173,12 @@ public class ApplicationActivity extends AbstractActivity implements Application
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error deleting Application", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                    //TODO
+                case GENERAL:
+                    notice.error("error deleting Application", exception);
+                }
             }
 
             public void onSuccess(Method method, Void response) {

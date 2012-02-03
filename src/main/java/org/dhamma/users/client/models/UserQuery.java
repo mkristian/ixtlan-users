@@ -29,7 +29,7 @@ public class UserQuery extends AbstractQuery<User> {
     @Override
     protected boolean match(User user) {
         return (name == null || user.searchToken().contains(name))
-                && (group == null || group.getId() == 0 || user.getGroups().contains(group))
+                && (group == null || group.getId() == 0 || user.getGroupIds().contains(group.getId()))
                 && (application == null || application.getId() == 0 || user.getApplicationIds().contains(application.getId()));
     }
 
@@ -68,8 +68,8 @@ public class UserQuery extends AbstractQuery<User> {
         if (query != null){
             String[] parts = query.split("[" + SEPARATOR + "]", -1);
             setName(parts[0]);
-            setGroup(new Group(Integer.parseInt(parts[1]), null, null, null, 0, null));
-            setApplication(new Application(Integer.parseInt(parts[2]), null, null, null));
+            setGroup(new Group(Integer.parseInt(parts[1])));
+            setApplication(new Application(Integer.parseInt(parts[2])));
         }
     }
 }

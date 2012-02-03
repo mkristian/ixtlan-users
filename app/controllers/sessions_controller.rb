@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
   protected
 
   # TODO do not know why skip_before_filter does not work with heroku
-  def authorization
+  def authorize
     true
   end
 

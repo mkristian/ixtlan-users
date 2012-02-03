@@ -31,6 +31,10 @@
         <label name="application">Application</label>
         <r:IdentifyableListBox ui:field="application"/>
       </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="hasRegions">Has regions</label>
+        <g:CheckBox ui:field="hasRegions"/>
+      </g:HTMLPanel>
     </g:FlowPanel>
 
   </g:FlowPanel>

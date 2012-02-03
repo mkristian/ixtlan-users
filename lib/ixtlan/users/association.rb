@@ -38,12 +38,12 @@ module Ixtlan
         user.groups.each do |group|
           allowed_ids = ids_method(current_user.id, group.id)
           if @id_sym == :application_id
-            if @manager.root_applications.member?(Application.ALL) # is root
+            if @manager.current_user.root?
               # all are allowed
               allowed_ids = allowed_ids | (group_map[group.id] || []) | ids_method(user.id, group.id)
-            elsif @manager.root_applications.size > 0
-              # all from the root_applications are allowed
-              allowed_ids = allowed_ids | @manager.root_applications.collect { |a| a.id }
+            elsif @manager.allowed_applications.size > 0
+              # all from the allowed_applications are allowed
+              allowed_ids = allowed_ids | @manager.allowed_applications.collect { |a| a.id }
             end
           elsif current_user.root?
             # all are allowed

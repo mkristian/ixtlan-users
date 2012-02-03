@@ -35,8 +35,9 @@ module Ixtlan
           group_ids = (params.delete(:group_ids) || []).collect { |g| g.to_i }
           group_ids = new_group_ids(user, :group_ids => group_ids)
           # adjust the groups to the allowed groups
-          @groups = group_ids.collect do |g| 
-            { :id => g.id }
+          @groups = group_ids.collect do |g|
+            #TODO fixnum or group - are realy both possible ?
+            { :id => g.is_a?(Fixnum) ? g : g.id }
           end
         end
         # TODO since we have already @groups as state we could return 
@@ -63,18 +64,18 @@ module Ixtlan
       end
       
       def all_group_ids
-        @all_group_ids ||= Group.where(:application_id => root_applications).collect { |g| g.id }
+        @all_group_ids ||= Group.where(:application_id => allowed_applications).collect { |g| g.id }
       end
 
-      def root_applications
-        @apps ||= @current_user.root_group_applications
+      def allowed_applications
+        @apps ||= @current_user.allowed_applications
       end
 
       def allowed_group_ids(params)    
-        if root_applications.member?(Application.ALL)
+        if current_user.root?
           # all are allowed
           requested_group_ids(params)
-        elsif root_applications.empty?
+        elsif allowed_applications.empty?
           # only the ones from the current_user.groups are allowed
           current_group_ids & requested_group_ids(params)
         else
@@ -84,7 +85,7 @@ module Ixtlan
       end
       
       def new_group_ids(user, params)
-        if root_applications.member?(Application.ALL)
+        if current_user.root?
           requested_group_ids(params)
         else
           if user
@@ -92,8 +93,7 @@ module Ixtlan
             user_group_ids = user.groups.collect do |g|
               g.id
             end
-            
-            if root_applications.empty?
+            if allowed_applications.empty?
               # the new set of group ids for the given user
               user_group_ids - current_group_ids + allowed_group_ids(params)
             else

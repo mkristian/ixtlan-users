@@ -12,6 +12,7 @@
       <g:Button ui:field="newButton">New</g:Button>
       <g:Button ui:field="editButton">Edit</g:Button>
       <g:Button ui:field="showButton">Show</g:Button>
+      <g:Button ui:field="showAtButton">Show as AT</g:Button>
       <t:UserQueryEditor ui:field="queryEditor"/>
       <g:Button ui:field="searchButton">Search</g:Button>
     </g:FlowPanel>

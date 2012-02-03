@@ -2,8 +2,11 @@ package org.dhamma.users.client.views;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.dhamma.users.client.editors.RemotePermissionEditor;
 import org.dhamma.users.client.models.Application;
+import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.models.RemotePermission;
 import org.dhamma.users.client.places.RemotePermissionPlace;
 
@@ -24,6 +27,8 @@ import com.google.inject.Singleton;
 
 import de.mkristian.gwt.rails.places.RestfulAction;
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.*;
+import de.mkristian.gwt.rails.session.SessionManager;
 import de.mkristian.gwt.rails.views.ModelButton;
 
 @Singleton
@@ -53,9 +58,21 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
 
     private Presenter presenter;
 
+    private final SessionManager<User> session;
+
     public RemotePermissionViewImpl() {
+        this(null);
+    }
+
+    @Inject
+    public RemotePermissionViewImpl(SessionManager<User> session) {
         initWidget(BINDER.createAndBindUi(this));
         editorDriver.initialize(editor);
+        this.session = session;
+    }
+
+    private boolean isAllowed(RestfulActionEnum action){
+        return session == null || session.isAllowed(RemotePermissionPlace.NAME, action);
     }
 
     @UiHandler("newButton")
@@ -88,21 +105,22 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
         presenter.delete(flush());
     }
 
-    public void setup(Presenter presenter, RestfulAction action) {
+    public void setup(Presenter presenter, RestfulAction a) {
+        RestfulActionEnum action = RestfulActionEnum.valueOf(a);
         this.presenter = presenter;
-        newButton.setVisible(!action.name().equals(RestfulActionEnum.NEW.name()));
-        if(action.name().equals(RestfulActionEnum.INDEX.name())){
+        newButton.setVisible(action != NEW && isAllowed(NEW));
+        if(action == INDEX){
             editButton.setVisible(false);
             showButton.setVisible(false);
             list.setVisible(true);
             model.setVisible(false);
         }
         else {
-            createButton.setVisible(action.name().equals(RestfulActionEnum.NEW.name()));
-            editButton.setVisible(action.name().equals(RestfulActionEnum.SHOW.name()));
-            showButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
-            saveButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
-            deleteButton.setVisible(action.name().equals(RestfulActionEnum.EDIT.name()));
+            createButton.setVisible(action == NEW);
+            editButton.setVisible(action == SHOW && isAllowed(EDIT));
+            showButton.setVisible(action == EDIT);
+            saveButton.setVisible(action == EDIT);
+            deleteButton.setVisible(action == EDIT && isAllowed(DESTROY));
             list.setVisible(false);
             model.setVisible(true);
         }
@@ -145,7 +163,7 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
         list.setText(0, 1, "Ip");
         list.setText(0, 2, "Token");
         list.setText(0, 3, "Application");
-        list.getRowFormatter().addStyleName(0, "model-list-header");
+        list.getRowFormatter().addStyleName(0, "gwt-rails-model-list-header");
         int row = 1;
         for(RemotePermission model: models){
             setRow(row, model);
@@ -156,9 +174,7 @@ public class RemotePermissionViewImpl extends Composite implements RemotePermiss
     private void setRow(int row, RemotePermission model) {
         list.setText(row, 0, model.getId() + "");
         list.setText(row, 1, model.getIp() + "");
-
         list.setText(row, 2, model.getToken() + "");
-
         list.setText(row, 3, model.getApplication() == null ? "-" : model.getApplication().toDisplay());
 
         list.setWidget(row, 4, newButton(RestfulActionEnum.SHOW, model));

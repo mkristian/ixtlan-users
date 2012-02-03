@@ -3,6 +3,8 @@ require 'spec_helper'
 describe User do
   subject do
     u = User.first
+    user = User.find_by_login('someone')
+    user.delete if user
     user = User.new :login => 'someone', :name => 'me', :email => 'me@example.com'
     if u.nil?
       user.id = 1
@@ -19,15 +21,14 @@ describe User do
   end
 
   it 'should retrieve all as changed users without from date' do
-    User.create(:login => 'someoneelse', :name => 'me', :email => 'me@example.com', :modified_by => subject) unless User.find_by_login('someoneelse')
+    User.create(:login => 'someoneelse', :name => 'me', :email => 'someoneelse@example.com', :modified_by => subject) unless User.find_by_login('someoneelse')
 
     User.all.should == User.all_changed_after(nil)
   end
 
   it 'should retrieve all as changed users without from date' do
     last = 200.years.ago
-    user = User.find_by_login('someoneelse') || User.create(:login => 'someoneelse', :name => 'me', :email => 'me@example.com', :modified_by => subject)
-
+    user = User.find_by_login('someoneelse') || User.create(:login => 'someoneelse', :name => 'me', :email => 'someoneelse@example.com', :modified_by => subject)
     User.all.each { |u| last = last < u.updated_at ? u.updated_at : last }
 
     User.all_changed_after(last).should == []
@@ -119,31 +120,33 @@ describe User do
         all.save
 
         a1 = Application.find_by_name("spec-app1") || Application.create(:name => "spec-app1", :modified_by => User.first)
-        a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app")
+        @a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app")
         perm = RemotePermission.find_by_ip("1.2.3.4") || RemotePermission.create(:ip => "1.2.3.4", :token => '1234', :application => a1, :modified_by => User.first)
-        
+
         @root = Group.ROOT
         @root.modified_by = User.first
         @root.save
 
         @g1 = Group.find_by_name("spec1") || Group.create(:name => "spec1", :modified_by => User.first, :application => a1)
-        @g2 = Group.find_by_name("spec2") || Group.create(:name => "spec2", :modified_by => User.first, :application => a2)
+        @g2 = Group.find_by_name("spec2") || Group.create(:name => "spec2", :modified_by => User.first, :application => @a2)
         subject.groups << @g1
         subject.groups << @g2
+        subject.at_token = 'asd'
         subject.save
       end
 
       it 'should create a valid user with group_ids' do
         u = User.filtered_new({ :login => 'user1',
                                 :name => 'User', 
-                                :email => 'user1@example.com', 
+                                :email => 'user1@example.com',
+                                #:at_token => 'asd',
                                 :group_ids => [@g1.id, @g2.id, @root.id]}, 
                               subject)
         u.modified_by = User.first
         u.deep_save.should == true
         u = u.reload
         u.groups.should == [@g1, @g2]
-        u.deep_update_attributes({:group_ids => [@g1.id]}, 
+        u.deep_update_attributes({:group_ids => [@g1.id], :at_token => nil}, 
                                  subject).should == true
         u.reload.groups.should == [@g1]
       end
@@ -160,7 +163,8 @@ describe User do
         u = u.reload
         u.groups.should == [@g1, @g2]
         u.deep_update_attributes({:groups => [{:id => @g1.id}, 
-                                              {:id => @root.id}]}, 
+                                              {:id => @root.id}],
+                                   :at_token => nil}, 
                                  subject).should == true
         u.reload.groups.should == [@g1]
         subject.groups << @root
@@ -186,18 +190,18 @@ describe User do
       end
 
       it 'should give a list of application url' do
-        subject.application_urls.should == ["application spec-app1 has no configure url", "http://example.com/app"]
+        subject.application_urls.should == ["application spec-app1 has no configure url", @a2.url]
       end
 
 
       it 'should send new user email' do
         index = ActionMailer::Base.deliveries.size
-        u = User.new(:login => "new-spec", :name => "NM", :modified_by => User.first)
-        u.groups << @g2
+        u = User.new(:login => "new-spec", :email => 'new-spec@example.com', :name => "NM", :modified_by => User.first)
+        u.groups << @g1 # use group which has different id from Group.AT !
         passwd = u.reset_password_and_save
         passwd.should_not be_nil
-        ActionMailer::Base.deliveries[index].body.raw_source.should =~ /#{passwd}/
-        ActionMailer::Base.deliveries[index].body.raw_source.should =~ /#{@g2.application.url}/
+        ActionMailer::Base.deliveries[index].body.raw_source.should =~ /#{@g1.application.url}/
+        ActionMailer::Base.deliveries[index + 1].body.raw_source.should =~ /#{passwd}/
       end
     end
   end

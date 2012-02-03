@@ -1,5 +1,13 @@
 Users::Application.routes.draw do
 
+  get '/ats/last_changes', :controller => :ats, :action => :last_changes
+
+  resources :regions do
+    collection do
+      get :last_changes
+    end
+  end
+
   resources :audits
 
   resources :errors
@@ -8,14 +16,11 @@ Users::Application.routes.draw do
 
   resources :remote_permissions
 
-  resources :roles
-
   resources :groups
 
   resource :session do
     member do
       post :reset_password
-      get :current_groups
       put :ping
     end
   end
@@ -27,6 +32,9 @@ Users::Application.routes.draw do
   resources :users do
     collection do
       get :last_changes
+    end
+    member do
+      get :at
     end
   end
 

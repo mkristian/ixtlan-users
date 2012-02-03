@@ -4,15 +4,19 @@ import java.util.List;
 
 import org.dhamma.users.client.caches.ApplicationsCache;
 import org.dhamma.users.client.caches.GroupsCache;
+import org.dhamma.users.client.caches.RegionsCache;
 import org.dhamma.users.client.caches.UsersCache;
 import org.dhamma.users.client.events.ApplicationEvent;
 import org.dhamma.users.client.events.ApplicationEventHandler;
 import org.dhamma.users.client.events.GroupEvent;
 import org.dhamma.users.client.events.GroupEventHandler;
+import org.dhamma.users.client.events.RegionEvent;
+import org.dhamma.users.client.events.RegionEventHandler;
 import org.dhamma.users.client.events.UserEvent;
 import org.dhamma.users.client.events.UserEventHandler;
 import org.dhamma.users.client.models.Application;
 import org.dhamma.users.client.models.Group;
+import org.dhamma.users.client.models.Region;
 import org.dhamma.users.client.models.User;
 import org.dhamma.users.client.models.UserQuery;
 import org.dhamma.users.client.places.UserPlace;
@@ -22,7 +26,6 @@ import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.activity.shared.AbstractActivity;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
@@ -30,6 +33,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import de.mkristian.gwt.rails.DisplayErrors;
 import de.mkristian.gwt.rails.Notice;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
@@ -40,24 +44,28 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
     private final UserPlace place;
     private final UsersRestService service;
     private final Notice notice;
+    private final DisplayErrors errors;
     private final PlaceController placeController;
     private final UserView view;
     private final GroupsCache groupsCache;
     private final ApplicationsCache applicationsCache;
+    private final RegionsCache regionsCache;
     private final UsersCache cache;
     private EventBus eventBus;
-    
+       
     @Inject
-    public UserActivity(@Assisted UserPlace place, final Notice notice, final UserView view,
+    public UserActivity(@Assisted UserPlace place, final Notice notice, DisplayErrors errors, final UserView view,
             UsersRestService service, PlaceController placeController,
-            UsersCache cache, GroupsCache groupsCache, ApplicationsCache applicationsCache) {
+            UsersCache cache, GroupsCache groupsCache, ApplicationsCache applicationsCache, RegionsCache regionsCache) {
         this.place = place;
         this.notice = notice;
+        this.errors = errors;
         this.view = view;
         this.service = service;
         this.placeController = placeController;  
         this.groupsCache = groupsCache;
         this.applicationsCache = applicationsCache;
+        this.regionsCache = regionsCache;
         this.cache = cache;
 
         notice.hide();
@@ -88,24 +96,37 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
         this.eventBus.addHandler(UserEvent.TYPE, new UserEventHandler() {
 
             public void onModelEvent(ModelEvent<User> event) {
-                notice.finishLoading();
+		notice.finishLoading();
                 if (event.getModels() != null) {
                     view.reset(event.getModels());
-                } else if (event.getModel() == null) {
+                }
+		else if (event.getModel() == null) {
                     // TODO maybe error message ?
-                    notice.error("error loading list of User");
+		    notice.error("error loading list of User");
                 }
             }
         });
+
+        this.eventBus.addHandler(RegionEvent.TYPE, new RegionEventHandler(){
+
+            public void onModelEvent(ModelEvent<Region> event) {
+                view.resetRegions(event.getModels());
+            }
+            
+        });
+        view.resetRegions(regionsCache.getOrLoadModels());
 
         display.setWidget(view.asWidget());
 
         view.edit(new UserQuery(place.query));
 
-        switch(RestfulActionEnum.valueOf(place.action)){
-            case EDIT: 
+        switch(UserRestfulActionEnum.valueOf(place.action)){
+            case EDIT:
             case SHOW:
                 load(place.id);
+                break;
+            case AT:
+                loadAt(place.id);
                 break;
             case NEW:
                 view.edit(new User());
@@ -138,13 +159,18 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error creating User", exception);
+                switch (errors.showMessages(method, exception)) {
+                case GENERAL:
+                    notice.error("error creating User", exception);
+		    break;
+		default:
+                    notice.error("some error creating User", exception);
+                }
             }
 
-            public void onSuccess(Method method, User response) {
+            public void onSuccess(Method method, final User response) {
                 notice.finishLoading();
                 notice.info("sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
-                GWT.log("TODO notice: sent info mail to " + response.getName() + " <" + response.getEmail() + ">");
                 eventBus.fireEvent(new UserEvent(response, Action.CREATE));
                 goTo(new UserPlace(response.getId(), RestfulActionEnum.EDIT));
             }
@@ -173,14 +199,39 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
         }
     }
 
+    public void loadAt(int id) {
+        User model = cache.getModel(id);
+        view.edit(model);
+        if (model == null || model.getCreatedAt() == null) {
+            service.showAt(id, new MethodCallback<User>() {
+
+                public void onFailure(Method method, Throwable exception) {
+                    notice.finishLoading();
+                    notice.error("error loading User", exception);
+                }
+
+                public void onSuccess(Method method, User response) {
+                    notice.finishLoading();
+                    eventBus.fireEvent(new UserEvent(response, Action.LOAD));
+                    view.edit(response);
+                }
+            });
+            notice.loading();
+        }
+    }
+
     public void save() {
         User model = view.flush();
-        GWT.log(model.getGroups().toString());
         service.update(model.minimalClone(), new MethodCallback<User>() {
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error saving User", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                        //TODO
+                case GENERAL:
+                    notice.error("error saving User", exception);
+                }
             }
 
             public void onSuccess(Method method, User response) {
@@ -197,7 +248,12 @@ public class UserActivity extends AbstractActivity implements UserView.Presenter
 
             public void onFailure(Method method, Throwable exception) {
                 notice.finishLoading();
-                notice.error("error deleting User", exception);
+                switch (errors.showMessages(method, exception)) {
+                case CONFLICT:
+                        //TODO
+                case GENERAL:
+                    notice.error("error deleting User", exception);
+                }
             }
 
             public void onSuccess(Method method, Void response) {
