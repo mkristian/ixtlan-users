@@ -4,8 +4,6 @@ Users::Application.routes.draw do
 
   resources :errors
 
-  resources :users
-
   resources :applications
 
   resources :remote_permissions
