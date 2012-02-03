@@ -64,16 +64,16 @@ group :production do
   gem 'pg', :platforms => :ruby
 end
 
-gem 'resty-generators', '~> 0.7.0', :path => '../../rails-resty-gwt/resty-generators'
-gem 'ixtlan-generators', '~> 0.1.3'#, :path => '../../ixtlan/ixtlan-generators'
+gem 'resty-generators', '~> 0.7.3'#, :path => '../../rails-resty-gwt/resty-generators'
+gem 'ixtlan-generators', '~> 0.1.5'#, :path => '../../ixtlan/ixtlan-generators'
 
 gem 'enforce-ssl'
 gem "ixtlan-session-timeout", '~> 0.4.0'
-gem "ixtlan-guard", '~> 0.7.1',:path => '../../ixtlan/ixtlan-guard'
-gem "ixtlan-core", '~> 0.7.0'#,:path => '../../ixtlan/ixtlan-core'
+gem "ixtlan-guard", '~> 0.7.1'#,:path => '../../ixtlan/ixtlan-guard'
+gem "ixtlan-core", '~> 0.7.3'#,:path => '../../ixtlan/ixtlan-core'
 gem "ixtlan-error-handler", '~> 0.2.0'#, :path => '../../ixtlan/ixtlan-error-handler'
 gem "ixtlan-audit", '~> 0.2.0'#, :path => '../../ixtlan/ixtlan-audit'
-#gem 'slf4r', '~> 0.4.2'
+gem 'slf4r', '~> 0.4.2'
 gem 'bcrypt-ruby'
 
 #gem 'rspec', '~> 2.7.0', :group => :development
