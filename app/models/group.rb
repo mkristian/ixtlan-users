@@ -6,7 +6,7 @@ class Group < ActiveRecord::Base
   validates :name, :presence => true, :format => /^[a-zA-Z0-9_\-]+$/, :length => {:maximum => 32 }
   validates :description, :length => { :maximum => 255 }#, :format => /^[[:print:]]+$/, :allow_nil => true
 
-  attr_accessor :applications,:regions
+  attr_accessor :applications, :regions
 
   def self.ROOT
     find_by_id(1) || new(:name => 'root', :application => Application.THIS)
@@ -58,15 +58,17 @@ class Group < ActiveRecord::Base
   end
 
   def applications(user = nil)
+    # TODO root needs to see ALL applications !!
     if self == Group.ROOT || self == Group.APP_ADMIN
       @applications = (ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application } || []) if user
-      @applications
+      @applications || []
     else
       []
     end
   end
 
   def application_ids(user = nil)
+    # TODO root needs to see ALL applications !!
     if self == Group.ROOT || self == Group.APP_ADMIN
       @application_ids = ApplicationsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |agu| agu.application_id } if user
       @application_ids || []

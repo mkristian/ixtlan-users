@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
       end
     end
     if result.valid?
-      result.applications #memorize apps
+      result.applications # setup app objects
       result.filter_groups(token)
     end
     result
