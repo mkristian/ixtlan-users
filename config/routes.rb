@@ -12,7 +12,11 @@ Users::Application.routes.draw do
 
   resources :errors
 
-  resources :applications
+  resources :applications do
+    collection do
+      get :last_changes
+    end
+  end
 
   resources :remote_permissions
 

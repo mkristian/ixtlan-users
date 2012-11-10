@@ -30,6 +30,12 @@ class Application < ActiveRecord::Base
     }
   end
   
+  def self.update_options
+    {
+      :only => [:id, :name, :url, :updated_at], :root => 'application'
+    }
+  end
+
   def self.reduced_options
     {
       :except => [:created_at, :updated_at, :modified_by_id]
@@ -59,6 +65,14 @@ class Application < ActiveRecord::Base
       # the above seems not to work !!
       all.delete_if { |a| a.id == Application.ATS.id }
       all
+    end
+  end
+
+  def self.all_changed_after(from)
+    if from.blank?
+      Application.all(:conditions => ["url NOT NULL"])
+    else
+      Application.all(:conditions => ["url NOT NULL and updated_at > ?", from])
     end
   end
 

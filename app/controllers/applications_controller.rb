@@ -44,6 +44,17 @@ class ApplicationsController < ApplicationController
 
   public
 
+  # GET /applications/last_changes.xml
+  # GET /applications/last_changes.json
+  def last_changes
+    @users = Application.all_changed_after(params[:updated_at])
+
+    respond_to do |format|
+      format.xml  { render :xml => @users.to_xml(Application.update_options) }
+      format.json  { render :json => @users.to_json(Application.update_options) }
+    end
+  end
+
   # GET /applications
   # GET /applications.xml
   # GET /applications.json
