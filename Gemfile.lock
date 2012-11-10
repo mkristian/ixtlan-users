@@ -1,3 +1,14 @@
+PATH
+  remote: ../../ixtlan/ixtlan-core
+  specs:
+    ixtlan-core (0.8.0)
+
+PATH
+  remote: ../../ixtlan/ixtlan-guard
+  specs:
+    ixtlan-guard (0.9.0)
+      ixtlan-core (~> 0.8.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -51,12 +62,9 @@ GEM
     i18n (0.5.0)
     ixtlan-audit (0.2.0)
       slf4r (~> 0.4.2)
-    ixtlan-core (0.7.3)
     ixtlan-error-handler (0.2.0)
       slf4r (~> 0.4.2)
     ixtlan-generators (0.1.5)
-    ixtlan-guard (0.7.1)
-      ixtlan-core (~> 0.7.0)
     ixtlan-session-timeout (0.4.0)
     jdbc-sqlite3 (3.7.2)
     json (1.6.1)
@@ -135,10 +143,10 @@ DEPENDENCIES
   capybara
   enforce-ssl
   ixtlan-audit (~> 0.2.0)
-  ixtlan-core (~> 0.7.3)
+  ixtlan-core (~> 0.8.0)!
   ixtlan-error-handler (~> 0.2.0)
   ixtlan-generators (~> 0.1.5)
-  ixtlan-guard (~> 0.7.1)
+  ixtlan-guard (~> 0.9.0)!
   ixtlan-session-timeout (~> 0.4.0)
   jdbc-sqlite3
   json (= 1.6.1)
