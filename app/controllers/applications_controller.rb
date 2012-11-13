@@ -1,5 +1,7 @@
 class ApplicationsController < ApplicationController
 
+  respond_to :json
+
   before_filter :cleanup_params
 
   before_filter :authorize_application, :except => [:index, :new, :create]
@@ -48,11 +50,12 @@ class ApplicationsController < ApplicationController
   # GET /applications/last_changes.json
   def last_changes
     @users = Application.all_changed_after(params[:updated_at])
+    respond_with(RegionSerializer.new(@regions).use(:collection))
 
-    respond_to do |format|
-      format.xml  { render :xml => @users.to_xml(Application.update_options) }
-      format.json  { render :json => @users.to_json(Application.update_options) }
-    end
+#    respond_to do |format|
+#      format.xml  { render :xml => @users.to_xml(Application.update_options) }
+#      format.json  { render :json => @users.to_json(Application.update_options) }
+#    end
   end
 
   # GET /applications

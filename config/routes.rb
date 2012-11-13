@@ -1,22 +1,20 @@
 Users::Application.routes.draw do
 
-  get '/ats/last_changes', :controller => :ats, :action => :last_changes
+  get '/ats/last_changes', :controller => 'remote/ats', :action => :last_changes
+  get '/applications/last_changes', :controller => 'remote/applications', :action => :last_changes
+  get '/regions/last_changes', :controller => 'remote/regions', :action => :last_changes
+  get '/users/last_changes', :controller => 'remote/users', :action => :last_changes
+  get '/domains/last_changes', :controller => 'remote/domains', :action => :last_changes
+  post '/authentications', :controller => 'remote/authentications', :action => :create
+  post '/authentications/reset_password', :controller => 'remote/authentications', :action => :reset_password
 
-  resources :regions do
-    collection do
-      get :last_changes
-    end
-  end
+  resources :regions
 
   resources :audits
 
   resources :errors
 
-  resources :applications do
-    collection do
-      get :last_changes
-    end
-  end
+  resources :applications
 
   resources :remote_permissions
 
@@ -34,18 +32,8 @@ Users::Application.routes.draw do
   resource :configuration
 
   resources :users do
-    collection do
-      get :last_changes
-    end
     member do
       get :at
     end
   end
-
-  resource :authentications do
-    collection do
-      post :reset_password
-    end
-  end
-
 end

@@ -6,11 +6,19 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 puts "you can use ENV['login'] and ENV['email'] to set a proper user for production"
-u = User.new(:name => ENV['name'] || "Root", :login => ENV['login'] || "root", :email => ENV['email'] || "root@example.com")
-u.id = 1
-u.save
-u.modified_by = u
-u.save
+unless u = User.get(1)
+  u = User.new(:name => "System", :login => "system", :email => "system@example.com")
+  u.id = 1
+  u.save
+end
+
+unless uu = User.get(2)
+  uu = User.new(:name => ENV['name'] || "Root", :login => ENV['login'] || "root", :email => ENV['email'] || "root@example.com")
+  uu.id = 2
+  uu.save
+  uu.modified_by = u
+  uu.save
+end
 
 this = Application.THIS
 this.url = "http://localhost:3000/Users.html"
@@ -25,10 +33,12 @@ root = Group.ROOT
 root.modified_by = u
 root.application = this
 root.save
-
-u.groups << root
-# allow the root group for root user to act on all applications
-ApplicationsGroupsUser.create(:application => all, :group => root, :user => u)
+unless uu.root?
+  uu.groups << root
+  # allow the root group for root user to act on all applications
+  ApplicationsGroupsUser.create(:application => all, :group => root, :user => uu)
+  uu.save
+end
 
 user_admin = Group.USER_ADMIN
 user_admin.modified_by = u
@@ -46,24 +56,39 @@ at.application = all
 at.save
 
 unless ENV['email'] || ENV['login']
-  # harded access credentials only for development
-  dev = Application.create(:name => "development", 
-                           :url => "http://localhost/Dev.html",
-                           :modified_by => u)
-  RemotePermission.create(:ip => '127.0.0.1', 
-                          :token => 'be happy', 
-                          :modified_by => u,
-                          :application => dev)
-  dev_root = Group.create(:name => "root", 
-                          :modified_by => u, 
-                          :application => dev)
-  u.groups << dev_root
+  # hard coded access credentials only for development
+  unless dev = Application.find_by_name("development")
+    dev = Application.create(:name => "development", 
+                             :url => "http://localhost/Dev.html",
+                             :modified_by => u)
+  end
+  unless RemotePermission.find_by_token( 'be happy')
+    RemotePermission.create(:ip => '127.0.0.1', 
+                            :token => 'be happy', 
+                            :modified_by => u,
+                            :application => dev)
+  end
+  unless dev_root = Group.find_by_name_and_application('root', dev)
+    Group.create(:name => "root", 
+                 :modified_by => u, 
+                 :application => dev)
+    uu.groups << dev_root
+    uu.save
+  end
 end
 
-u.save
-
-
-c = Configuration.instance
-c.from_email = 'noreply@example.com'
-c.modified_by = u
-c.save
+if defined? ::Configuration
+  c.from_email = 'noreply@example.com'
+  c = ::Configuration.instance
+  if defined? Ixtlan::Errors
+    c.errors_keep_dumps = 30
+  end
+  if defined? Ixtlan::Audit
+    c.audits_keep_logs = 90
+  end
+  if defined? Ixtlan::Sessions
+    c.idle_session_timeout = 15
+  end
+  c.modified_by = u
+  c.save
+end

@@ -38,13 +38,15 @@ class User < ActiveRecord::Base
   end
   
   def self.authenticate(login, password, token = nil)
-    result = User.new
+p login
+    result = User.new( :login=>'login', :email=>'login@example.com', :name => 'dummy', :modified_by => User.first )
     if password.blank?
       result.log = "no password given with login: #{login}"
     elsif login.blank?
       result.log = "no login given"
     else
       u = User.find_by_login(login) || User.find_by_email(login)
+puts u
       if u && u.hashed.nil?
         result.log = "user has no password: #{login}"
       elsif u
@@ -71,10 +73,11 @@ class User < ActiveRecord::Base
         result.log = "login not found: #{login}"
       end
     end
-    if result.valid?
+    unless result.log.nil?
       result.applications # setup app objects
       result.filter_groups(token)
     end
+p result
     result
   end
 
@@ -199,6 +202,10 @@ class User < ActiveRecord::Base
         !app_ids.member?(g.application.id)
       end
     end
+  end
+
+  def log
+    @log
   end
 
   def log=(msg)
