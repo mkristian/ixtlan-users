@@ -1,4 +1,4 @@
-rest = Users::Application.config.restserver
+rest = Users::Application.config.rest
 
 rest.server( :gettext ) do |server|
   server.url = "http://localhost:3000"
