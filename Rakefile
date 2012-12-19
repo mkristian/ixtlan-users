@@ -13,4 +13,22 @@ task :update => [:environment] do
 
     puts "#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}\n\t#{sync}"
 end
+
+task :headers do
+  require 'rubygems'
+  require 'copyright_header'
+ 
+  args = {
+    :license => 'AGPL3', 
+    :copyright_software => 'ixtlan_users',
+    :copyright_software_description => 'webapp to manage users for other webapps/miniapps',
+    :copyright_holder => ['Christian Meier'],
+    :copyright_years => [Time.now.year],
+    :add_path => ['lib', 'app', 'src', 'config', 'db/seeds.rb'].join(File::SEPARATOR),
+    :output_dir => '.'
+  }
+
+  command_line = CopyrightHeader::CommandLine.new( args )
+  command_line.execute
+end
 # vim: syntax=Ruby
