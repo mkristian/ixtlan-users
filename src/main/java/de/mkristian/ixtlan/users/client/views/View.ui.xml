@@ -1,0 +1,29 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+  xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:t="urn:import:de.mkristian.gwt.rails.editors">
+
+  <g:FlowPanel styleName="gwt-rails-display rideboards-resource">
+
+    <g:Label ui:field="header"/>
+
+    <g:FlowPanel styleName="gwt-rails-buttons">
+      <g:Button ui:field="newButton">New</g:Button>
+      <g:Button ui:field="editButton">Edit</g:Button>
+      <g:Button ui:field="reloadButton">Reload</g:Button>
+    </g:FlowPanel>
+
+      <t:IdentifiableEditor ui:field="editor" styleName="gwt-rails-model-editor" />
+
+      <g:FlowPanel styleName="gwt-rails-buttons">
+        <g:Button ui:field="createButton">Create</g:Button>
+        <g:Button ui:field="saveButton">Save</g:Button>
+        <g:Button ui:field="deleteButton">Delete</g:Button>
+        <g:Button ui:field="cancelButton">Cancel</g:Button>
+        
+      </g:FlowPanel>
+
+  </g:FlowPanel>
+
+</ui:UiBinder>
