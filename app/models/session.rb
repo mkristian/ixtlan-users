@@ -1,11 +1,14 @@
-require 'ixtlan/guard/abstract_session'
+require 'ixtlan/user_management/session_model'
 
-class Session < Ixtlan::Guard::AbstractSession
-  include ActiveModel::Serializers::JSON
-  include ActiveModel::Serializers::Xml
+class Session < Ixtlan::UserManagement::Session
 
-  def self.authenticate(login, password)
-    User.authenticate(login, password)
+  # needed for respond_with
+  extend ActiveModel::Naming
+
+  # needed for respond_with
+  def errors
+    []
   end
+
 
 end

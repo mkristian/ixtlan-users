@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014054505) do
+ActiveRecord::Schema.define(:version => 20121218144118) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -55,6 +56,14 @@ ActiveRecord::Schema.define(:version => 20121014054505) do
     t.integer  "modified_by_id"
   end
 
+  create_table "domains_groups_users", :id => false, :force => true do |t|
+    t.integer "domain_id"
+    t.integer "group_id"
+    t.integer "user_id"
+  end
+
+  add_index "domains_groups_users", ["domain_id", "group_id", "user_id"], :name => "index_domains_groups_users_on_domain_id_and_group_id_and_user_id", :unique => true
+
   create_table "errors", :force => true do |t|
     t.string   "message"
     t.text     "request"
@@ -75,7 +84,17 @@ ActiveRecord::Schema.define(:version => 20121014054505) do
     t.datetime "updated_at"
     t.integer  "modified_by_id"
     t.boolean  "has_regions",    :default => false
+    t.boolean  "has_domains",    :default => false
+    t.boolean  "has_locales",    :default => false
   end
+
+  create_table "groups_locales_users", :id => false, :force => true do |t|
+    t.integer "group_id"
+    t.integer "locale_id"
+    t.integer "user_id"
+  end
+
+  add_index "groups_locales_users", ["group_id", "locale_id", "user_id"], :name => "index_groups_locales_users_on_group_id_and_locale_id_and_user_id", :unique => true
 
   create_table "groups_regions_users", :id => false, :force => true do |t|
     t.integer "group_id"

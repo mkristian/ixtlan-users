@@ -6,10 +6,10 @@ class Group < ActiveRecord::Base
   validates :name, :presence => true, :format => /^[a-zA-Z0-9_\-]+$/, :length => {:maximum => 32 }
   validates :description, :length => { :maximum => 255 }#, :format => /^[[:print:]]+$/, :allow_nil => true
 
-  attr_accessor :applications, :regions
+  attr_accessor :applications, :regions, :locales, :domains
 
   def self.ROOT
-    find_by_id(1) || new(:name => 'root', :application => Application.THIS)
+    find_by_id(1) || new(:id => 1, :name => 'root', :application => Application.THIS)
   end
 
   def self.USER_ADMIN
@@ -24,36 +24,50 @@ class Group < ActiveRecord::Base
     find_by_id(4) || new(:name => 'at', :application => Application.ALL)
   end
 
-  def self.options
-    {
-      :except => [:created_at, :modified_by_id],
-      :include => {
-        :application => {
-          :only => [:id, :name]
-        }
-      },
-      :methods => [:application_ids, :region_ids]
-    }
-  end
+  # def self.options
+  #   {
+  #     :except => [:created_at, :modified_by_id],
+  #     :include => {
+  #       :application => {
+  #         :only => [:id, :name]
+  #       }
+  #     },
+  #     :methods => [:application_ids, :region_ids]
+  #   }
+  # end
 
-  def self.single_options
-    {
-      :except => [:modified_by_id],
-      :include => {
-        :modified_by => {
-          :only => [:id, :login, :name]
-        },
-        :application => {
-          :except => [:created_at, :updated_at, :modified_by_id]
-        }
-      }
-    }
-  end
+  # def self.single_options
+  #   {
+  #     :except => [:modified_by_id],
+  #     :include => {
+  #       :modified_by => {
+  #         :only => [:id, :login, :name]
+  #       },
+  #       :application => {
+  #         :except => [:created_at, :updated_at, :modified_by_id]
+  #       }
+  #     }
+  #   }
+  # end
 
   def regions(user = nil)
     if has_regions
       @regions = GroupsRegionsUser.where(:user_id => user.id, :group_id => id).collect { |item| item.region } if user
       @regions || []
+    end
+  end
+
+  def locales(user = nil)
+    if has_locales
+      @locales = GroupsLocalesUser.where(:user_id => user.id, :group_id => id).collect { |item| item.locale } if user
+      @locales || []
+    end
+  end
+
+  def domains(user = nil)
+    if has_domains
+      @domains = DomainsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |item| item.domain } if user
+      @domains || []
     end
   end
 

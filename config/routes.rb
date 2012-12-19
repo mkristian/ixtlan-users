@@ -20,14 +20,14 @@ Users::Application.routes.draw do
 
   resources :groups
 
-  resource :session do
+  resource :session, :module => "local" do
     member do
       post :reset_password
       put :ping
     end
   end
 
-  resource :profile
+  resource :profile, :module => "local"
 
   resource :configuration
 

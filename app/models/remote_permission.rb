@@ -5,30 +5,30 @@ class RemotePermission < ActiveRecord::Base
   validates :ip, :length => {:maximum => 16}, :allow_nil => true, :format => /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/
   validates :token, :presence => true, :length => { :minumum => 8, :maximum => 32 }, :format => /^[a-zA-Z0-9 ]+$/
  
-  def self.options
-    {
-      :except => [:created_at, :modified_by_id],
-      :include => {
-        :application => {
-          :only => [:id, :name]
-        }
-      }
-    }
-  end
+  # def self.options
+  #   {
+  #     :except => [:created_at, :modified_by_id],
+  #     :include => {
+  #       :application => {
+  #         :only => [:id, :name]
+  #       }
+  #     }
+  #   }
+  # end
 
-  def self.single_options
-    {
-      :except => [:modified_by_id],
-      :include => {
-        :modified_by => {
-          :only => [:id, :login, :name]
-        },
-        :application => {
-          :except => [:created_at, :updated_at, :modified_by_id]
-        }
-      }
-    }
-  end
+  # def self.single_options
+  #   {
+  #     :except => [:modified_by_id],
+  #     :include => {
+  #       :modified_by => {
+  #         :only => [:id, :login, :name]
+  #       },
+  #       :application => {
+  #         :except => [:created_at, :updated_at, :modified_by_id]
+  #       }
+  #     }
+  #   }
+  # end
   
   private
   def self.permitted(group, current_application)

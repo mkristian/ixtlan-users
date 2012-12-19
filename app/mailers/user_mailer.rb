@@ -1,32 +1,40 @@
-class UserMailer < ActionMailer::Base
+class UserMailer
 
-  # default :from => ... does not work with dynamic values
-
-  def send_password(user)
-    @user = user
-    @password = user.password
-
-    mail :to => user.email, :subject => "", :from => Configuration.instance.from_email
+  def self.send_password(user)
+    Pony.mail :to => user.email, :subject => "", :from => ::Configuration.instance.from_email, :body => user.password
   end
 
-  def send_reset_password(user)
-    @user = user
-    @password = user.password
-
-    mail :to => user.email, :subject => "reset access", :from => Configuration.instance.from_email
+  def self.send_reset_password(user)
+    Pony.mail :to => user.email, :subject => "reset access", :from => ::Configuration.instance.from_email, :body => reset_password_body( user )
   end
 
-  def send_new_user(user)
-    @user = user
-    @profile_url = Configuration.instance.profile_url
-    @urls = urls(user)
-
-    mail :to => user.email, :subject => "access", :from => Configuration.instance.from_email
+  def self.send_new_user(user)
+    Pony.mail :to => user.email, :subject => "access", :from => ::Configuration.instance.from_email, :body => new_user_body( user ) 
   end
 
   private
 
-  def urls(user)
+  def self.reset_password_body( user )
+    text = 'hello' + " #{user.name},\n\n"
+    text += 'new password' + ": #{user.password}\n\n"
+    text += 'in case you did not ask for a new password just ignore this email.' + "\n\n"
+    text += 'enjoy !'
+    text
+  end
+
+  def self.new_user_body( user )
+    text = 'hello' + " #{user.name},\n\n"
+    text += 'profile url' + ": #{::Configuration.instance.profile_url}\n"
+    urls( user ).each do |app, url|
+      text += "#{app} url: #{url}\n"
+    end
+    text += 'username' + ": #{user.login}\n"
+    text += 'password' + ': ' + 'will be sent in a separate email' + "\n\n"
+    text += 'enjoy !'
+    text
+  end
+
+  def self.urls(user)
     Hash[
          user.applications.collect do |app|
            case app

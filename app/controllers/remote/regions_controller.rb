@@ -1,11 +1,9 @@
 class Remote::RegionsController < Remote::ApplicationController
 
-  public
-
   # GET /regions/last_changes
   def last_changes
-    @regions = serializer( Region.all_changed_after( params[:updated_at] ) ).use( :update )
-    respond_with @regions
+    @regions = Region.all_changed_after( params[:updated_at] )
+    respond_with serializer( @regions ).use( :update )
   end
 
 end

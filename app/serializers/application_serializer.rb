@@ -2,20 +2,17 @@ require 'ixtlan/babel/serializer'
 
 class ApplicationSerializer < Ixtlan::Babel::Serializer
 
-  model Application
+  root 'application'
 
   add_context(:update,
-              :root => 'application',
               :only => [:id, :name, :url, :updated_at]
              )
 
   add_context(:collection,
-              :root => 'application',
               :except => [:created_at, :modified_by_id]
              )
 
   add_context(:single,
-              :root => 'application',
               :except => [:modified_by_id],
               :include => {
                 :modified_by => {
@@ -23,6 +20,4 @@ class ApplicationSerializer < Ixtlan::Babel::Serializer
                 }
               }
              )
-
-  default_context_key :single
 end

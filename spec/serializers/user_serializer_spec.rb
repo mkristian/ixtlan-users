@@ -1,26 +1,15 @@
 require 'spec_helper'
-require File.join(Rails.root, 'app', 'presenters', 'user_presenter')
+require File.join(Rails.root, 'app', 'serializers', 'user_serializer')
 
-describe UserPresenter do
+describe UserSerializer do
 
   describe "json" do
     subject do
-      UserPresenter.new(User.first)
-    end
-
-    it "use default" do
-      body = JSON.parse(subject.to_json)
-      user = body['user']
-      user.should have(6).items
-      user['id'].should_not be_nil
-      user['name'].should_not be_nil
-      user['login'].should_not be_nil
-      user['applications'].should_not be_nil
-      user.key?('at_token').should == true
+      UserSerializer.new(User.first)
     end
 
     it "use single" do
-      body = JSON.parse(subject.single.to_json)
+      body = JSON.parse(subject.to_json)
       user = body['user']
       user.should have(9).items
       user['id'].should_not be_nil
@@ -34,8 +23,8 @@ describe UserPresenter do
       user.key?('at_token').should == true
     end
 
-    it "use remote_update" do
-      body = JSON.parse(subject.remote_update.to_json)
+    it "use update" do
+      body = JSON.parse(subject.use(:update).to_json)
       user = body['user']
       user.should have(4).items
       user['id'].should_not be_nil
@@ -44,8 +33,8 @@ describe UserPresenter do
       user['updated_at'].should_not be_nil
     end
 
-    it "use at_remote_update" do
-      body = JSON.parse(subject.at_remote_update.to_json)
+    it "use at_update" do
+      body = JSON.parse(subject.use(:at_update).to_json)
       user = body['at']
       user.should have(4).items
       user['id'].should_not be_nil
@@ -55,7 +44,7 @@ describe UserPresenter do
     end
 
     it "use authenticate" do
-      body = JSON.parse(subject.authenticate.to_json)
+      body = JSON.parse(subject.use(:authenticate).to_json)
       user = body['user']
       user.should have(5).items
       user['id'].should_not be_nil
@@ -66,17 +55,20 @@ describe UserPresenter do
     end
 
     it "use collection" do
-      body = JSON.parse(subject.collection.to_json)
-      user = body['user']
-      user.should have(8).items
-      user['id'].should_not be_nil
-      user['login'].should_not be_nil
-      user['name'].should_not be_nil
-      user['email'].should_not be_nil
-      user['group_ids'].should_not be_nil
-      user['updated_at'].should_not be_nil
-      user['application_ids'].should_not be_nil
-      user.key?('at_token').should == true
+      body = JSON.parse(UserSerializer.new( User.all ).to_json)
+      body.should have(3).items
+      user = body.each do |item|
+        user = item['user']
+        user.should have(6).items
+        user['id'].should_not be_nil
+        user['login'].should_not be_nil
+        user['name'].should_not be_nil
+        user['email'].should_not be_nil
+        user['updated_at'].should_not be_nil
+        user.key?('at_token').should == true
+#        user['group_ids'].should_not be_nil
+#        user['application_ids'].should_not be_nil
+      end
     end
 
   end

@@ -6,16 +6,16 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 puts "you can use ENV['login'] and ENV['email'] to set a proper user for production"
-unless u = User.get(1)
+unless u = User.find_by_id(1)
   u = User.new(:name => "System", :login => "system", :email => "system@example.com")
   u.id = 1
+  u.modified_by_id = 1
   u.save
 end
 
-unless uu = User.get(2)
+unless uu = User.find_by_id(2)
   uu = User.new(:name => ENV['name'] || "Root", :login => ENV['login'] || "root", :email => ENV['email'] || "root@example.com")
   uu.id = 2
-  uu.save
   uu.modified_by = u
   uu.save
 end
@@ -55,6 +55,28 @@ at.modified_by = u
 at.application = all
 at.save
 
+atu = User.find_by_id(3)
+if ENV['login'].nil? && atu.nil?
+  atu = User.new(:name => "AT", :login => "at", :email => "at@example.com")
+  atu.id = 3
+  atu.modified_by = u
+  atu.at_token = 'at'
+  atu.groups << at
+  atu.save
+end
+
+unless r = Region.find_by_name( 'europe' )
+  r = Region.new( :name => 'europe' )
+  r.modified_by = u
+  r.save
+end
+
+unless d = Domain.find_by_name( 'dummy' )
+  d = Domain.new( :name => 'dummy' )
+  d.modified_by = u
+  d.save
+end
+
 unless ENV['email'] || ENV['login']
   # hard coded access credentials only for development
   unless dev = Application.find_by_name("development")
@@ -68,27 +90,29 @@ unless ENV['email'] || ENV['login']
                             :modified_by => u,
                             :application => dev)
   end
-  unless dev_root = Group.find_by_name_and_application('root', dev)
-    Group.create(:name => "root", 
-                 :modified_by => u, 
-                 :application => dev)
+  unless dev_root = Group.first( :conditions => { :name => 'root', :application_id => dev } )
+    dev_root = Group.create( :name => "root", 
+                             :modified_by => u, 
+                             :application => dev )
     uu.groups << dev_root
     uu.save
   end
 end
 
 if defined? ::Configuration
-  c.from_email = 'noreply@example.com'
   c = ::Configuration.instance
-  if defined? Ixtlan::Errors
-    c.errors_keep_dumps = 30
+  if c.new_record?
+    c.from_email = 'noreply@example.com'
+    if defined? Ixtlan::Errors
+      c.errors_keep_dumps = 30
+    end
+    if defined? Ixtlan::Audit
+      c.audits_keep_logs = 90
+    end
+    if defined? Ixtlan::Sessions
+      c.idle_session_timeout = 15
+    end
+    c.modified_by = u
+    c.save
   end
-  if defined? Ixtlan::Audit
-    c.audits_keep_logs = 90
-  end
-  if defined? Ixtlan::Sessions
-    c.idle_session_timeout = 15
-  end
-  c.modified_by = u
-  c.save
 end

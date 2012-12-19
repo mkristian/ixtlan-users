@@ -6,7 +6,7 @@ class Application < ActiveRecord::Base
   validates :url, :format => /^https?\:\/\/[a-z0-9\-\.]+(\.[a-z0-9]+)*(\:[0-9]+)?(\/\S*)?$/, :length => { :maximum => 64 }, :allow_nil => true
 
   def self.THIS
-    find_by_id(1) || new(:name => 'THIS')
+    find_by_id(1) || new(:name => 'users')
   end
 
   def self.ALL

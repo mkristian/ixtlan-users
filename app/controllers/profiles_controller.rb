@@ -1,47 +1,29 @@
-class ProfilesController < ApplicationController
+class ProfilesController < LocalController
  
+  cache_headers :private
+
   # GET /profiles
-  # GET /profiles.xml
-  # GET /profiles.json
   def show
-    @profile = current_user
+    @profile = serializer( current_user ).use( :profile )
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @profile.to_xml(User.options.merge(:root => 'profile')) }
-      format.json  { render :json => @profile.to_json(User.options.merge(:root => 'profile')) }
-    end
-  end
-
-  # GET /profiles/edit
-  def edit
-    @profile = current_user
+    respond_with @profile
   end
 
   # PUT /profiles
-  # PUT /profiles.xml
-  # PUT /profiles.json
   def update
     @profile = current_user
 
-    profile = params[:profile] ||[]
-    profile.delete(:created_at)
-    profile.delete(:updated_at)
-    profile.delete(:login)
-    profile.delete(:id)
+    profile_params = params[ :profile ]
+    profile_params.delete( :login )
 
-    user = User.authenticate(@profile.login, profile.delete(:password))
+    # TODO too much business logic here
+    user = User.authenticate( @profile.login,
+                              profile_params.delete( :password ) )
+
     if user == @profile
-      respond_to do |format|
-        if @profile.update_attributes(profile)
-          format.html { redirect_to(profile_path, :notice => 'Profile was successfully updated.') }
-          format.xml  { render :xml => @profile.to_json(User.options.merge(:root => 'profile')) }
-          format.json  { render :json => @profile.to_json(User.options.merge(:root => 'profile')) }
-        else
-          format.html { render :action => "edit" }
-          format.xml  { render :xml => @profile.errors, :status => :unprocessable_entity }
-          format.json  { render :json => @profile.errors, :status => :unprocessable_entity }
-        end
+      if @profile.update_attributes( profile_params )
+
+        respond_with serializer( @profile ).use( :profile )
       end
     else
       head :unauthorized

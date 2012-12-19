@@ -1,10 +1,8 @@
 class Remote::ApplicationsController < Remote::ApplicationController
 
-  public
-
   # GET /applications/last_changes
   def last_changes
-    @applications = serializer( Application.all_changed_after( params[ :updated_at ] ) ).use( :update )
-    respond_with @applications
+    @applications = Application.all_changed_after( params[ :updated_at ] )
+    respond_with serializer( @applications ).use( :update )
   end
 end

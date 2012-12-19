@@ -1,20 +1,21 @@
 class UsersController < ApplicationController
 
   before_filter :cleanup_params
-  before_filter :remote_permission, :only => :last_changes
-  skip_before_filter :authorize,  :only => :last_changes
+  
+#before_filter :remote_permission, :only => :last_changes
+ # skip_before_filter :authorize,  :only => :last_changes
 
   # TODO do not know why skip_before_filter does not work with heroku
-  def authorization
-    super if params[:action] != 'last_changes'
-  end
+ # def authorization
+ #   super if params[:action] != 'last_changes'
+ # end
 
   private
 
   # TODO why needed for rspecs 
-  def authorize
-    super unless params[:action] == "last_changes"
-  end
+  #def authorize
+  #  super unless params[:action] == "last_changes"
+  #end
 
   def cleanup_params
     # compensate the shortcoming of the incoming json/xml
@@ -39,17 +40,6 @@ class UsersController < ApplicationController
   end
 
   public
-
-  # GET /users/last_changes.xml
-  # GET /users/last_changes.json
-  def last_changes
-    @users = User.all_changed_after(params[:updated_at])
-
-    respond_to do |format|
-      format.xml  { render :xml => @users.to_xml(User.update_options) }
-      format.json  { render :json => @users.to_json(User.update_options) }
-    end
-  end
 
   # GET /users
   # GET /users.xml

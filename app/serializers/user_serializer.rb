@@ -2,16 +2,31 @@ require 'ixtlan/babel/serializer'
 
 class UserSerializer < Ixtlan::Babel::Serializer
 
-  model User
+  root 'user'
 
-  add_context(:default,
-              :root => 'user',
-              :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
-              :methods => [ :applications ]
-             )
+  add_context(:session,
+              :only => [:id],
+              :include=> { 
+                :groups => {
+                  :only => [:id],
+                  :include => {
+                    :domains => { 
+                      :only => [:id, :name]
+                    },
+                    :locales => { 
+                      :only => [:id, :code]
+                    },
+                    :regions => { 
+                      :only => [:id, :name]
+                    },
+                    :application => {
+                      :only => [:id, :name]
+                    }                      
+                  }
+                }
+              })
 
   add_context(:update,
-              :root => 'user',
               :only => [:id, :login, :name, :updated_at])
 
   add_context(:at_update, 
@@ -21,6 +36,9 @@ class UserSerializer < Ixtlan::Babel::Serializer
   add_context(:collection, 
               :except => [:hashed, :hashed2, :created_at, :modified_by_id],
               :methods => [:group_ids, :application_ids])
+
+  add_context(:profile,
+              :except => [:hashed, :hashed2, :modified_by_id])
 
   add_context(:single,
               :except => [:hashed, :hashed2, :modified_by_id], 
@@ -44,29 +62,29 @@ class UserSerializer < Ixtlan::Babel::Serializer
               :include => {
                 :groups => {
                   :only => [:id, :name],
-                  :methods => [:regions]
+                  :methods => [:domains, :locales, :regions]
                 },
                 :applications => {
                    :except => [:created_at, :updated_at, :modified_by_id]
                 }
               })
 
-  default_context_key :default
   
   def setup_associations(options = {})
     methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
     
     to_model.groups.each { |g| g.applications(self) } if methods.member? :applications
     to_model.groups.each { |g| g.application_ids(self) } if methods.member? :application_ids
+    to_model.groups.each { |g| g.domains(self) } if methods.member? :domains
+    to_model.groups.each { |g| g.locales(self) } if methods.member? :locales
     to_model.groups.each { |g| g.regions(self) } if methods.member? :regions
-    p to_model.applications
   end
   private :setup_associations
 
   def to_json(options = nil)
     opts = filter.options.dup
     opts.merge!(options) if options
-    setup_associations(opts)
+    setup_associations(opts) unless collection?
     super
   end
 

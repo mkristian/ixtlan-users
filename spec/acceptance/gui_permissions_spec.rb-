@@ -1,223 +1,167 @@
-require 'acceptance/rails_gwt'
+require 'acceptance/acceptance_helper'
+require 'rails_gwt/dsl'
 
-class UserConfig
+MENU = %w(Ats Regions Audits Profile Configuration Errors Applications Groups Users Remote\ permissions)
 
-  attr_reader :login, :name, :menu, :resource, :action
-
-  def initialize(login)
-    @user_config = CONFIG[login]
-    raise "unknown login #{login}" unless @user_config
-    @login = login.to_s
-    @name = @user_config[:name]
-    @menu = @user_config[:menu]
-  end
-  
-  def resources
-    @user_config.collect { |k,v| k.to_s if v.is_a? Hash }.delete_if { |i| i.nil? }.sort!.collect { |i| i.to_sym }
-  end
-
-  def resource=(resource)
-    @resource = resource.to_s.pluralize
-    @config = @user_config[resource]
-    #raise "unknown resource #{resource}" unless @config
-  end
-
-  def content
-    c = @config[@action][:content] || []
-    c = [c] unless c.is_a? Array
-    c
-  end
-
-  def buttons
-    c = @config[@action][:buttons] || []
-    c = [c] unless c.is_a? Array
-    c
-  end
-
-  def action_buttons
-    c = @config[@action][:action_buttons] || []
-    c = [c] unless c.is_a? Array
-    c
-  end
-
-  def action=(action)
-    @action = @config[action] ? action : nil
-    @action
-  end
-
-  def mode
-    @config[:mode] || :page
-  end
-
-  def resource_id
-    if id = @config[:resource_id]
-      self.class_eval(id)
-    else
-      1
-    end
-  end
-
-  def self.logins
-    CONFIG.keys
-  end
-
-  MENU = %w(Ats Regions Audits Profile Configuration Errors Applications Groups Users Remote\ permissions)
-
-  CONFIG = {
-    :root => {
-      :name => 'Root',
-      :menu => MENU,
-      :users => {
-        :new => { :action_buttons => 'Create', :buttons => 'Search' },
-        :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show", 'Search'] },
-        :show => { :buttons => ['New', 'Edit', 'Search'] },
-        :index => { :buttons => 'New', :content => 'root@example.com' }
-      },
-      :regions => {
-        :new => { :action_buttons => 'Create' },
-        :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
-        :show => { :buttons => ['New', 'Edit'] },
-        :index => { :buttons => 'New', :content => 'Asia' }
-      },
-      :remote_permissions => {
-        :new => { :action_buttons => 'Create' },
-        :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
-        :show => { :buttons => ['New', 'Edit'] },
-        :index => { :buttons => 'New', :content => 'development' }
-      },
-      :applications => {
-        :new => { :action_buttons => 'Create' },
-        :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
-        :show => { :buttons => ['New', 'Edit'] },
-        :index => { :buttons => 'New', :content => 'development' }
-      },
-      :groups => {
-        :new => { :action_buttons => 'Create' },
-        :edit => { :action_buttons => ['Save', 'Delete'], 
-          :buttons => ["New", "Show"] },
-        :show => { :buttons => ['New', 'Edit'] },
-        :index => { :buttons => 'New', :content => 'user-admin' }
-      },
-      :ats => {
-        :resource_id => "User.find_by_login('at').id",
-        :show => { :buttons => ['New', 'Edit', 'Search'] },
-        :index => { :buttons => 'New', :content => 'at@example.com' }
-      },
-      :profile => {
-        :mode => :singleton,
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' }
-      }
+CONFIG = {
+  :root => {
+    :name => 'Root',
+    :menu => MENU,
+    :users => {
+      :new => { :action_buttons => 'Create', :buttons => 'Search' },
+      :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show", 'Search'] },
+      :show => { :buttons => ['New', 'Edit', 'Search'] },
+      :index => { :buttons => 'New', :content => 'root@example.com' }
     },
-    :root_dev => {
-      :name => 'Root',
-      :menu => ["Applications", "Groups", "Profile", "Remote permissions", "Users"],
-      :users => {
-        :show => { :buttons => ['Edit', 'Search'] },
-        :index => { :content => ['registrar@example.com', 'root_dev@example.com'] }
-      },
-      :applications => {
-        :resource_id => "Application.find_by_name('development').id",
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' },
-        :index => { :content => 'development' }
-      },
-      :remote_permissions => {
-        :new => { :action_buttons => 'Create' },
-        :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
-        :show => { :buttons => ['New', 'Edit'] },
-        :index => { :buttons => 'New', :content => 'development' }
-      },
-      :groups => {
-        :resource_id => "Group.find_by_name('registrar').id",
-        :new => { :action_buttons => 'Create' },
-        :edit => { :action_buttons => ['Save', 'Delete'], 
-          :buttons => ["New", "Show"] },
-        :show => { :buttons => ['New', 'Edit'] },
-        :index => { :buttons => 'New', :content => ['registrar', 'root'] }
-      },
-      :profile => {
-        :mode => :singleton,
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' }
-      }
+    :regions => {
+      :new => { :action_buttons => 'Create' },
+      :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
+      :show => { :buttons => ['New', 'Edit'] },
+      :index => { :buttons => 'New', :content => 'Asia' }
     },
-    :none => {
-      :name => 'None',
-      :menu => "Profile",
-      :profile => {
-        :mode => :singleton,
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' }
-      }
+    :remote_permissions => {
+      :new => { :action_buttons => 'Create' },
+      :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
+      :show => { :buttons => ['New', 'Edit'] },
+      :index => { :buttons => 'New', :content => 'development' }
     },
-    :registrar => {
-      :name => 'Registrar',
-      :menu => "Profile",
-      :profile => {
-        :mode => :singleton,
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' }
-      }
+    :applications => {
+      :new => { :action_buttons => 'Create' },
+      :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
+      :show => { :buttons => ['New', 'Edit'] },
+      :index => { :buttons => 'New', :content => 'development' }
     },
-    :user_admin => {
-      :name => 'User Admin',
-      :menu => ["Profile", "Users"],
-      :users => {
-        :new => { :action_buttons => 'Create', :buttons => 'Search' },
-        :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show", 'Search'] },
-        :show => { :buttons => ['New', 'Edit', 'Search'] },
-        :index => { :buttons => 'New', :content => 'root@example.com' }
-      },
-      :profile => {
-        :mode => :singleton,
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' }
-      }
+    :groups => {
+      :new => { :action_buttons => 'Create' },
+      :edit => { :action_buttons => ['Save', 'Delete'], 
+        :buttons => ["New", "Show"] },
+      :show => { :buttons => ['New', 'Edit'] },
+      :index => { :buttons => 'New', :content => 'user-admin' }
     },
-    :at => {
-      :name => 'AT',
-      :menu => ["Profile", 'Ats'],
-      :profile => {
-        :mode => :singleton,
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' }
-      },
-      :ats => {
-        :resource_id => "User.find_by_login('at').id",
-        :show => { :buttons => ['Search'] },
-        :index => { :content => 'at@example.com' }
-      },
+    :ats => {
+      :resource_id => "User.find_by_login('at').id",
+      :show => { :buttons => ['New', 'Edit', 'Search'] },
+      :index => { :buttons => 'New', :content => 'at@example.com' }
     },
-    :admin_at => {
-      :name => 'AT Admin',
-      :menu => ["Profile", 'Ats', 'Users'],
-      :profile => {
-        :mode => :singleton,
-        :edit => { :action_buttons => 'Save', :buttons => "Show" },
-        :show => { :buttons => 'Edit' }
-      },
-      :users => {
-        :new => { :action_buttons => 'Create', :buttons => 'Search' },
-        :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show", 'Search'] },
-        :show => { :buttons => ['New', 'Edit', 'Search'] },
-        :index => { :buttons => 'New', :content => 'root@example.com' }
-      },
-      :ats => {
-        :resource_id => "User.find_by_login('at').id",
-        :show => { :buttons => ['New', 'Edit', 'Search'] },
-        :index => { :buttons => 'New', :content => 'at@example.com' }
-      },
+    :profile => {
+      :mode => :singleton,
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' }
     }
+  },
+  :root_dev => {
+    :name => 'Root',
+    :menu => ["Applications", "Groups", "Profile", "Remote permissions", "Users"],
+    :users => {
+      :show => { :buttons => ['Edit', 'Search'] },
+      :index => { :content => ['registrar@example.com', 'root_dev@example.com'] }
+    },
+    :applications => {
+      :resource_id => "Application.find_by_name('development').id",
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' },
+      :index => { :content => 'development' }
+    },
+    :remote_permissions => {
+      :new => { :action_buttons => 'Create' },
+      :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show"] },
+      :show => { :buttons => ['New', 'Edit'] },
+      :index => { :buttons => 'New', :content => 'development' }
+    },
+    :groups => {
+      :resource_id => "Group.find_by_name('registrar').id",
+      :new => { :action_buttons => 'Create' },
+      :edit => { :action_buttons => ['Save', 'Delete'], 
+        :buttons => ["New", "Show"] },
+      :show => { :buttons => ['New', 'Edit'] },
+      :index => { :buttons => 'New', :content => ['registrar', 'root'] }
+    },
+    :profile => {
+      :mode => :singleton,
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' }
+    }
+  },
+  :none => {
+    :name => 'None',
+    :menu => "Profile",
+    :profile => {
+      :mode => :singleton,
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' }
+    }
+  },
+  :registrar => {
+    :name => 'Registrar',
+    :menu => "Profile",
+    :profile => {
+      :mode => :singleton,
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' }
+    }
+  },
+  :user_admin => {
+    :name => 'User Admin',
+    :menu => ["Profile", "Users"],
+    :users => {
+      :new => { :action_buttons => 'Create', :buttons => 'Search' },
+      :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show", 'Search'] },
+      :show => { :buttons => ['New', 'Edit', 'Search'] },
+      :index => { :buttons => 'New', :content => 'root@example.com' }
+    },
+    :profile => {
+      :mode => :singleton,
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' }
+    }
+  },
+  :at => {
+    :name => 'AT',
+    :menu => ["Profile", 'Ats'],
+    :profile => {
+      :mode => :singleton,
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' }
+    },
+    :ats => {
+      :resource_id => "User.find_by_login('at').id",
+      :show => { :buttons => ['Search'] },
+      :index => { :content => 'at@example.com' }
+    },
+  },
+  :admin_at => {
+    :name => 'AT Admin',
+    :menu => ["Profile", 'Ats', 'Users'],
+    :profile => {
+      :mode => :singleton,
+      :edit => { :action_buttons => 'Save', :buttons => "Show" },
+      :show => { :buttons => 'Edit' }
+    },
+    :users => {
+      :new => { :action_buttons => 'Create', :buttons => 'Search' },
+      :edit => { :action_buttons => ['Save', 'Delete'], :buttons => ["New", "Show", 'Search'] },
+      :show => { :buttons => ['New', 'Edit', 'Search'] },
+      :index => { :buttons => 'New', :content => 'root@example.com' }
+    },
+    :ats => {
+      :resource_id => "User.find_by_login('at').id",
+      :show => { :buttons => ['New', 'Edit', 'Search'] },
+      :index => { :buttons => 'New', :content => 'at@example.com' }
+    },
   }
-end
+}
 
+FACTORY = RailsGwt::UserConfigFactory.new
+
+CONFIG.each do |login, config|
+  FACTORY.add(login, config)
+end
 
 feature "GUI permissions", %q{
 just test the UI to show the right buttons after login with different users
 } do
 
-  include RailsGwt
+  include RailsGwt::DSL
 
   background do
     # regions
@@ -277,14 +221,14 @@ just test the UI to show the right buttons after login with different users
     end
   end
 
-  LOGINS = UserConfig.logins
+  LOGINS = FACTORY.logins
   #LOGINS = [:root_dev, :root, :user_admin,:none, :at, :registrar, :admin_at]
   LOGINS.shuffle.each do |login|
     scenario "pages with '#{login}'" do
       visit '/Users.html#profiles'
 
       login_session(login) do #, false) do
-        userconfig = UserConfig.new(login)
+        userconfig = FACTORY[login]
         userconfig.resources.each do |resource|
           userconfig.resource = resource
           visit_resource(userconfig) do |config|

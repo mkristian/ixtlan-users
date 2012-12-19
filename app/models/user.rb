@@ -38,17 +38,15 @@ class User < ActiveRecord::Base
   end
   
   def self.authenticate(login, password, token = nil)
-p login
-    result = User.new( :login=>'login', :email=>'login@example.com', :name => 'dummy', :modified_by => User.first )
+    result = nil
     if password.blank?
-      result.log = "no password given with login: #{login}"
+      result = "no password given with login: #{login}"
     elsif login.blank?
-      result.log = "no login given"
+      result = "no login given"
     else
       u = User.find_by_login(login) || User.find_by_email(login)
-puts u
       if u && u.hashed.nil?
-        result.log = "user has no password: #{login}"
+        result = "user has no password: #{login}"
       elsif u
         if Password.new(u.hashed) == password
           # clear reset password if any
@@ -66,18 +64,17 @@ puts u
             u.save
             result = u
           else
-            result.log = "wrong password for login: #{login}"
+            result = "wrong password for login: #{login}"
           end
         end
       else
-        result.log = "login not found: #{login}"
+        result = "login not found: #{login}"
       end
     end
-    unless result.log.nil?
+    if result.is_a? User
       result.applications # setup app objects
       result.filter_groups(token)
     end
-p result
     result
   end
 
@@ -204,22 +201,6 @@ p result
     end
   end
 
-  def log
-    @log
-  end
-
-  def log=(msg)
-    @log = msg
-  end
-
-  def to_log
-    if @log
-      @log
-    else
-      "User(#{self.id})"
-    end
-  end
-
   def application_urls
     groups.collect do |g|
       g.application.url || "application #{g.application.name} has no configure url"
@@ -295,7 +276,7 @@ p result
   end
 
   def allowed_applications
-    @allowed_apps ||= Group.APP_ADMIN.applications(self)
+    @allowed_apps ||= root? ? Application.all : Group.APP_ADMIN.applications(self)
   end
 
   def applications
@@ -315,95 +296,95 @@ p result
     @group_ids ||= groups.collect { |g| g.id }
   end
 
-  def self.update_options
-    {
-      :only => [:id, :login, :name, :updated_at]
-    }
-  end
+  # def self.update_options
+  #   {
+  #     :only => [:id, :login, :name, :updated_at]
+  #   }
+  # end
 
-  def self.at_update_options
-    {
-      :only => [:id, :name, :at_token, :updated_at], :root => 'at'
-    }
-  end
+  # def self.at_update_options
+  #   {
+  #     :only => [:id, :name, :at_token, :updated_at], :root => 'at'
+  #   }
+  # end
 
-  def self.no_children_options
-    {
-      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
-      :methods => [ :applications ]
-    }
-  end
+  # def self.no_children_options
+  #   {
+  #     :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id],
+  #     :methods => [ :applications ]
+  #   }
+  # end
 
-  def self.options
-    {
-      :except => [:hashed, :hashed2, :created_at, :modified_by_id],
-      :methods => [:group_ids, :application_ids]
-    }
-  end
+  # def self.options
+  #   {
+  #     :except => [:hashed, :hashed2, :created_at, :modified_by_id],
+  #     :methods => [:group_ids, :application_ids]
+  #   }
+  # end
 
-  def self.single_options
-    {
-      :except => [:hashed, :hashed2, :modified_by_id], 
-      :include => { 
-        :modified_by => {
-          :only => [:id, :login, :name],
-        },
-        :groups => {
-          :only => [:id, :name, :application_id],
-          :include => {
-            :application => {
-              :only => [:id, :name]
-            }
-          },
-          :methods => [:applications, :regions]
-        }
-      }
-    }
-  end
+  # def self.single_options
+  #   {
+  #     :except => [:hashed, :hashed2, :modified_by_id], 
+  #     :include => { 
+  #       :modified_by => {
+  #         :only => [:id, :login, :name],
+  #       },
+  #       :groups => {
+  #         :only => [:id, :name, :application_id],
+  #         :include => {
+  #           :application => {
+  #             :only => [:id, :name]
+  #           }
+  #         },
+  #         :methods => [:applications, :regions]
+  #       }
+  #     }
+  #   }
+  # end
 
-  def self.remote_options
-    {
-      :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id, :at_token, :email],
-      :include => {
-        :groups => {
-          :only => [:id, :name],
-          :methods => [:regions]
-        }
-      },
-      :methods => [ :applications ],
-    }
-  end
+  # def self.remote_options
+  #   {
+  #     :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id, :at_token, :email],
+  #     :include => {
+  #       :groups => {
+  #         :only => [:id, :name],
+  #         :methods => [:regions]
+  #       }
+  #     },
+  #     :methods => [ :applications ],
+  #   }
+  # end
 
-  unless respond_to? :old_as_json
-    alias :old_as_json :as_json
-    def as_json(options = nil)
-      options = self.class.no_children_options unless options
-      setup_groups(options)
-      old_as_json(options)
-    end
-  end
+  # unless respond_to? :old_as_json
+  #   alias :old_as_json :as_json
+  #   def as_json(options = nil)
+  #     options = self.class.no_children_options unless options
+  #     setup_groups(options)
+  #     old_as_json(options)
+  #   end
+  # end
 
-  unless respond_to? :old_to_json
-    alias :old_to_json :to_json
-    def to_json(options = nil)
-      setup_groups(options)
-      old_to_json(options)
-    end
+  # unless respond_to? :old_to_json
+  #   alias :old_to_json :to_json
+  #   def to_json(options = nil)
+  #     setup_groups(options)
+  #     old_to_json(options)
+  #   end
 
-    def setup_groups(options = {})
-      methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
+  #   def setup_groups(options = {})
+  #     methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
      
-      groups.each { |g| g.applications(self) } if methods.member? :applications
-      groups.each { |g| g.application_ids(self) } if methods.member? :application_ids
-      groups.each { |g| g.regions(self) } if methods.member? :regions
-    end
+  #     groups.each { |g| g.applications(self) } if methods.member? :applications
+  #     groups.each { |g| g.application_ids(self) } if methods.member? :application_ids
+  #     groups.each { |g| g.regions(self) } if methods.member? :regions
+  #   end
 
-    alias :old_to_xml :to_xml
-    def to_xml(options = nil) 
-      setup_groups(options)
-      old_to_xml(options)
-    end
-  end
+  #   alias :old_to_xml :to_xml
+  #   def to_xml(options = nil) 
+  #     setup_groups(options)
+  #     old_to_xml(options)
+  #   end
+  # end
 
   private
   def generate_password

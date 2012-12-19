@@ -1,14 +1,19 @@
-class SessionsController < ApplicationController
+class SessionsController < LocalController
 
   skip_before_filter :authorize
 
   skip_before_filter :check_session, :only => :destroy
 
-  skip_after_filter :csrf, :only => :destroy
-
   skip_after_filter :audit, :only => :ping
 
   prepend_after_filter :reset_session, :only => :destroy
+
+  private
+
+  def login_and_password
+    auth = params[:authentication] || params
+    [ auth[:login] || auth[:email], auth[:password] ]
+  end
 
   protected
 
@@ -20,22 +25,16 @@ class SessionsController < ApplicationController
   public
 
   def create
-    auth = params[:authentication] || params
-    @session = Session.create(auth[:login] || auth[:email], 
-                              auth[:password])
-
-    if @session.valid?
-      current_user(@session.user)
-      @session.idle_session_timeout = Rails.application.config.idle_session_timeout
-      @session.permissions = guard.permissions(current_user_groups)
-
-      # TODO make html login
-      respond_to do |format|
-        format.html { render :inline => "authorized" }
-        format.xml  { render :xml => @session.to_xml }
-        format.json  { render :json => @session.to_json }
-      end
+    user = User.authenticate( *login_and_password )
+    if user.is_a? User
+      current_user( user )
+      @session = serializer( Session.new( 'user' => user,
+                                          'idle_session_timeout' => Users::Application.config.idle_session_timeout,
+                                          'permissions' => guard.permissions( user.groups) ) )
+      
+      respond_with @session
     else
+      @session = user.to_s
       head :unauthorized
     end
   end
@@ -47,10 +46,6 @@ class SessionsController < ApplicationController
   def destroy
     # for the log
     @session = current_user
-    
-    def @session.to_log
-      "Session(user-id: #{id})"
-    end
 
     # reset session happens in the after filter which allows for 
     # audit log with username which happens in another after filter
@@ -58,14 +53,7 @@ class SessionsController < ApplicationController
   end
 
   def reset_password
-    authentication = params[:authentication] || []
-    user = User.reset_password(authentication[:email] || authentication[:login])
-
-    if user
-
-      # for the log
-      @session = user
-      
+    if @session = User.reset_password( login_and_password[ 0 ] )
       head :ok
     else
       head :not_found
