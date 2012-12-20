@@ -6,8 +6,8 @@ import javax.inject.Singleton;
 
 import de.mkristian.gwt.rails.presenters.ReadOnlyPresenterImpl;
 import de.mkristian.ixtlan.users.client.UsersErrorHandler;
-import de.mkristian.ixtlan.users.client.caches.ErrorRemoteReadOnly;
-import de.mkristian.ixtlan.users.client.models.Error;
+import de.mkristian.ixtlan.users.client.errors.Error;
+import de.mkristian.ixtlan.users.client.errors.ErrorRemoteReadOnly;
 import de.mkristian.ixtlan.users.client.views.ErrorListView;
 import de.mkristian.ixtlan.users.client.views.ErrorView;
 

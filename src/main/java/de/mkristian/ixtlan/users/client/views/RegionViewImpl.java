@@ -66,10 +66,4 @@ public class RegionViewImpl extends CRUDViewImpl<Region>
     protected Region newModel() {
         return new Region();
     }
-//    public void reset(Region model) {
-//        GWT.log(model.toDisplay());
-//        super.reset( model );
-//        GWT.log( "asd" + model.getId());
-//        GWT.log( "asd" + editor.getId());
-//    }
  }

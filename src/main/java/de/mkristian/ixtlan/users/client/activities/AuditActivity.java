@@ -8,8 +8,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import de.mkristian.gwt.rails.activities.AbstractReadOnlyActivity;
 import de.mkristian.gwt.rails.events.ModelEventHandler;
-import de.mkristian.ixtlan.users.client.events.AuditEvent;
-import de.mkristian.ixtlan.users.client.models.Audit;
+import de.mkristian.ixtlan.users.client.audits.Audit;
+import de.mkristian.ixtlan.users.client.audits.AuditEvent;
 import de.mkristian.ixtlan.users.client.places.AuditPlace;
 import de.mkristian.ixtlan.users.client.presenters.AuditPresenter;
 

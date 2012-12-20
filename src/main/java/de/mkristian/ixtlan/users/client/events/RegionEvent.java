@@ -19,7 +19,7 @@ public class RegionEvent extends ModelEvent<Region> {
 
     public RegionEvent( Method method, List<Region> models,
                 ModelEvent.Action action ) {
-        super( models, action );
+        super( method, models, action );
     }
 
     public RegionEvent( Method method, Throwable e ) {

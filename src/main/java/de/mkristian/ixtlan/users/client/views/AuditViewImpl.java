@@ -16,8 +16,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
 import de.mkristian.gwt.rails.views.ReadOnlyViewImpl;
-import de.mkristian.ixtlan.users.client.editors.AuditEditor;
-import de.mkristian.ixtlan.users.client.models.Audit;
+import de.mkristian.ixtlan.users.client.audits.Audit;
+import de.mkristian.ixtlan.users.client.audits.AuditEditor;
 import de.mkristian.ixtlan.users.client.places.AuditPlace;
 
 @Singleton

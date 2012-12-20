@@ -18,21 +18,18 @@ public class ManagedGinModule extends BaseModule {
         super.configure();
 //        bind(de.mkristian.ixtlan.users.client.restservices.AtsRestService.class).toProvider(AtsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.RegionsRestService.class).toProvider(RegionsRestServiceProvider.class);
-        bind(de.mkristian.ixtlan.users.client.restservices.AuditsRestService.class).toProvider(AuditsRestServiceProvider.class);
-        bind(de.mkristian.ixtlan.users.client.restservices.ErrorsRestService.class).toProvider(ErrorsRestServiceProvider.class);
+        bind(de.mkristian.ixtlan.users.client.audits.AuditsRestService.class).toProvider(AuditsRestServiceProvider.class);
+        bind(de.mkristian.ixtlan.users.client.errors.ErrorsRestService.class).toProvider(ErrorsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.ApplicationsRestService.class).toProvider(ApplicationsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.RemotePermissionsRestService.class).toProvider(RemotePermissionsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.GroupsRestService.class).toProvider(GroupsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.ProfileRestService.class).toProvider(ProfilesRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.ConfigurationRestService.class).toProvider(ConfigurationsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.UsersRestService.class).toProvider(UsersRestServiceProvider.class);
-//        bind(Application.class).to(UsersApplication.class);     
-//        bind(PlaceHistoryMapper.class).to(UsersPlaceHistoryMapper.class).in(Singleton.class);
-//        bind(ActivityMapper.class).to(SessionActivityPlaceActivityMapper.class).in(Singleton.class);
-//        bind(LoginView.class).to(LoginViewImpl.class);
         install(new GinFactoryModuleBuilder()
             .implement(Activity.class, Names.named("ats"), de.mkristian.ixtlan.users.client.activities.AtActivity.class)
             .implement(Activity.class, Names.named("regions"), de.mkristian.ixtlan.users.client.activities.RegionActivity.class)
+            .implement(Activity.class, Names.named("domains"), de.mkristian.ixtlan.users.client.activities.DomainActivity.class)
             .implement(Activity.class, Names.named("audits"), de.mkristian.ixtlan.users.client.activities.AuditActivity.class)
             .implement(Activity.class, Names.named("errors"), de.mkristian.ixtlan.users.client.activities.ErrorActivity.class)
             .implement(Activity.class, Names.named("applications"), de.mkristian.ixtlan.users.client.activities.ApplicationActivity.class)
@@ -92,17 +89,17 @@ public class ManagedGinModule extends BaseModule {
     }
 
     @Singleton
-    public static class ErrorsRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.restservices.ErrorsRestService> {
-        private final de.mkristian.ixtlan.users.client.restservices.ErrorsRestService service = GWT.create(de.mkristian.ixtlan.users.client.restservices.ErrorsRestService.class);
-        public de.mkristian.ixtlan.users.client.restservices.ErrorsRestService get() {
+    public static class ErrorsRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.errors.ErrorsRestService> {
+        private final de.mkristian.ixtlan.users.client.errors.ErrorsRestService service = GWT.create(de.mkristian.ixtlan.users.client.errors.ErrorsRestService.class);
+        public de.mkristian.ixtlan.users.client.errors.ErrorsRestService get() {
             return service;
         }
     }
 
     @Singleton
-    public static class AuditsRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.restservices.AuditsRestService> {
-        private final de.mkristian.ixtlan.users.client.restservices.AuditsRestService service = GWT.create(de.mkristian.ixtlan.users.client.restservices.AuditsRestService.class);
-        public de.mkristian.ixtlan.users.client.restservices.AuditsRestService get() {
+    public static class AuditsRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.audits.AuditsRestService> {
+        private final de.mkristian.ixtlan.users.client.audits.AuditsRestService service = GWT.create(de.mkristian.ixtlan.users.client.audits.AuditsRestService.class);
+        public de.mkristian.ixtlan.users.client.audits.AuditsRestService get() {
             return service;
         }
     }

@@ -12,7 +12,7 @@
       <g:Button ui:field="listButton">List All</g:Button>
     </g:FlowPanel>
 
-    <t:IdentifiableEditor ui:field="editor" styleName="gwt-rails-model-editor" />
+    <t:EnabledEditor ui:field="editor" styleName="gwt-rails-model-editor" />
 
   </g:FlowPanel>
 

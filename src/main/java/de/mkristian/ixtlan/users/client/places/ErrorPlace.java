@@ -2,8 +2,8 @@ package de.mkristian.ixtlan.users.client.places;
 
 import de.mkristian.gwt.rails.places.RestfulAction;
 import de.mkristian.gwt.rails.places.RestfulPlace;
+import de.mkristian.ixtlan.users.client.errors.Error;
 import de.mkristian.ixtlan.users.client.managed.ActivityFactory;
-import de.mkristian.ixtlan.users.client.models.Error;
 
 
 import com.google.gwt.activity.shared.Activity;

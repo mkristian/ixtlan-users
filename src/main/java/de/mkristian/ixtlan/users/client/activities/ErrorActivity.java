@@ -8,8 +8,8 @@ import com.google.inject.assistedinject.Assisted;
 
 import de.mkristian.gwt.rails.activities.AbstractReadOnlyActivity;
 import de.mkristian.gwt.rails.events.ModelEventHandler;
-import de.mkristian.ixtlan.users.client.events.ErrorEvent;
-import de.mkristian.ixtlan.users.client.models.Error;
+import de.mkristian.ixtlan.users.client.errors.Error;
+import de.mkristian.ixtlan.users.client.errors.ErrorEvent;
 import de.mkristian.ixtlan.users.client.places.ErrorPlace;
 import de.mkristian.ixtlan.users.client.presenters.ErrorPresenter;
 
