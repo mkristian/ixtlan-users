@@ -1,4 +1,4 @@
-package de.mkristian.ixtlan.users.client.editors;
+package de.mkristian.ixtlan.users.client.errors;
 
 
 import com.google.gwt.core.client.GWT;
@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.mkristian.gwt.rails.editors.EnabledEditor;
-import de.mkristian.ixtlan.users.client.models.Error;
 
 
 public class ErrorEditor extends EnabledEditor<Error>{

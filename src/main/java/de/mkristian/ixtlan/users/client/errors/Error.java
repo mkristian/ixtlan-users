@@ -1,4 +1,4 @@
-package de.mkristian.ixtlan.users.client.models;
+package de.mkristian.ixtlan.users.client.errors;
 
 
 import java.util.Date;

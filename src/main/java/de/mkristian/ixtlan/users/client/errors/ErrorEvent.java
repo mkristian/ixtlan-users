@@ -1,4 +1,4 @@
-package de.mkristian.ixtlan.users.client.events;
+package de.mkristian.ixtlan.users.client.errors;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import org.fusesource.restygwt.client.Method;
 
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEventHandler;
-import de.mkristian.ixtlan.users.client.models.Error;
 
 public class ErrorEvent extends ModelEvent<Error> {
 

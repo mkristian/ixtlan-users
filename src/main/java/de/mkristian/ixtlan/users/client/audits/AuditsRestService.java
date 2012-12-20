@@ -1,7 +1,6 @@
-package de.mkristian.ixtlan.users.client.restservices;
+package de.mkristian.ixtlan.users.client.audits;
 
 import de.mkristian.gwt.rails.dispatchers.DefaultDispatcherSingleton;
-import de.mkristian.ixtlan.users.client.models.Audit;
 
 import java.util.List;
 

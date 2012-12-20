@@ -18,7 +18,7 @@
  * along with ixtlan_gettext.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.mkristian.ixtlan.users.client.caches;
+package de.mkristian.ixtlan.users.client.domains;
 
 import java.util.List;
 
@@ -33,36 +33,33 @@ import de.mkristian.gwt.rails.RemoteNotifier;
 import de.mkristian.gwt.rails.caches.RemoteReadOnlyAdapter;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
-import de.mkristian.ixtlan.users.client.events.ErrorEvent;
-import de.mkristian.ixtlan.users.client.models.Error;
-import de.mkristian.ixtlan.users.client.restservices.ErrorsRestService;
 
 @Singleton
-public class ErrorRemoteReadOnly extends RemoteReadOnlyAdapter<Error> {
+public class DomainRemoteReadOnly extends RemoteReadOnlyAdapter<Domain> {
 
-    private final ErrorsRestService restService;
+    private final DomainRestService restService;
     
     @Inject
-    protected ErrorRemoteReadOnly( RemoteNotifier notifier, 
+    protected DomainRemoteReadOnly( RemoteNotifier notifier, 
             EventBus eventBus, 
-            ErrorsRestService restService ) {
+            DomainRestService restService ) {
         super( eventBus, notifier );
         this.restService = restService;
     }
 
     @Override
-    protected ModelEvent<Error> newEvent(Method method, List<Error> models, Action action) {
-        return new ErrorEvent( method, models, action );
+    protected ModelEvent<Domain> newEvent(Method method, List<Domain> models, Action action) {
+        return new DomainEvent( method, models, action );
     }
 
     @Override
-    protected ModelEvent<Error> newEvent(Method method, Error model, Action action) {
-        return new ErrorEvent( method, model, action );
+    protected ModelEvent<Domain> newEvent(Method method, Domain model, Action action) {
+        return new DomainEvent( method, model, action );
     }
 
     @Override
-    protected ErrorEvent newEvent(Method method, Throwable e) {
-        return new ErrorEvent( method, e );
+    protected DomainEvent newEvent(Method method, Throwable e) {
+        return new DomainEvent( method, e );
     }
 
     @Override

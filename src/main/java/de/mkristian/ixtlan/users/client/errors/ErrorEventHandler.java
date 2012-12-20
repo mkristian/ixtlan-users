@@ -1,8 +1,7 @@
-package de.mkristian.ixtlan.users.client.events;
+package de.mkristian.ixtlan.users.client.errors;
 
 
 import de.mkristian.gwt.rails.events.ModelEventHandler;
-import de.mkristian.ixtlan.users.client.models.Error;
 
 public interface ErrorEventHandler extends ModelEventHandler<Error> {
 }

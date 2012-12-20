@@ -18,7 +18,7 @@
  * along with ixtlan_gettext.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.mkristian.ixtlan.users.client.caches;
+package de.mkristian.ixtlan.users.client.locales;
 
 import java.util.List;
 
@@ -33,36 +33,33 @@ import de.mkristian.gwt.rails.RemoteNotifier;
 import de.mkristian.gwt.rails.caches.RemoteReadOnlyAdapter;
 import de.mkristian.gwt.rails.events.ModelEvent;
 import de.mkristian.gwt.rails.events.ModelEvent.Action;
-import de.mkristian.ixtlan.users.client.events.AuditEvent;
-import de.mkristian.ixtlan.users.client.models.Audit;
-import de.mkristian.ixtlan.users.client.restservices.AuditsRestService;
 
 @Singleton
-public class AuditRemoteReadOnly extends RemoteReadOnlyAdapter<Audit> {
+public class LocaleRemoteReadOnly extends RemoteReadOnlyAdapter<Locale> {
 
-    private final AuditsRestService restService;
+    private final LocalesRestService restService;
     
     @Inject
-    protected AuditRemoteReadOnly( RemoteNotifier notifier, 
+    protected LocaleRemoteReadOnly( RemoteNotifier notifier, 
             EventBus eventBus, 
-            AuditsRestService restService ) {
+            LocalesRestService restService ) {
         super( eventBus, notifier );
         this.restService = restService;
     }
 
     @Override
-    protected ModelEvent<Audit> newEvent(Method method, List<Audit> models, Action action) {
-        return new AuditEvent( method, models, action );
+    protected ModelEvent<Locale> newEvent(Method method, List<Locale> models, Action action) {
+        return new LocaleEvent( method, models, action );
     }
 
     @Override
-    protected ModelEvent<Audit> newEvent(Method method, Audit model, Action action) {
-        return new AuditEvent( method, model, action );
+    protected ModelEvent<Locale> newEvent(Method method, Locale model, Action action) {
+        return new LocaleEvent( method, model, action );
     }
 
     @Override
-    protected ModelEvent<Audit> newEvent(Method method, Throwable e) {
-        return new AuditEvent( method, e );
+    protected LocaleEvent newEvent(Method method, Throwable e) {
+        return new LocaleEvent( method, e );
     }
 
     @Override
