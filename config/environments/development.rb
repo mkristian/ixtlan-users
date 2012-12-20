@@ -49,4 +49,15 @@ Users::Application.configure do
   # config.active_recordauto_explain_threshold_in_seconds = 0.5
 
 end
-Pony.options = { :via => :test }
+class MailDump
+    def initialize(values)
+      @settings = {}
+    end
+    
+    attr_accessor :settings
+
+    def deliver!(mail)
+      puts mail.to_s
+    end
+end
+Pony.options = { :via => MailDump }

@@ -38,6 +38,7 @@ class UserSerializer < Ixtlan::Babel::Serializer
               :methods => [:group_ids, :application_ids])
 
   add_context(:profile,
+              :root => 'profile',
               :except => [:hashed, :hashed2, :modified_by_id])
 
   add_context(:single,

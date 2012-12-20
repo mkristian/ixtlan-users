@@ -5,6 +5,12 @@ PATH
       ixtlan-generators (~> 0.1.4)
 
 PATH
+  remote: ../../ixtlan/ixtlan-audit
+  specs:
+    ixtlan-audit (0.2.1)
+      slf4r (~> 0.4.2)
+
+PATH
   remote: ../../ixtlan/ixtlan-babel
   specs:
     ixtlan-babel (0.1.2)
@@ -86,8 +92,6 @@ GEM
     ffi (1.1.5-java)
     hike (1.2.1)
     i18n (0.6.1)
-    ixtlan-audit (0.2.1)
-      slf4r (~> 0.4.2)
     ixtlan-generators (0.1.7)
     ixtlan-session-timeout (0.4.0)
     jdbc-sqlite3 (3.7.2)
@@ -177,7 +181,7 @@ DEPENDENCIES
   capybara
   copyright-header (~> 1.0.7)
   enforce-ssl
-  ixtlan-audit (~> 0.2.1)
+  ixtlan-audit (~> 0.2.1)!
   ixtlan-babel!
   ixtlan-core (~> 0.8.0)!
   ixtlan-error-handler (~> 0.2.1)!

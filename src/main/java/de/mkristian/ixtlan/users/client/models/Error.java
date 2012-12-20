@@ -9,18 +9,15 @@ import org.fusesource.restygwt.client.Json;
 import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.gwt.rails.models.HasToDisplay;
-import de.mkristian.gwt.rails.models.Identifyable;
+import de.mkristian.gwt.rails.models.Identifiable;
 
 @Json(style = Style.RAILS)
-public class Error implements HasToDisplay, Identifyable {
+public class Error implements HasToDisplay, Identifiable {
 
   public final int id;
 
   @Json(name = "created_at")
   private final Date createdAt;
-
-  @Json(name = "updated_at")
-  private final Date updatedAt;
 
   private String message;
 
@@ -37,16 +34,14 @@ public class Error implements HasToDisplay, Identifyable {
   private String backtrace;
 
   public Error(){
-    this(0, null, null);
+    this(0, null);
   }
   
   @JsonCreator
   public Error(@JsonProperty("id") int id, 
-          @JsonProperty("createdAt") Date createdAt, 
-          @JsonProperty("updatedAt") Date updatedAt){
+          @JsonProperty("createdAt") Date createdAt){
     this.id = id;
     this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 
   public int getId(){
@@ -55,10 +50,6 @@ public class Error implements HasToDisplay, Identifyable {
 
   public Date getCreatedAt(){
     return createdAt;
-  }
-
-  public Date getUpdatedAt(){
-    return updatedAt;
   }
 
   public String getMessage(){

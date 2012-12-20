@@ -12,8 +12,6 @@
       <g:NumberLabel ui:field="id" />
       <g:Label>created at: </g:Label>
       <g:DateLabel ui:field="createdAt" predefinedFormat="DATE_TIME_MEDIUM"/>
-      <g:Label>updated at: </g:Label>
-      <g:DateLabel ui:field="updatedAt" predefinedFormat="DATE_TIME_MEDIUM" />
     </g:FlowPanel>
 
     <g:FlowPanel styleName="gwt-rails-model-fields">

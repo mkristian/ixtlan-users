@@ -23,7 +23,7 @@ public class ManagedGinModule extends BaseModule {
         bind(de.mkristian.ixtlan.users.client.restservices.ApplicationsRestService.class).toProvider(ApplicationsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.RemotePermissionsRestService.class).toProvider(RemotePermissionsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.GroupsRestService.class).toProvider(GroupsRestServiceProvider.class);
-        bind(de.mkristian.ixtlan.users.client.restservices.ProfilesRestService.class).toProvider(ProfilesRestServiceProvider.class);
+        bind(de.mkristian.ixtlan.users.client.restservices.ProfileRestService.class).toProvider(ProfilesRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.ConfigurationRestService.class).toProvider(ConfigurationsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.UsersRestService.class).toProvider(UsersRestServiceProvider.class);
 //        bind(Application.class).to(UsersApplication.class);     
@@ -60,9 +60,9 @@ public class ManagedGinModule extends BaseModule {
     }
 
     @Singleton
-    public static class ProfilesRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.restservices.ProfilesRestService> {
-        private final de.mkristian.ixtlan.users.client.restservices.ProfilesRestService service = GWT.create(de.mkristian.ixtlan.users.client.restservices.ProfilesRestService.class);
-        public de.mkristian.ixtlan.users.client.restservices.ProfilesRestService get() {
+    public static class ProfilesRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.restservices.ProfileRestService> {
+        private final de.mkristian.ixtlan.users.client.restservices.ProfileRestService service = GWT.create(de.mkristian.ixtlan.users.client.restservices.ProfileRestService.class);
+        public de.mkristian.ixtlan.users.client.restservices.ProfileRestService get() {
             return service;
         }
     }

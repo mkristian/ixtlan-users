@@ -34,11 +34,14 @@ class LocalController < ApplicationController
   end
 
   def cleanup
-    params_filter = ParamsFilter.new
     model_params =  params[ params_key ]
-    params[ :filtered ][ params_key ] = model_params
-    params[ params_key ] = params_filter.filter( model_params )
-    @_updated_at ||= params_filter.updated_at
+    if model_params
+      params_filter = ParamsFilter.new
+      params[ :filtered ] = {}
+      params[ :filtered ][ params_key ] = model_params
+      params[ params_key ] = params_filter.filter( model_params )
+      @_updated_at ||= params_filter.updated_at
+    end
   end
 
   private
@@ -53,7 +56,7 @@ class LocalController < ApplicationController
 
   def current_user(user = nil)  
     if user
-      session['user'] = serializer(user).use(:session).to_hash
+      session['user'] = serializer(user).use(:session).to_hash['user']
       @_current_user = user
     else
       @_current_user ||= 
@@ -113,7 +116,9 @@ class LocalController < ApplicationController
   end
 
   def authorize_app(application)
-    authorize(application) do |group, app|
+    authorize do |group, app|
+p group
+p app
       apps = group.applications(current_user)
       apps.member?(app) || apps.member?(Application.ALL)
     end

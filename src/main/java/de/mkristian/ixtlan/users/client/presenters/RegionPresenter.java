@@ -20,18 +20,11 @@
 
 package de.mkristian.ixtlan.users.client.presenters;
 
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-
-import de.mkristian.gwt.rails.caches.Cache;
-import de.mkristian.gwt.rails.caches.Remote;
-import de.mkristian.gwt.rails.presenters.AbstractPresenter;
-import de.mkristian.gwt.rails.presenters.CRUDPresenter;
-import de.mkristian.gwt.rails.views.CRUDListView;
-import de.mkristian.gwt.rails.views.CRUDView;
+import de.mkristian.gwt.rails.presenters.CRUDPresenterImpl;
 import de.mkristian.ixtlan.users.client.UsersErrorHandler;
 import de.mkristian.ixtlan.users.client.caches.RegionCache;
 import de.mkristian.ixtlan.users.client.caches.RegionRemote;
@@ -40,15 +33,7 @@ import de.mkristian.ixtlan.users.client.views.RegionListView;
 import de.mkristian.ixtlan.users.client.views.RegionView;
 
 @Singleton
-public class RegionPresenter extends AbstractPresenter 
-            implements CRUDPresenter<Region> {
-
-    private final CRUDView<Region> view;
-    private final CRUDListView<Region> listView;
-    private final Cache<Region> cache;
-    private final Remote<Region> remote;
-
-    private boolean isEditing = false;
+public class RegionPresenter extends CRUDPresenterImpl<Region> {
 
     @Inject
     public RegionPresenter( UsersErrorHandler errors,
@@ -56,77 +41,6 @@ public class RegionPresenter extends AbstractPresenter
             RegionListView listView,
             RegionCache cache,
             RegionRemote remote ){
-        super( errors );
-        this.view = view;
-        this.view.setPresenter(this);
-        this.listView = listView;
-        this.listView.setPresenter(this);
-        this.cache = cache;
-        this.remote = remote;
-    }
-
-    //@Override
-    public void showAll(){
-        isEditing = false;
-        setWidget( listView );
-        reset( cache.getOrLoadModels() );
-    }
-
-    //@Override
-    public void edit(int id) {
-        edit( cache.getOrLoadModel(id) );
-    }
-    
-    //@Override
-    public void edit( Region model ){
-        isEditing = true;
-        setWidget( view );
-        view.edit( model );
-    }
-
-    //@Override
-    public void showNew(){
-        isEditing = true;
-        setWidget( view );
-        view.showNew( );
-    }
-    
-    //@Override
-    public void show( Region model ){
-        isEditing = false;
-        setWidget( view );
-        view.show( model );
-    }
-    
-    //@Override
-    public void show( int id ){
-        show( cache.getOrLoadModel(id) );
-    }
-
-    public void create( final Region model ) {
-        remote.create( model );
-    }
-
-    public void delete( final Region model ) {
-        remote.delete( model );
-    }
-        
-    //@Override
-    public void reset( Region model ) {
-        view.reset( model );
-    }
- 
-    //@Override
-    public void reset( List<Region> models ) {
-        listView.reset( models );
-    }
-
-    public void save( Region model ) { 
-        remote.update( model );
-    }
-
-    //@Override
-    public boolean isDirty() {
-        return isEditing && view.isDirty();
+        super( errors, view, listView, cache, remote );
     }
 }

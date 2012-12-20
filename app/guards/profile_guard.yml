@@ -1,0 +1,5 @@
+profile:
+  defaults: [*] # to allow every user the profile page
+#  show: []
+#  edit: []
+#  update: []

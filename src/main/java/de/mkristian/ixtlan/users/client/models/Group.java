@@ -11,10 +11,10 @@ import org.fusesource.restygwt.client.Json;
 import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.gwt.rails.models.HasToDisplay;
-import de.mkristian.gwt.rails.models.Identifyable;
+import de.mkristian.gwt.rails.models.Identifiable;
 
 @Json(style = Style.RAILS)
-public class Group implements HasToDisplay, Identifyable {
+public class Group implements HasToDisplay, Identifiable {
 
   public final int id;
 

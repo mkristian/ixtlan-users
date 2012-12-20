@@ -12,7 +12,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 
 import de.mkristian.gwt.rails.editors.UserLabel;
-import de.mkristian.gwt.rails.editors.IdentifyableListBox;
+import de.mkristian.gwt.rails.editors.IdentifiableListBox;
 import de.mkristian.ixtlan.users.client.models.Application;
 import de.mkristian.ixtlan.users.client.models.Group;
 import de.mkristian.ixtlan.users.client.models.User;
@@ -34,7 +34,7 @@ public class GroupEditor extends Composite implements Editor<Group>{
 
     @UiField TextArea description;
 
-    @UiField IdentifyableListBox<Application> application;
+    @UiField IdentifiableListBox<Application> application;
 
     @UiField CheckBox hasRegions;
 

@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceController;
 
 import de.mkristian.gwt.rails.RemoteNotifier;
@@ -14,13 +13,13 @@ import de.mkristian.gwt.rails.presenters.SingletonPresenterImpl;
 import de.mkristian.ixtlan.users.client.UsersErrorHandler;
 import de.mkristian.ixtlan.users.client.models.Profile;
 import de.mkristian.ixtlan.users.client.places.ProfilePlace;
-import de.mkristian.ixtlan.users.client.restservices.ProfilesRestService;
+import de.mkristian.ixtlan.users.client.restservices.ProfileRestService;
 import de.mkristian.ixtlan.users.client.views.ProfileView;
 
 public class ProfilePresenter 
             extends SingletonPresenterImpl<Profile> {
     
-    private final ProfilesRestService service;
+    private final ProfileRestService service;
     private final PlaceController places;
     private final RemoteNotifier notifier;
 
@@ -28,7 +27,7 @@ public class ProfilePresenter
     public ProfilePresenter(RemoteNotifier notifier,
                 UsersErrorHandler errors,
                 ProfileView view,
-                ProfilesRestService service,
+                ProfileRestService service,
                 PlaceController places){
         super( errors, view, null );
         this.notifier = notifier;
@@ -39,13 +38,13 @@ public class ProfilePresenter
     public void save(final Profile model){
         notifier.saving();
         service.update(model, new MethodCallback<Profile>() {
-            //@Override
+            @Override
             public void onSuccess(Method method, Profile model) {
                 notifier.finish();
                 isEditing = false;
                 places.goTo(new ProfilePlace(model, RestfulActionEnum.SHOW));
             }
-            //@Override
+            @Override
             public void onFailure(Method method, Throwable e) {
                 onError(method, e);
             }
@@ -56,14 +55,13 @@ public class ProfilePresenter
         notifier.loading();
         isEditing = false;
         setWidget(view);
-        GWT.log("profile", new Exception());
         service.show(new MethodCallback<Profile>() {
-            //@Override
+            @Override
             public void onSuccess(Method method, Profile model) {
                 notifier.finish();
                 view.show(model);
             }
-            //@Override
+            @Override
             public void onFailure(Method method, Throwable e) {
                 onError(method, e);   
             }
@@ -75,12 +73,12 @@ public class ProfilePresenter
         isEditing = true;
         setWidget(view);
         service.show(new MethodCallback<Profile>() {
-            //@Override
+            @Override
             public void onSuccess(Method method, Profile model) {
                 notifier.finish();
                 view.edit(model);
             }
-            //@Override
+            @Override
             public void onFailure(Method method, Throwable e) {
                 onError(method, e);   
             }

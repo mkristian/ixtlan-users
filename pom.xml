@@ -160,11 +160,6 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
-      <artifactId>ixtlan-audit</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
       <artifactId>slf4r</artifactId>
       <type>gem</type>
     </dependency>
@@ -297,6 +292,18 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
+        <artifactId>ixtlan-audit</artifactId>
+        <version>0.2.1</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>slf4r</artifactId>
+        <version>0.4.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
         <artifactId>ixtlan-babel</artifactId>
         <version>0.1.2</version>
         <type>gem</type>
@@ -311,12 +318,6 @@
         <groupId>rubygems</groupId>
         <artifactId>ixtlan-error-handler</artifactId>
         <version>0.2.1</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>slf4r</artifactId>
-        <version>0.4.2</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -545,12 +546,6 @@
         <groupId>rubygems</groupId>
         <artifactId>enforce-ssl</artifactId>
         <version>0.2.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-audit</artifactId>
-        <version>0.2.1</version>
         <type>gem</type>
       </dependency>
       <dependency>

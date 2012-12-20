@@ -9,11 +9,11 @@ import org.fusesource.restygwt.client.Json;
 import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.gwt.rails.models.HasToDisplay;
-import de.mkristian.gwt.rails.models.Identifyable;
+import de.mkristian.gwt.rails.models.Identifiable;
 import de.mkristian.gwt.rails.views.ExternalApplication;
 
 @Json(style = Style.RAILS)
-public class Application implements HasToDisplay, Identifyable, ExternalApplication {
+public class Application implements HasToDisplay, Identifiable, ExternalApplication {
 
   public final int id;
 

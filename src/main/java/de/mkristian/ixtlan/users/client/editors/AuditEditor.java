@@ -10,11 +10,11 @@ import com.google.gwt.user.client.ui.NumberLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.mkristian.gwt.rails.editors.IdentifiableEditor;
+import de.mkristian.gwt.rails.editors.EnabledEditor;
 import de.mkristian.ixtlan.users.client.models.Audit;
 
 
-public class AuditEditor extends IdentifiableEditor<Audit>{
+public class AuditEditor extends EnabledEditor<Audit>{
     
     interface Binder extends UiBinder<Widget, AuditEditor> {}
 
@@ -24,7 +24,6 @@ public class AuditEditor extends IdentifiableEditor<Audit>{
 
     @UiField NumberLabel<Integer> id;
     @UiField DateLabel createdAt;
-    @UiField DateLabel updatedAt;
 
     @UiField TextBox login;
 
@@ -42,9 +41,5 @@ public class AuditEditor extends IdentifiableEditor<Audit>{
         resetVisibility();
         this.login.setEnabled(enabled);
         this.message.setEnabled(enabled);
-    }
-
-    public int getId() {
-        return id.getValue();
     }
 }

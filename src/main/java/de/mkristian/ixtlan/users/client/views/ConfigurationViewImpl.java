@@ -40,7 +40,7 @@ public class ConfigurationViewImpl extends SingletonViewImpl<Configuration>
               places,
               new ConfigurationEditor(),
               (SimpleBeanEditorDriver<Configuration, Editor<Configuration>>) GWT.create( EditorDriver.class ) );
-      initWidget(BINDER.createAndBindUi(this));
+      initWidget( BINDER.createAndBindUi( this ) );
   }
 
     @Override

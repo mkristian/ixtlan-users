@@ -3,7 +3,6 @@ package de.mkristian.ixtlan.users.client.views;
 
 import javax.inject.Inject;
 
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -14,7 +13,6 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
-import de.mkristian.gwt.rails.editors.IdentifiableEditor;
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
 import de.mkristian.gwt.rails.session.Guard;
 import de.mkristian.gwt.rails.views.CRUDViewImpl;
@@ -31,7 +29,7 @@ public class RegionViewImpl extends CRUDViewImpl<Region>
     
     static private Binder BINDER = GWT.create( Binder.class );
 
-    static interface EditorDriver extends SimpleBeanEditorDriver<Region, IdentifiableEditor<Region>> {}
+    static interface EditorDriver extends SimpleBeanEditorDriver<Region, RegionEditor> {}
 
     @SuppressWarnings("unchecked")
     @Inject
@@ -42,7 +40,6 @@ public class RegionViewImpl extends CRUDViewImpl<Region>
                 new RegionEditor(),
                 (SimpleBeanEditorDriver<Region, Editor<Region>>) GWT.create(EditorDriver.class) );
         initWidget( BINDER.createAndBindUi( this ) );
-        editorDriver.initialize( editor ); 
     }
     
     @Override
@@ -56,17 +53,23 @@ public class RegionViewImpl extends CRUDViewImpl<Region>
     }
 
     @Override
-    protected Place showPlace( int id ) {
-        return new RegionPlace( id, RestfulActionEnum.SHOW );
+    protected Place showPlace( Region model ) {
+        return new RegionPlace( model, RestfulActionEnum.SHOW );
     }
 
     @Override
-    protected Place editPlace(int id) {
-        return new RegionPlace( id, RestfulActionEnum.EDIT );
+    protected Place editPlace( Region model ) {
+        return new RegionPlace( model, RestfulActionEnum.EDIT );
     }
 
     @Override
     protected Region newModel() {
         return new Region();
     }
+//    public void reset(Region model) {
+//        GWT.log(model.toDisplay());
+//        super.reset( model );
+//        GWT.log( "asd" + model.getId());
+//        GWT.log( "asd" + editor.getId());
+//    }
  }

@@ -10,12 +10,12 @@ import com.google.gwt.user.client.ui.NumberLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.mkristian.gwt.rails.editors.IdentifiableEditor;
+import de.mkristian.gwt.rails.editors.EnabledEditor;
 import de.mkristian.gwt.rails.editors.UserLabel;
 import de.mkristian.ixtlan.users.client.models.Region;
 import de.mkristian.ixtlan.users.client.models.User;
 
-public class RegionEditor extends IdentifiableEditor<Region>{
+public class RegionEditor extends EnabledEditor<Region>{
     
     interface Binder extends UiBinder<Widget, RegionEditor> {}
 
@@ -37,9 +37,5 @@ public class RegionEditor extends IdentifiableEditor<Region>{
     public void setEnabled(boolean enabled) {
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
         this.name.setEnabled(enabled);
-    }
-    
-    public int getId(){
-        return id.getValue();
     }
 }

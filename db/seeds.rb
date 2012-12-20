@@ -65,8 +65,8 @@ if ENV['login'].nil? && atu.nil?
   atu.save
 end
 
-unless r = Region.find_by_name( 'europe' )
-  r = Region.new( :name => 'europe' )
+unless r = Region.find_by_name( 'Europe' )
+  r = Region.new( :name => 'Europe' )
   r.modified_by = u
   r.save
 end

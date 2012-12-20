@@ -36,7 +36,7 @@ class RegionsController < LocalController
   end
 
   # DELETE /regions/1
-  def destroy
+  def destroy 
     @region = Region.optimistic_find( updated_at, params[:id] )
 
     @region.destroy

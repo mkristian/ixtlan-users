@@ -27,6 +27,7 @@ import javax.inject.Singleton;
 
 import org.fusesource.restygwt.client.Method;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 
 import de.mkristian.gwt.rails.RemoteNotifier;
@@ -78,6 +79,7 @@ public class RegionRemote extends RemoteAdapter<Region> {
 
     @Override
     public void retrieve( int id ) {
+        GWT.log( "-------------retreve " + id);
         notifier.loading();
         restService.show( id, newRetrieveCallback() );
     }

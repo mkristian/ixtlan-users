@@ -14,15 +14,15 @@
       <g:Button ui:field="reloadButton">Reload</g:Button>
     </g:FlowPanel>
 
-      <t:IdentifiableEditor ui:field="editor" styleName="gwt-rails-model-editor" />
+    <t:IdentifiableEditor ui:field="editor" styleName="gwt-rails-model-editor" />
 
-      <g:FlowPanel styleName="gwt-rails-buttons">
-        <g:Button ui:field="createButton">Create</g:Button>
-        <g:Button ui:field="saveButton">Save</g:Button>
-        <g:Button ui:field="deleteButton">Delete</g:Button>
-        <g:Button ui:field="cancelButton">Cancel</g:Button>
+    <g:FlowPanel styleName="gwt-rails-buttons">
+      <g:Button ui:field="createButton">Create</g:Button>
+      <g:Button ui:field="saveButton">Save</g:Button>
+      <g:Button ui:field="deleteButton">Delete</g:Button>
+      <g:Button ui:field="cancelButton">Cancel</g:Button>
         
-      </g:FlowPanel>
+    </g:FlowPanel>
 
   </g:FlowPanel>
 

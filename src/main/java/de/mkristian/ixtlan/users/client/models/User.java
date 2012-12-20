@@ -13,11 +13,11 @@ import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.gwt.rails.caches.FilterUtils;
 import de.mkristian.gwt.rails.models.HasToDisplay;
-import de.mkristian.gwt.rails.models.Identifyable;
+import de.mkristian.gwt.rails.models.Identifiable;
 import de.mkristian.gwt.rails.models.IsUser;
 
 @Json(style = Style.RAILS)
-public class User implements HasToDisplay, Identifyable, IsUser {
+public class User implements HasToDisplay, Identifiable, IsUser {
 
   public final int id;
 

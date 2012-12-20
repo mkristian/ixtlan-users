@@ -28,12 +28,12 @@ public class RegionActivity extends AbstractCRUDActivitiy<Region> {
         return RegionEvent.TYPE;
     }
 
-    //@Override
+    @Override
     protected RestfulPlace<Region, ?> showPlace( Region model ) {
         return new RegionPlace( model, RestfulActionEnum.SHOW );
     }
     
-    //@Override
+    @Override
     protected RestfulPlace<Region, ?> showAllPlace() {
         return new RegionPlace( RestfulActionEnum.INDEX );
     }

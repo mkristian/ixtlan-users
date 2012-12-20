@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import de.mkristian.gwt.rails.editors.IdentifyableListBox;
+import de.mkristian.gwt.rails.editors.IdentifiableListBox;
 import de.mkristian.gwt.rails.events.QueryEvent;
 import de.mkristian.gwt.rails.events.QueryEventHandler;
 import de.mkristian.ixtlan.users.client.models.Application;
@@ -33,9 +33,9 @@ public class UserQueryEditor extends Composite implements Editor<UserQuery>{
     
     @UiField TextBox name;
 
-    @UiField IdentifyableListBox<Group> group;
+    @UiField IdentifiableListBox<Group> group;
 
-    @UiField IdentifyableListBox<Application> application;
+    @UiField IdentifiableListBox<Application> application;
     
     public UserQueryEditor() {
         initWidget(BINDER.createAndBindUi(this));

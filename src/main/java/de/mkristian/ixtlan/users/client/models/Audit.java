@@ -9,34 +9,29 @@ import org.fusesource.restygwt.client.Json;
 import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.gwt.rails.models.HasToDisplay;
-import de.mkristian.gwt.rails.models.Identifyable;
+import de.mkristian.gwt.rails.models.Identifiable;
 
 @Json(style = Style.RAILS)
-public class Audit implements HasToDisplay, Identifyable {
+public class Audit implements HasToDisplay, Identifiable {
 
   public final int id;
 
   @Json(name = "created_at")
   private final Date createdAt;
 
-  @Json(name = "updated_at")
-  private final Date updatedAt;
-
   private String login;
 
   private String message;
 
   public Audit(){
-    this(0, null, null);
+    this(0, null);
   }
   
   @JsonCreator
   public Audit(@JsonProperty("id") int id, 
-          @JsonProperty("createdAt") Date createdAt, 
-          @JsonProperty("updatedAt") Date updatedAt){
+          @JsonProperty("createdAt") Date createdAt){
     this.id = id;
     this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
   }
 
   public int getId(){
@@ -45,10 +40,6 @@ public class Audit implements HasToDisplay, Identifyable {
 
   public Date getCreatedAt(){
     return createdAt;
-  }
-
-  public Date getUpdatedAt(){
-    return updatedAt;
   }
 
   public String getLogin(){
