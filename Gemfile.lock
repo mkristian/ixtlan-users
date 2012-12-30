@@ -7,13 +7,13 @@ PATH
 PATH
   remote: ../../ixtlan/ixtlan-audit
   specs:
-    ixtlan-audit (0.2.1)
+    ixtlan-audit (0.3.1)
       slf4r (~> 0.4.2)
 
 PATH
   remote: ../../ixtlan/ixtlan-babel
   specs:
-    ixtlan-babel (0.1.2)
+    ixtlan-babel (0.2.1)
 
 PATH
   remote: ../../ixtlan/ixtlan-core
@@ -23,25 +23,31 @@ PATH
 PATH
   remote: ../../ixtlan/ixtlan-error-handler
   specs:
-    ixtlan-error-handler (0.2.1)
+    ixtlan-error-handler (0.3.1)
       slf4r (~> 0.4.2)
+
+PATH
+  remote: ../../ixtlan/ixtlan-gettext
+  specs:
+    ixtlan-gettext (0.1.0)
+      fast_gettext (~> 0.6)
+      ixtlan-remote (~> 0.1)
 
 PATH
   remote: ../../ixtlan/ixtlan-guard
   specs:
     ixtlan-guard (0.9.0)
-      ixtlan-core (~> 0.8.0)
       virtus (~> 0.5)
 
 PATH
   remote: ../../ixtlan/ixtlan-optimistic
   specs:
-    ixtlan-optimistic (0.2.0)
+    ixtlan-optimistic (0.2.1)
 
 PATH
   remote: ../../ixtlan/ixtlan-remote
   specs:
-    ixtlan-remote (0.1.0)
+    ixtlan-remote (0.1.1)
       rest-client (~> 1.6.3)
 
 GEM
@@ -88,6 +94,7 @@ GEM
     diff-lcs (1.1.3)
     enforce-ssl (0.2.2)
     erubis (2.7.0)
+    fast_gettext (0.6.11)
     ffi (1.1.5)
     ffi (1.1.5-java)
     hike (1.2.1)
@@ -181,11 +188,13 @@ DEPENDENCIES
   capybara
   copyright-header (~> 1.0.7)
   enforce-ssl
-  ixtlan-audit (~> 0.2.1)!
+  fast_gettext
+  ixtlan-audit (~> 0.3.0)!
   ixtlan-babel!
   ixtlan-core (~> 0.8.0)!
-  ixtlan-error-handler (~> 0.2.1)!
+  ixtlan-error-handler (~> 0.3.0)!
   ixtlan-generators (~> 0.1.5)
+  ixtlan-gettext!
   ixtlan-guard (~> 0.9.0)!
   ixtlan-optimistic!
   ixtlan-remote!

@@ -2,6 +2,7 @@ class CreateAudits < ActiveRecord::Migration
   def self.up
     create_table :audits do |t|
       t.string :login
+      t.string :path
       t.string :message
 
       t.timestamps

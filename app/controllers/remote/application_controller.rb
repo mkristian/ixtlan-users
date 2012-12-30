@@ -18,6 +18,6 @@ class Remote::ApplicationController < ApplicationController
   include Ixtlan::Remote::AccessController
 
   def permission_model
-    RemotePermission
+    Application
   end
 end

@@ -9,7 +9,7 @@ class ApplicationSerializer < Ixtlan::Babel::Serializer
              )
 
   add_context(:collection,
-              :except => [:created_at, :modified_by_id]
+              :only => [:id, :name, :url, :updated_at]
              )
 
   add_context(:single,
@@ -17,6 +17,9 @@ class ApplicationSerializer < Ixtlan::Babel::Serializer
               :include => {
                 :modified_by => {
                   :only => [:id, :login, :name]
+                },
+                :groups => {
+                  :only => [:id, :name, :has_regions, :has_locales, :has_domains]
                 }
               }
              )

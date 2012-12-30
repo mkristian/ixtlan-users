@@ -15,8 +15,8 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
 
 import de.mkristian.gwt.rails.places.RestfulAction;
-import de.mkristian.ixtlan.users.client.audits.AbstractAuditListViewImpl;
-import de.mkristian.ixtlan.users.client.audits.Audit;
+import de.mkristian.ixtlan.gwt.audits.AbstractAuditListViewImpl;
+import de.mkristian.ixtlan.gwt.audits.Audit;
 import de.mkristian.ixtlan.users.client.places.AuditPlace;
 
 @Singleton

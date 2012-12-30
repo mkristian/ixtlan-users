@@ -54,11 +54,13 @@ describe Ixtlan::Users::Manager do
                                   :application_id => @a3.id)
 
     @root_user = User.find_by_login("root") || User.create(:login => "root", :email => 'root@example.com', :name => 'root', :modified_by => User.first)
-    @root_user.groups << root
-    @root_user.save
-    ApplicationsGroupsUser.create(:user_id => @root_user.id,
-                                  :group_id => root.id,
-                                  :application_id => all.id)
+    if @root_user.groups.empty?
+      @root_user.groups << root
+      @root_user.save
+      ApplicationsGroupsUser.create(:user_id => @root_user.id,
+                                    :group_id => root.id,
+                                    :application_id => all.id)
+    end
 
     @app_user = User.find_by_login("app") || User.create(:login => "app", :email => 'app@example.com', :name => 'app user', :modified_by => User.first)
     @app_user.groups << root

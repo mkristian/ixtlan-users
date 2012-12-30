@@ -53,8 +53,8 @@ gem 'enforce-ssl'
 gem "ixtlan-session-timeout", '~> 0.4.0'
 gem "ixtlan-guard", '~> 0.9.0',:path => '../../ixtlan/ixtlan-guard'
 gem "ixtlan-core", '~> 0.8.0',:path => '../../ixtlan/ixtlan-core'
-gem "ixtlan-error-handler", '~> 0.2.1', :path => '../../ixtlan/ixtlan-error-handler'
-gem "ixtlan-audit", '~> 0.2.1', :path => '../../ixtlan/ixtlan-audit'
+gem "ixtlan-error-handler", '~> 0.3.0', :path => '../../ixtlan/ixtlan-error-handler'
+gem "ixtlan-audit", '~> 0.3.0', :path => '../../ixtlan/ixtlan-audit'
 gem 'slf4r', '~> 0.4.2'
 gem 'bcrypt-ruby'
 
@@ -68,6 +68,7 @@ end
 
 gem 'ixtlan-remote', :path => '../../ixtlan/ixtlan-remote'
 gem "ixtlan-babel", :path => '../../ixtlan/ixtlan-babel'
+gem "ixtlan-gettext", :path => '../../ixtlan/ixtlan-gettext', :require => false
 gem "ixtlan-optimistic", :path => '../../ixtlan/ixtlan-optimistic'
 gem 'virtus', '~>0.5.2'
 gem 'rest-client', '~> 1.6.7'
@@ -76,3 +77,4 @@ gem 'rest-client', '~> 1.6.7'
 
 gem 'copyright-header', '~> 1.0.7', :group => :development
 gem 'pony', '~> 1.4'
+gem 'fast_gettext'

@@ -27,10 +27,6 @@
         <label name="token">Token</label>
         <g:TextBox ui:field="token"/>
       </g:HTMLPanel>
-      <g:HTMLPanel>
-        <label name="application">Application</label>
-        <r:IdentifyableListBox ui:field="application"/>
-      </g:HTMLPanel>
     </g:FlowPanel>
 
   </g:FlowPanel>

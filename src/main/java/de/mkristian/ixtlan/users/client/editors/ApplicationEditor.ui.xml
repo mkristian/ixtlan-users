@@ -27,6 +27,14 @@
         <label name="url">Url</label>
         <g:TextBox ui:field="url"/>
       </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="allowed_ip">Allowed Ip</label>
+        <g:TextBox ui:field="allowedIp"/>
+      </g:HTMLPanel>
+      <g:HTMLPanel>
+        <label name="authentication_token">Authentication Token</label>
+        <g:TextBox ui:field="authenticationToken"/>
+      </g:HTMLPanel>
     </g:FlowPanel>
 
   </g:FlowPanel>

@@ -1,4 +1,4 @@
-require 'ixtlan/audit/audit_serializer'
+require 'ixtlan/audit/serializer'
 
 class AuditSerializer < Ixtlan::Audit::AuditSerializer
 end

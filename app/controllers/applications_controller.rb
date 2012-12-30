@@ -1,8 +1,15 @@
 class ApplicationsController < LocalController
 
-  before_filter :authorize_application, :except => [:index, :create]
+#  before_filter :authorize_application, :except => [:index, :create]
 
-  skip_before_filter :authorize, :except => [:index, :create]
+#  skip_before_filter :authorize, :except => [:index, :create]
+
+  guard_filter do |groups|
+    groups.select do |group|
+      group.application == Application.ALL || 
+        ( application && group.application == application )
+    end
+  end
 
   private
 
@@ -20,6 +27,9 @@ class ApplicationsController < LocalController
     end
   end
 
+  def application
+    aid = params[ :application_id ] || params[ :id ]
+    @application ||= Application.find( aid ) if aid
   public
 
   # GET /applications
@@ -31,7 +41,7 @@ class ApplicationsController < LocalController
 
   # GET /applications/1
   def show
-    respond_with serializer( @application )
+    respond_with serializer( application )
   end
 
   # POST /applications
@@ -39,7 +49,7 @@ class ApplicationsController < LocalController
     @application = Application.new( params[:application] )
     @application.modified_by = current_user
 
-    authorize_app(@application)
+#    authorize_app(@application)
 
     @application.save
     
@@ -50,14 +60,45 @@ class ApplicationsController < LocalController
   def update
     params[:application][:modified_by] = current_user
 
-    @application.update_attributes( params[:application] )
+    application.update_attributes( params[:application] )
 
-    respond_with serializer( @application )
+    respond_with serializer( application )
   end
 
   # DELETE /applications/1
   def destroy
-    @application.destroy
+    application.destroy
+
+    head :ok
+  end
+
+  def group_create
+    group = application.group_create( current_user, params[ :group ] )
+
+    # for audit log
+    @application = group
+
+    respond_with serializer( group )
+  end
+
+  def group_update
+    group = application.group_update( current_user, 
+                                      updated_at,
+                                      param[ :id ], 
+                                      params[ :group ] )
+
+    # for audit log
+    @application = group
+
+    respond_with serializer( group )
+  end
+
+  def group_destroy
+    group = application.group_delete( updated_at,
+                                      param[ :id ] )
+
+    # for audit log
+    @application = group
 
     head :ok
   end

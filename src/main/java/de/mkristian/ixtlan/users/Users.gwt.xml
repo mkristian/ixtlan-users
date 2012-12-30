@@ -29,6 +29,7 @@
   <inherits name='org.fusesource.restygwt.RestyGWT'/>
 
   <inherits name='de.mkristian.gwt.RailsGWT'/>
+  <inherits name='de.mkristian.ixtlan.IxtlanGWT'/>
 
   <entry-point class='de.mkristian.ixtlan.users.client.UsersEntryPoint' />
 

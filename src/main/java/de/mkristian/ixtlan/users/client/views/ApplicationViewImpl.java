@@ -1,191 +1,268 @@
 package de.mkristian.ixtlan.users.client.views;
 
-import java.util.List;
+
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.DESTROY;
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.EDIT;
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.INDEX;
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.NEW;
+import static de.mkristian.gwt.rails.places.RestfulActionEnum.SHOW;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
-
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.VerticalAlign;
+import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.inject.Singleton;
 
-import de.mkristian.gwt.rails.places.RestfulAction;
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
-import static de.mkristian.gwt.rails.places.RestfulActionEnum.*;
-import de.mkristian.gwt.rails.session.SessionManager;
+import de.mkristian.gwt.rails.session.Guard;
+import de.mkristian.gwt.rails.views.CRUDViewImpl;
 import de.mkristian.gwt.rails.views.ModelButton;
 import de.mkristian.ixtlan.users.client.editors.ApplicationEditor;
+import de.mkristian.ixtlan.users.client.editors.GroupEditor;
 import de.mkristian.ixtlan.users.client.models.Application;
-import de.mkristian.ixtlan.users.client.models.User;
+import de.mkristian.ixtlan.users.client.models.Group;
 import de.mkristian.ixtlan.users.client.places.ApplicationPlace;
+import de.mkristian.ixtlan.users.client.presenters.ApplicationPresenter;
 
 @Singleton
-public class ApplicationViewImpl extends Composite implements ApplicationView {
+public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPresenter> 
+            implements ApplicationView {
 
     @UiTemplate("ApplicationView.ui.xml")
-    interface Binder extends UiBinder<Widget, ApplicationViewImpl> {}
+    static interface Binder extends UiBinder<Widget, ApplicationViewImpl> {}
     
-    private static Binder BINDER = GWT.create(Binder.class);
+    static private Binder BINDER = GWT.create( Binder.class );
 
-    interface EditorDriver extends SimpleBeanEditorDriver<Application, ApplicationEditor> {}
+    static interface EditorDriver extends SimpleBeanEditorDriver<Application, ApplicationEditor> {}
+    static interface GroupEditorDriver 
+                extends SimpleBeanEditorDriver<Group, GroupEditor> {}
 
-    private final EditorDriver editorDriver = GWT.create(EditorDriver.class);
+    private final GroupEditorDriver editorDriver = GWT.create(GroupEditorDriver.class);
 
-    @UiField Button newButton;
-    @UiField Button editButton;
-    @UiField Button showButton;
+    private GroupEditor groupEditor = new GroupEditor();
 
-    @UiField Button createButton;
-    @UiField Button saveButton;
-    @UiField Button deleteButton;
+    private final Button save = new Button("Save");
 
-    @UiField Panel model;
+    private final Button cancel = new Button("Cancel");
+
     @UiField FlexTable list;
-
-    @UiField ApplicationEditor editor;
-
-    private Presenter presenter;
-
-    private final SessionManager<User> session;
-
-    public ApplicationViewImpl() {
-        this(null);
-    }
-
+    
+//    static interface RemotePermissionEditorDriver
+//               extends SimpleBeanEditorDriver<RemotePermission, RemotePermissionEditor> {}
+//
+//    @UiField public Button rpEditButton;
+//    @UiField public Button rpCancelButton;
+//    @UiField public Button rpSaveButton;
+//    @UiField(provided=true) public EnabledEditor<RemotePermission> remotePermissionEditor;
+//
+//    private final SimpleBeanEditorDriver<RemotePermission, Editor<RemotePermission>> editorDriver;
+    
+    @SuppressWarnings("unchecked")
     @Inject
-    public ApplicationViewImpl(SessionManager<User> session) {
-        initWidget(BINDER.createAndBindUi(this));
-        editorDriver.initialize(editor);
-        this.session = session;
+    public ApplicationViewImpl( Guard guard, PlaceController places ) {
+        super( "Applications", 
+                guard, 
+                places, 
+                new ApplicationEditor(),
+                (SimpleBeanEditorDriver<Application, Editor<Application>>) GWT.create(EditorDriver.class) );
+//        remotePermissionEditor = new RemotePermissionEditor();
+//        editorDriver = GWT.create( RemotePermissionEditorDriver.class );
+        editorDriver.initialize( groupEditor );
+        initWidget( BINDER.createAndBindUi( this ) );
+        save.addClickHandler( saveClickHandler );
+        cancel.addClickHandler( cancelClickHandler );
+    }
+    
+    @Override
+    protected String placeName() {
+        return ApplicationPlace.NAME;
+    }
+    
+    @Override
+    protected Place newPlace() {
+        return new ApplicationPlace( NEW );
     }
 
-    private boolean isAllowed(RestfulActionEnum action){
-        return session == null || session.isAllowed(ApplicationPlace.NAME, action);
+    @Override
+    protected Place showPlace( Application model ) {
+        return new ApplicationPlace( model, SHOW );
     }
 
-    @UiHandler("newButton")
-    void onClickNew(ClickEvent e) {
-        presenter.goTo(new ApplicationPlace(RestfulActionEnum.NEW));
+    @Override
+    protected Place editPlace( Application model ) {
+        return new ApplicationPlace( model, EDIT );
     }
 
-    @UiHandler("showButton")
-    void onClickShow(ClickEvent e) {
-        presenter.goTo(new ApplicationPlace(editor.id.getValue(), RestfulActionEnum.SHOW));
+    @Override
+    protected Application newModel() {
+        return new Application();
     }
 
-    @UiHandler("editButton")
-    void onClickEdit(ClickEvent e) {
-        presenter.goTo(new ApplicationPlace(editor.id.getValue(), RestfulActionEnum.EDIT));
+    @Override
+    protected Place showAllPlace() {
+        return new ApplicationPlace( INDEX );
     }
 
-    @UiHandler("createButton")
-    void onClickCreate(ClickEvent e) {
-        presenter.create();
+    @Override
+    public void edit( Application model ) {
+        super.edit( model );
+        resetGroup( model.getGroups() );
+    }
+//
+//    private void setup(Application model, boolean editable) {
+//        editorDriver.edit( model.getRemotePermission() );
+//        groupEditor.setEnabled( editable );
+//        
+//        rpSaveButton.setVisible( editable );
+//        rpCancelButton.setVisible( editable );
+//        rpEditButton.setVisible( ! editable );
+//    }
+
+    @Override
+    public void show(Application model) {
+        super.show(model);
+        resetGroup( model.getGroups() );
     }
 
-    @UiHandler("saveButton")
-    void onClickSave(ClickEvent e) {
-        presenter.save();
+    @Override
+    public void reset(Application model) {
+        super.reset(model);
+        resetGroup( model.getGroups() );
     }
 
-    @UiHandler("deleteButton")
-    void onClickDelete(ClickEvent e) {
-        presenter.delete(flush());
+    @Override
+    public boolean isDirty() {
+        return super.isDirty() || editorDriver.isDirty();
     }
-
-    public void setup(Presenter presenter, RestfulAction a) {
-        RestfulActionEnum action = RestfulActionEnum.valueOf(a);
-        this.presenter = presenter;
-        newButton.setVisible(action != NEW && isAllowed(NEW));
-        if(action == INDEX){
-            editButton.setVisible(false);
-            showButton.setVisible(false);
-            list.setVisible(true);
-            model.setVisible(false);
+//
+//    @Override
+//    public boolean isRemotePermissionDirty() {
+//        return editorDriver.isDirty();
+//    }
+//    
+//
+//    @UiHandler("rpCancelButton")
+//    public void onClickRPCancel(ClickEvent e) {
+//        //places.goTo( showPlace( presenter.get() ) );
+//    }
+//
+//    @UiHandler("rpEditButton")
+//    public void onClickRPEdit(ClickEvent e) {
+//        //places.goTo( editPlace( presenter.get() ) );
+//    }
+//
+//    @UiHandler("rpSaveButton")
+//    public void onClickRPSave(ClickEvent e) {
+//        //presenter.save( editorDriver.flush() );
+//    }
+    private final ClickHandler saveClickHandler = new ClickHandler() {
+        
+        public void onClick(ClickEvent event) {
+            getPresenter().save( editorDriver.flush() );
         }
-        else {
-            createButton.setVisible(action == NEW);
-            editButton.setVisible(action == SHOW && isAllowed(EDIT));
-            showButton.setVisible(action == EDIT);
-            saveButton.setVisible(action == EDIT);
-            deleteButton.setVisible(action == EDIT && isAllowed(DESTROY));
-            list.setVisible(false);
-            model.setVisible(true);
+    };
+
+    private final ClickHandler cancelClickHandler = new ClickHandler() {
+        
+        public void onClick(ClickEvent event) {
+            getPresenter().showCurrent();
         }
-        editor.setEnabled(!action.viewOnly());
-    }
-
-    public void edit(Application model) {
-        this.editorDriver.edit(model);
-        this.editor.resetVisibility();
-    }
-
-    public Application flush() {
-        return editorDriver.flush();
-    }
-
+    };
+    
     private final ClickHandler clickHandler = new ClickHandler() {
         
         @SuppressWarnings("unchecked")
         public void onClick(ClickEvent event) {
-            ModelButton<Application> button = (ModelButton<Application>)event.getSource();
+            ModelButton<Group> button = (ModelButton<Group>)event.getSource();
             switch(button.action){
+                case EDIT:
+                    getPresenter().edit(button.model); break;
                 case DESTROY:
-                    presenter.delete(button.model);
-                    break;
-                default:
-                    presenter.goTo(new ApplicationPlace(button.model, button.action));
+                    getPresenter().delete(button.model); break; 
             }
         }
     };
 
-    private Button newButton(RestfulActionEnum action, Application model){
-        ModelButton<Application> button = new ModelButton<Application>(action, model);
+    private Button newButton(RestfulActionEnum action, Group model){
+        ModelButton<Group> button = new ModelButton<Group>(action, model);
         button.addClickHandler(clickHandler);
         return button;
     }
 
-    public void reset(List<Application> models) {
+    private final Map<Integer, Integer> id2row = new HashMap<Integer, Integer>();
+    
+    private void setRow( int row, Group model ) {
+        id2row.put( model.getId(), row );
+        list.setText( row, 0, "" + model.getId() );
+        list.setText( row, 1, model.getName() );
+        list.setText( row, 2, model.hasRegions() ? "X" : "_" );
+        list.setText( row, 3, model.hasRegions() ? "X" : "_" );
+        list.setText( row, 4, model.hasRegions() ? "X" : "_" );
+        list.setWidget( row, 5, newButton( EDIT, model ) );
+        list.setWidget( row, 6, newButton( DESTROY, model ) );
+    } 
+    
+    @Override
+    public void resetGroup( Iterable<Group> groups ){
+        int row = 1;
         list.removeAllRows();
         list.setText(0, 0, "Id");
         list.setText(0, 1, "Name");
-        list.setText(0, 2, "Url");
-        list.getRowFormatter().addStyleName(0, "gwt-rails-model-list-header");
-        int row = 1;
-        for(Application model: models){
-            setRow(row, model);
-            row++;
+        list.setText(0, 2, "Has Regions");
+        list.setText(0, 3, "Has Locales");
+        list.setText(0, 4, "Has Domains");
+        
+        for(Group t: groups){
+            setRow(row, t);
+            row ++;
         }
     }
 
-    private void setRow(int row, Application model) {
-        list.setText(row, 0, model.getId() + "");
-        list.setText(row, 1, model.getName() + "");
-        list.setText(row, 2, model.getUrl() + "");
-
-        list.setWidget(row, 3, newButton(RestfulActionEnum.SHOW, model));
-        list.setWidget(row, 4, newButton(RestfulActionEnum.EDIT, model));
-        list.setWidget(row, 5, newButton(RestfulActionEnum.DESTROY, model));
+    @Override
+    public void show( Group model ){
+        int row = id2row.get( model.getId() );
+        setRow( row, model );
+        list.getFlexCellFormatter().setColSpan( row, 0, 1 );
+    }
+    
+    @Override
+    public void edit( Group model ){
+        int row = id2row.get( model.getId());
+        list.setWidget(row, 1, groupEditor);
+        list.setWidget(row, 2, save);
+        list.setWidget(row, 3, cancel);
+        list.clearCell(row, 4);
+        list.clearCell(row, 5);
+        list.clearCell(row, 6);
+        FlexCellFormatter format = list.getFlexCellFormatter();
+        format.setColSpan( row, 1, 4 );
+        format.setVerticalAlignment( row, 0, HasAlignment.ALIGN_TOP );
+        format.setVerticalAlignment( row, 2, HasAlignment.ALIGN_BOTTOM );
+        format.setVerticalAlignment( row, 3, HasAlignment.ALIGN_BOTTOM );
+        editorDriver.edit( model );
+        // TODO not needed ???
+        //groupEditor.setEnabled( true );
     }
 
-    public void removeFromList(Application model) {
-        String id = model.getId() + "";
-        for(int i = 0; i < list.getRowCount(); i++){
-            if(list.getText(i, 0).equals(id)){
-                list.removeRow(i);
-                return;
-            }
-        }
+    @Override
+    public void reset( Group model ){
+        editorDriver.edit( model );
     }
-}
+ }

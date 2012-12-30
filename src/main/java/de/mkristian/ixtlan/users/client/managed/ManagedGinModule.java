@@ -18,8 +18,8 @@ public class ManagedGinModule extends BaseModule {
         super.configure();
 //        bind(de.mkristian.ixtlan.users.client.restservices.AtsRestService.class).toProvider(AtsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.RegionsRestService.class).toProvider(RegionsRestServiceProvider.class);
-        bind(de.mkristian.ixtlan.users.client.audits.AuditsRestService.class).toProvider(AuditsRestServiceProvider.class);
-        bind(de.mkristian.ixtlan.users.client.errors.ErrorsRestService.class).toProvider(ErrorsRestServiceProvider.class);
+        bind(de.mkristian.ixtlan.gwt.audits.AuditsRestService.class).toProvider(AuditsRestServiceProvider.class);
+        bind(de.mkristian.ixtlan.gwt.errors.ErrorsRestService.class).toProvider(ErrorsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.ApplicationsRestService.class).toProvider(ApplicationsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.RemotePermissionsRestService.class).toProvider(RemotePermissionsRestServiceProvider.class);
         bind(de.mkristian.ixtlan.users.client.restservices.GroupsRestService.class).toProvider(GroupsRestServiceProvider.class);
@@ -89,17 +89,17 @@ public class ManagedGinModule extends BaseModule {
     }
 
     @Singleton
-    public static class ErrorsRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.errors.ErrorsRestService> {
-        private final de.mkristian.ixtlan.users.client.errors.ErrorsRestService service = GWT.create(de.mkristian.ixtlan.users.client.errors.ErrorsRestService.class);
-        public de.mkristian.ixtlan.users.client.errors.ErrorsRestService get() {
+    public static class ErrorsRestServiceProvider implements Provider<de.mkristian.ixtlan.gwt.errors.ErrorsRestService> {
+        private final de.mkristian.ixtlan.gwt.errors.ErrorsRestService service = GWT.create(de.mkristian.ixtlan.gwt.errors.ErrorsRestService.class);
+        public de.mkristian.ixtlan.gwt.errors.ErrorsRestService get() {
             return service;
         }
     }
 
     @Singleton
-    public static class AuditsRestServiceProvider implements Provider<de.mkristian.ixtlan.users.client.audits.AuditsRestService> {
-        private final de.mkristian.ixtlan.users.client.audits.AuditsRestService service = GWT.create(de.mkristian.ixtlan.users.client.audits.AuditsRestService.class);
-        public de.mkristian.ixtlan.users.client.audits.AuditsRestService get() {
+    public static class AuditsRestServiceProvider implements Provider<de.mkristian.ixtlan.gwt.audits.AuditsRestService> {
+        private final de.mkristian.ixtlan.gwt.audits.AuditsRestService service = GWT.create(de.mkristian.ixtlan.gwt.audits.AuditsRestService.class);
+        public de.mkristian.ixtlan.gwt.audits.AuditsRestService get() {
             return service;
         }
     }

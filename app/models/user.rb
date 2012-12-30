@@ -192,8 +192,8 @@ class User < ActiveRecord::Base
 
   def filter_groups(token)
     if token
-      perm = RemotePermission.find_by_token(token)
-      app_id = (perm && perm.application) ? perm.application.id : 0
+      app = Application.find_by_authentication_token(token)
+      app_id = app ? app.id : 0
       app_ids =[app_id, Application.ALL.id]
       groups.delete_if do |g|
         !app_ids.member?(g.application.id)

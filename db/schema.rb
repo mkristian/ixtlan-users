@@ -11,14 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121218144118) do
+ActiveRecord::Schema.define(:version => 20121220161147) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
     t.string   "url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.integer  "modified_by_id"
+    t.string   "allowed_ip"
+    t.string   "authentication_token"
   end
 
   create_table "applications_groups_users", :id => false, :force => true do |t|
@@ -27,18 +29,20 @@ ActiveRecord::Schema.define(:version => 20121218144118) do
     t.integer "user_id"
   end
 
+  add_index "applications_groups_users", ["application_id", "group_id", "user_id"], :name => "index_applications_groups_users", :unique => true
+
   create_table "audits", :force => true do |t|
     t.string   "login"
+    t.string   "path"
     t.string   "message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
   end
 
   create_table "configurations", :force => true do |t|
     t.integer  "idle_session_timeout", :default => 15
     t.string   "from_email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.integer  "modified_by_id"
     t.integer  "errors_keep_dumps",    :default => 30
     t.string   "errors_base_url"
@@ -51,8 +55,8 @@ ActiveRecord::Schema.define(:version => 20121218144118) do
 
   create_table "domains", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "modified_by_id"
   end
 
@@ -72,20 +76,19 @@ ActiveRecord::Schema.define(:version => 20121218144118) do
     t.text     "parameters"
     t.string   "clazz"
     t.text     "backtrace"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
   end
 
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.integer  "application_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "modified_by_id"
     t.boolean  "has_regions",    :default => false
-    t.boolean  "has_domains",    :default => false
     t.boolean  "has_locales",    :default => false
+    t.boolean  "has_domains",    :default => false
   end
 
   create_table "groups_locales_users", :id => false, :force => true do |t|
@@ -102,10 +105,14 @@ ActiveRecord::Schema.define(:version => 20121218144118) do
     t.integer "user_id"
   end
 
+  add_index "groups_regions_users", ["group_id", "region_id", "user_id"], :name => "index_groups_regions_users_on_group_id_and_region_id_and_user_id", :unique => true
+
   create_table "groups_users", :id => false, :force => true do |t|
     t.integer "group_id"
     t.integer "user_id"
   end
+
+  add_index "groups_users", ["group_id", "user_id"], :name => "index_groups_users_on_group_id_and_user_id", :unique => true
 
   create_table "locales", :force => true do |t|
     t.string   "code"
@@ -114,25 +121,16 @@ ActiveRecord::Schema.define(:version => 20121218144118) do
 
   create_table "regions", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "modified_by_id"
-  end
-
-  create_table "remote_permissions", :force => true do |t|
-    t.string   "ip"
-    t.string   "token"
-    t.integer  "application_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "modified_by_id"
   end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
@@ -144,8 +142,8 @@ ActiveRecord::Schema.define(:version => 20121218144118) do
     t.string   "name"
     t.string   "hashed"
     t.string   "hashed2"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "modified_by_id"
     t.string   "at_token"
   end

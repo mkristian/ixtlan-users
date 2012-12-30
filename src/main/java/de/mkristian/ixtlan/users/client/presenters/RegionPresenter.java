@@ -42,5 +42,6 @@ public class RegionPresenter extends CRUDPresenterImpl<Region> {
             RegionCache cache,
             RegionRemote remote ){
         super( errors, view, listView, cache, remote );
+        view.setPresenter( this );
     }
 }

@@ -22,9 +22,10 @@ import de.mkristian.ixtlan.users.client.models.Domain;
 import de.mkristian.ixtlan.users.client.models.Region;
 import de.mkristian.ixtlan.users.client.places.DomainPlace;
 import de.mkristian.ixtlan.users.client.places.RegionPlace;
+import de.mkristian.ixtlan.users.client.presenters.DomainPresenter;
 
 @Singleton
-public class DomainViewImpl extends CRUDViewImpl<Domain> 
+public class DomainViewImpl extends CRUDViewImpl<Domain, DomainPresenter> 
             implements DomainView {
 
     @UiTemplate("View.ui.xml")
@@ -68,5 +69,10 @@ public class DomainViewImpl extends CRUDViewImpl<Domain>
     @Override
     protected Domain newModel() {
         return new Domain();
+    }
+
+    @Override
+    protected Place showAllPlace() {
+        return new DomainPlace( RestfulActionEnum.INDEX );
     }
  }

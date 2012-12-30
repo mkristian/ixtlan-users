@@ -66,7 +66,7 @@ class UserSerializer < Ixtlan::Babel::Serializer
                   :methods => [:domains, :locales, :regions]
                 },
                 :applications => {
-                   :except => [:created_at, :updated_at, :modified_by_id]
+                   :only => [:id, :name, :url]
                 }
               })
 

@@ -42,5 +42,6 @@ public class DomainPresenter extends CRUDPresenterImpl<Domain> {
             DomainCache cache,
             DomainRemote remote ){
         super( errors, view, listView, cache, remote );
+        view.setPresenter( this ); 
     }
 }

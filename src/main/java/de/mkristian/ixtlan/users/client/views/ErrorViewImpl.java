@@ -16,8 +16,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
 import de.mkristian.gwt.rails.views.ReadOnlyViewImpl;
-import de.mkristian.ixtlan.users.client.errors.Error;
-import de.mkristian.ixtlan.users.client.errors.ErrorEditor;
+import de.mkristian.ixtlan.gwt.errors.Error;
+import de.mkristian.ixtlan.gwt.errors.ErrorEditor;
 import de.mkristian.ixtlan.users.client.places.ErrorPlace;
 
 

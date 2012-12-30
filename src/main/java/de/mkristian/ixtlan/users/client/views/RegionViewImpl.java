@@ -19,9 +19,10 @@ import de.mkristian.gwt.rails.views.CRUDViewImpl;
 import de.mkristian.ixtlan.users.client.editors.RegionEditor;
 import de.mkristian.ixtlan.users.client.models.Region;
 import de.mkristian.ixtlan.users.client.places.RegionPlace;
+import de.mkristian.ixtlan.users.client.presenters.RegionPresenter;
 
 @Singleton
-public class RegionViewImpl extends CRUDViewImpl<Region> 
+public class RegionViewImpl extends CRUDViewImpl<Region, RegionPresenter> 
             implements RegionView {
 
     @UiTemplate("View.ui.xml")
@@ -65,5 +66,10 @@ public class RegionViewImpl extends CRUDViewImpl<Region>
     @Override
     protected Region newModel() {
         return new Region();
+    }
+
+    @Override
+    protected Place showAllPlace() {
+        return new RegionPlace( RestfulActionEnum.INDEX );
     }
  }

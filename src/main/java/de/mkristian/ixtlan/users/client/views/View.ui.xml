@@ -9,6 +9,7 @@
     <g:Label ui:field="header"/>
 
     <g:FlowPanel styleName="gwt-rails-buttons">
+      <g:Button ui:field="listButton">List All</g:Button>
       <g:Button ui:field="newButton">New</g:Button>
       <g:Button ui:field="editButton">Edit</g:Button>
       <g:Button ui:field="reloadButton">Reload</g:Button>

@@ -82,13 +82,9 @@ unless ENV['email'] || ENV['login']
   unless dev = Application.find_by_name("development")
     dev = Application.create(:name => "development", 
                              :url => "http://localhost/Dev.html",
+                             :authentication_token => 'behappy',
+                             :allowed_ip => '127.0.0.1',
                              :modified_by => u)
-  end
-  unless RemotePermission.find_by_token( 'be happy')
-    RemotePermission.create(:ip => '127.0.0.1', 
-                            :token => 'be happy', 
-                            :modified_by => u,
-                            :application => dev)
   end
   unless dev_root = Group.first( :conditions => { :name => 'root', :application_id => dev } )
     dev_root = Group.create( :name => "root", 

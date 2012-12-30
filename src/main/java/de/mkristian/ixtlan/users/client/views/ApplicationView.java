@@ -1,32 +1,22 @@
 package de.mkristian.ixtlan.users.client.views;
 
-import java.util.List;
-
-
-import com.google.gwt.place.shared.Place;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.ImplementedBy;
 
-import de.mkristian.gwt.rails.places.RestfulAction;
+import de.mkristian.gwt.rails.views.CRUDView;
 import de.mkristian.ixtlan.users.client.models.Application;
+import de.mkristian.ixtlan.users.client.models.Group;
+import de.mkristian.ixtlan.users.client.presenters.ApplicationPresenter;
 
 @ImplementedBy(ApplicationViewImpl.class)
-public interface ApplicationView extends IsWidget {
+public interface ApplicationView extends CRUDView<Application, ApplicationPresenter> {
 
-    public interface Presenter {
-        void create();
-        void save();
-        void delete(Application model);
-        void goTo(Place place);
-    }
+    void resetGroup(Iterable<Group> groups);
+//
+//    boolean isRemotePermissionDirty();
 
-    void setup(Presenter presenter, RestfulAction action);
+    void edit(Group group);
 
-    void reset(List<Application> models);
+    void reset(Group model);
 
-    void edit(Application model);
-
-    Application flush();
-
-    void removeFromList(Application model);
+    void show(Group group);
 }

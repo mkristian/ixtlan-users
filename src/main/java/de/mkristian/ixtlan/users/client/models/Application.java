@@ -1,7 +1,9 @@
 package de.mkristian.ixtlan.users.client.models;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -13,7 +15,8 @@ import de.mkristian.gwt.rails.models.Identifiable;
 import de.mkristian.gwt.rails.views.ExternalApplication;
 
 @Json(style = Style.RAILS)
-public class Application implements HasToDisplay, Identifiable, ExternalApplication {
+public class Application implements HasToDisplay, Identifiable,
+                                       ExternalApplication {
 
   public final int id;
 
@@ -30,6 +33,12 @@ public class Application implements HasToDisplay, Identifiable, ExternalApplicat
 
   private String url;
 
+  @Json(name = "allowed_ip")
+  private String allowedIp;
+
+  @Json(name = "authenticationToken")
+  private String authenticationToken;
+  
   public Application(){
       this(0, null, null, null);
   }
@@ -81,6 +90,22 @@ public class Application implements HasToDisplay, Identifiable, ExternalApplicat
     url = value;
   }
 
+  public String getAllowedIp(){
+    return allowedIp;
+  }
+
+  public void setAllowedIp(String value){
+    allowedIp = value;
+  }
+
+  public String getAuthenticationToken(){
+    return authenticationToken;
+  }
+
+  public void setAuthenticationToken(String value){
+    authenticationToken = value;
+  }
+  
   public int hashCode(){
     return id;
   }
@@ -92,5 +117,15 @@ public class Application implements HasToDisplay, Identifiable, ExternalApplicat
 
   public String toDisplay() {
     return name;
+  }
+
+  List<Group> l;
+  public List<Group> getGroups() {
+      if (l == null){
+      l = new ArrayList<Group>();
+      l.add(new Group(2));
+      l.add(new Group(3));
+      }
+    return l;
   }
 }

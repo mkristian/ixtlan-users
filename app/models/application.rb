@@ -1,8 +1,12 @@
 class Application < ActiveRecord::Base
+
   belongs_to :modified_by, :class_name => "User"
+
+  has_many :groups
+
   validates :modified_by_id, :presence => true
   validates :name, :presence => true, :format => /^[a-zA-Z0-9 \-]+$/, :length => { :maximum => 32 }
-  #TODO is the url required ? and why not ?
+  # url is not required like in ALL application
   validates :url, :format => /^https?\:\/\/[a-z0-9\-\.]+(\.[a-z0-9]+)*(\:[0-9]+)?(\/\S*)?$/, :length => { :maximum => 64 }, :allow_nil => true
 
   def self.THIS
@@ -24,34 +28,34 @@ class Application < ActiveRecord::Base
       end
   end
 
-  def self.options
-    {
-      :except => [:created_at, :modified_by_id]
-    }
-  end
+  # def self.options
+  #   {
+  #     :except => [:created_at, :modified_by_id]
+  #   }
+  # end
   
-  def self.update_options
-    {
-      :only => [:id, :name, :url, :updated_at], :root => 'application'
-    }
-  end
+  # def self.update_options
+  #   {
+  #     :only => [:id, :name, :url, :updated_at], :root => 'application'
+  #   }
+  # end
 
-  def self.reduced_options
-    {
-      :except => [:created_at, :updated_at, :modified_by_id]
-    }
-  end
+  # def self.reduced_options
+  #   {
+  #     :except => [:created_at, :updated_at, :modified_by_id]
+  #   }
+  # end
 
-  def self.single_options
-    {
-      :except => [:modified_by_id],
-      :include => {
-        :modified_by => {
-          :only => [:id, :login, :name]
-        }
-      }
-    }
-  end
+  # def self.single_options
+  #   {
+  #     :except => [:modified_by_id],
+  #     :include => {
+  #       :modified_by => {
+  #         :only => [:id, :login, :name]
+  #       }
+  #     }
+  #   }
+  # end
 
   def self.filtered_all(current_user, *args)
     if current_user.root?
@@ -76,24 +80,49 @@ class Application < ActiveRecord::Base
     end
   end
 
-  unless respond_to? :old_as_json
-    alias :old_as_json :as_json
-    def as_json(options = nil)
-      old_as_json(options || self.class.reduced_options)
-    end
-  end
+  # unless respond_to? :old_as_json
+  #   alias :old_as_json :as_json
+  #   def as_json(options = nil)
+  #     old_as_json(options || self.class.reduced_options)
+  #   end
+  # end
 
-  unless respond_to? :old_to_xml
-    alias :old_to_xml :to_xml
-    def to_xml(options = nil)
-      #hacky di hack
-      groups = (options[:include]||{}).delete(:groups)
-      old_to_xml(options || self.class.reduced_options)
-      options[:include][:groups]= groups if groups
-    end
-  end
+  # unless respond_to? :old_to_xml
+  #   alias :old_to_xml :to_xml
+  #   def to_xml(options = nil)
+  #     #hacky di hack
+  #     groups = (options[:include]||{}).delete(:groups)
+  #     old_to_xml(options || self.class.reduced_options)
+  #     options[:include][:groups]= groups if groups
+  #   end
+  # end
 
   def to_s
     "Application(#{name})"
+  end
+
+  def group_create( current_user, attributes )
+    g = groups.new( attributes )
+    g.modified_by = current_user
+    g.save
+    g
+  end
+
+  def group_update( current_user, updated_at, id, attributes )
+    g = Group.optimistic_find( updated_at, id )
+    if g.application.id != id
+      raise "application and group.application mismatch"
+    end
+    g.update_attrbutes( attributes.merge( :modified_by => current_user ) )
+    g
+  end
+
+  def group_delete( updated_at, id )
+    g = Group.optimistic_find( updated_at, id )
+    if g.application.id != id
+      raise "application and group.application mismatch"
+    end
+    g.destroy
+    g
   end
 end

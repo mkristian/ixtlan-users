@@ -29,3 +29,4 @@ end
 Users::Application.config.configuration_manager.register("audit_manager") do |config|
   Users::Application.config.audit_manager.keep_logs = config.audits_keep_logs || 90 # days
 end
+Users::Application.config.audit_manager.model= Audit

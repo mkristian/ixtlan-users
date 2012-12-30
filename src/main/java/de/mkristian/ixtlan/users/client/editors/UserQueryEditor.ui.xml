@@ -8,9 +8,9 @@
     <label>Search: </label>
     <g:TextBox ui:field="name"/>
     <label name="group">Group</label>
-    <r:IdentifyableListBox ui:field="group" name="group"/>
+    <r:IdentifiableListBox ui:field="group" name="group"/>
     <label name="application">Application</label>
-    <r:IdentifyableListBox ui:field="application" name="application"/>    
+    <r:IdentifiableListBox ui:field="application" name="application"/>    
   </g:HTMLPanel>
 
 </ui:UiBinder>

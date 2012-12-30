@@ -1,4 +1,4 @@
-require 'ixtlan/error_handler/error_serializer'
+require 'ixtlan/errors/error_serializer'
 
-class ErrorSerializer < Ixtlan::ErrorHandler::ErrorSerializer
+class ErrorSerializer < Ixtlan::Errors::ErrorSerializer
 end

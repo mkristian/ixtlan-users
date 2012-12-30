@@ -35,17 +35,16 @@ class UserMailer
   end
 
   def self.urls(user)
-    Hash[
-         user.applications.collect do |app|
-           case app
-           when Application.ALL
-             ['ATs application', Configuration.instance.ats_url]
-           when Application.THIS
-             ['users admin', app.url]
-           else
-             [app.name, app.url]
-           end
-         end
-        ]
+    urls = user.applications.collect do |app|
+      case app
+      when Application.ALL
+        ['ATs application', Configuration.instance.ats_url]
+      when Application.THIS
+        ['users admin', app.url]
+      else
+        [app.name, app.url]
+      end
+    end
+    Hash[ urls ]
   end
 end

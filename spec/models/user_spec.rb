@@ -113,9 +113,8 @@ describe User do
         all.modified_by = User.first
         all.save
 
-        a1 = Application.find_by_name("spec-app1") || Application.create(:name => "spec-app1", :modified_by => User.first)
+        a1 = Application.find_by_name("spec-app1") || Application.create(:name => "spec-app1", :modified_by => User.first, :allowed_ip => "1.2.3.4", :authentication_token => '1234')
         @a2 = Application.find_by_name("spec-app2") || Application.create(:name => "spec-app2", :modified_by => User.first, :url => "http://example.com/app")
-        perm = RemotePermission.find_by_ip("1.2.3.4") || RemotePermission.create(:ip => "1.2.3.4", :token => '1234', :application => a1, :modified_by => User.first)
 
         @root = Group.ROOT
         @root.modified_by = User.first

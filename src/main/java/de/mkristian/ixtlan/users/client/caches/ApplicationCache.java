@@ -48,7 +48,7 @@ public class ApplicationCache extends AbstractPreemptiveCache<Application>{
     }
     
     @Inject
-    ApplicationCache( EventBus eventBus, ApplicationRemoteModel remote ) {
+    ApplicationCache( EventBus eventBus, ApplicationRemote remote ) {
         super( eventBus, store(), remote );
     }
 

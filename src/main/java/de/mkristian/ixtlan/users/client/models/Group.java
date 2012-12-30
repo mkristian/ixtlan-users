@@ -12,6 +12,7 @@ import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.gwt.rails.models.HasToDisplay;
 import de.mkristian.gwt.rails.models.Identifiable;
+import de.mkristian.ixtlan.gwt.locales.Locale;
 
 @Json(style = Style.RAILS)
 public class Group implements HasToDisplay, Identifiable {
@@ -40,13 +41,27 @@ public class Group implements HasToDisplay, Identifiable {
   private List<Application> applications;
 
   private final boolean hasApplications;
-  
+
   @Json(name = "has_regions")
   private boolean hasRegions;
 
   @Json(name = "region_ids")
   private final List<Integer> regionIds;
   private List<Region> regions;
+
+  @Json(name = "has_locales")
+  private boolean hasLocales;
+
+  //@Json(name = "locale_ids")
+  //private final List<Integer> localeIds;
+  //private List<Locale> locales;
+  
+  @Json(name = "has_domains")
+  private boolean hasDomains;
+
+  //@Json(name = "domain_ids")
+  //private final List<Integer> domainIds;
+  //private List<Domain> domains;
 
   public Group(){
       this(0, null, null, null, 0, null, null);
@@ -69,10 +84,18 @@ public class Group implements HasToDisplay, Identifiable {
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
     this.applicationId = applicationId;
+    
     this.hasApplications = applicationIds != null;
     this.applicationIds = applicationIds == null ? new ArrayList<Integer>() : applicationIds;
+    
     this.regionIds = regionIds == null ? new ArrayList<Integer>() : regionIds;
     this.hasRegions = regionIds != null;
+    // TODO
+    //this.localeIds = regionIds == null ? new ArrayList<Integer>() : regionIds;
+    this.hasLocales = regionIds != null;
+    // TODO
+    //this.domainIds = regionIds == null ? new ArrayList<Integer>() : regionIds;
+    this.hasDomains = regionIds != null;
   }
 
   public int getId(){
@@ -145,7 +168,7 @@ public class Group implements HasToDisplay, Identifiable {
         }
     }
   }
-  
+
   public boolean hasRegions(){
       return hasRegions;
   }
@@ -156,6 +179,30 @@ public class Group implements HasToDisplay, Identifiable {
 
   public void setHasRegions(boolean value){
       hasRegions = value;
+  }
+
+  public boolean hasLocales(){
+      return hasLocales;
+  }
+
+  public boolean getHasLocales(){
+      return hasLocales;
+  }
+
+  public void setHasLocales(boolean value){
+      hasLocales = value;
+  }
+
+  public boolean hasDomains(){
+      return hasDomains;
+  }
+
+  public boolean getHasDomains(){
+      return hasDomains;
+  }
+
+  public void setHasDomains(boolean value){
+      hasDomains = value;
   }
 
   public List<Region> getRegions() {
@@ -185,6 +232,8 @@ public class Group implements HasToDisplay, Identifiable {
       clone.setName(this.name);
       clone.setDescription(this.description);
       clone.setHasRegions(this.hasRegions);
+      clone.setHasLocales(this.hasLocales);
+      clone.setHasDomains(this.hasDomains);
       return clone;
   }
 

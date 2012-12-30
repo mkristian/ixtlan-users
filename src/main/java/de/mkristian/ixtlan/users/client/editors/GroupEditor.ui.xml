@@ -8,8 +8,6 @@
   <g:FlowPanel>
 
     <g:FlowPanel ui:field="signature" styleName="gwt-rails-model-signature">
-      <g:Label>id: </g:Label>
-      <g:NumberLabel ui:field="id" />
       <g:Label>created at: </g:Label>
       <g:DateLabel ui:field="createdAt" predefinedFormat="DATE_TIME_MEDIUM"/>
       <g:Label>updated at: </g:Label>
@@ -19,21 +17,10 @@
     </g:FlowPanel>
 
     <g:FlowPanel styleName="gwt-rails-model-fields">
-      <g:HTMLPanel>
-        <label name="name">Name</label>
-        <g:TextBox ui:field="name"/>
-      </g:HTMLPanel>
+      <g:FlexTable ui:field="table"/>
       <g:HTMLPanel>
         <label name="description">Description</label>
         <g:TextArea ui:field="description"/>
-      </g:HTMLPanel>
-      <g:HTMLPanel>
-        <label name="application">Application</label>
-        <r:IdentifyableListBox ui:field="application"/>
-      </g:HTMLPanel>
-      <g:HTMLPanel>
-        <label name="hasRegions">Has regions</label>
-        <g:CheckBox ui:field="hasRegions"/>
       </g:HTMLPanel>
     </g:FlowPanel>
 
