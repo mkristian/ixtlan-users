@@ -55,7 +55,7 @@ gem "ixtlan-audit", '~> 0.3.0'#, :path => '../../ixtlan/ixtlan-audit'
 gem 'slf4r', '~> 0.4.2'
 gem 'bcrypt-ruby'
 
-gem 'json', '1.6.1'
+gem 'json', '~> 1.6'
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.11.0'
@@ -67,7 +67,7 @@ gem 'ixtlan-remote'#, :path => '../../ixtlan/ixtlan-remote'
 gem "ixtlan-babel"#, :path => '../../ixtlan/ixtlan-babel'
 gem "ixtlan-gettext", :path => '../../ixtlan/ixtlan-gettext', :require => false
 gem "ixtlan-optimistic"#, :path => '../../ixtlan/ixtlan-optimistic'
-gem 'virtus', '~>0.5.2'
+gem 'virtus', '~> 0.5.2'
 gem 'rest-client', '~> 1.6.7'
 #gem 'backports', :platforms => :ruby_18
 
