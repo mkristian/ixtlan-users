@@ -8,9 +8,6 @@ gem 'activerecord',   RAILS_VERSION, :require => 'active_record'
 gem 'railties',       RAILS_VERSION, :require => 'rails'
 gem 'tzinfo',         '~> 0.3.32' # TODO why explicit ????
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 platforms :ruby do
   gem 'sqlite3', :groups => [:development, :test]
 end
