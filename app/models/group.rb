@@ -24,50 +24,30 @@ class Group < ActiveRecord::Base
     find_by_id(4) || new(:name => 'at', :application => Application.ALL)
   end
 
-  # def self.options
-  #   {
-  #     :except => [:created_at, :modified_by_id],
-  #     :include => {
-  #       :application => {
-  #         :only => [:id, :name]
-  #       }
-  #     },
-  #     :methods => [:application_ids, :region_ids]
-  #   }
-  # end
-
-  # def self.single_options
-  #   {
-  #     :except => [:modified_by_id],
-  #     :include => {
-  #       :modified_by => {
-  #         :only => [:id, :login, :name]
-  #       },
-  #       :application => {
-  #         :except => [:created_at, :updated_at, :modified_by_id]
-  #       }
-  #     }
-  #   }
-  # end
+  def load_associations( model, method, user )
+    if user
+      model.where(:user_id => user.id, :group_id => id).collect { |item| item.send method }
+    else
+      []
+    end
+  end
+  private :load_associations
 
   def regions(user = nil)
     if has_regions
-      @regions = GroupsRegionsUser.where(:user_id => user.id, :group_id => id).collect { |item| item.region } if user
-      @regions || []
+      @regions = load_associations( GroupsRegionsUser, :region, user )
     end
   end
 
   def locales(user = nil)
     if has_locales
-      @locales = GroupsLocalesUser.where(:user_id => user.id, :group_id => id).collect { |item| item.locale } if user
-      @locales || []
+      @locales = load_associations( GroupsLocalesUser, :locale, user )
     end
   end
 
   def domains(user = nil)
     if has_domains
-      @domains = DomainsGroupsUser.where(:user_id => user.id, :group_id => id).collect { |item| item.domain } if user
-      @domains || []
+      @domains = load_associations( DomainsGroupsUser, :domain, user )
     end
   end
 
