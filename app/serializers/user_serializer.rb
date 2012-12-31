@@ -73,12 +73,12 @@ class UserSerializer < Ixtlan::Babel::Serializer
   
   def setup_associations(options = {})
     methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
-    
-    to_model.groups.each { |g| g.applications(self) } if methods.member? :applications
-    to_model.groups.each { |g| g.application_ids(self) } if methods.member? :application_ids
-    to_model.groups.each { |g| g.domains(self) } if methods.member? :domains
-    to_model.groups.each { |g| g.locales(self) } if methods.member? :locales
-    to_model.groups.each { |g| g.regions(self) } if methods.member? :regions
+  
+    [:applications, :application_ids, :domains, :locales, :regions ].each do |m|
+
+      to_model.groups.each { |g| g.send( m, self) } if methods.member? m
+    end
+
   end
   private :setup_associations
 

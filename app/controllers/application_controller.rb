@@ -15,7 +15,8 @@ class ApplicationController < ActionController::Base
     auth = params[:authentication] || params
     [ auth[:login] || auth[:email], auth[:password] ]
   end
-
+  
+end
   # old stuff
 #   protect_from_forgery
 
@@ -85,4 +86,4 @@ class ApplicationController < ActionController::Base
 #     end
 #   end
 
-end
+# end

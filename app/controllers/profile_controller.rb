@@ -1,6 +1,6 @@
 class ProfileController < LocalController
  
-  cache_headers :private
+#TODO  cache_headers :private
 
   # GET /profile
   def show

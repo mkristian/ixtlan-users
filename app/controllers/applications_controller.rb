@@ -4,7 +4,7 @@ class ApplicationsController < LocalController
 
 #  skip_before_filter :authorize, :except => [:index, :create]
 
-  guard_filter do |groups|
+  guard_filter( {} ) do |groups|
     groups.select do |group|
       group.application == Application.ALL || 
         ( application && group.application == application )
@@ -16,7 +16,7 @@ class ApplicationsController < LocalController
   def authorize_application
     #TODO super(params[:id])
     if params[:id]
-      @application = 
+      @application =         
         if updated_at
           Application.optimistic_find(updated_at, params[:id])
         else
@@ -30,6 +30,8 @@ class ApplicationsController < LocalController
   def application
     aid = params[ :application_id ] || params[ :id ]
     @application ||= Application.find( aid ) if aid
+  end
+
   public
 
   # GET /applications

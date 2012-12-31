@@ -37,43 +37,54 @@ class User < ActiveRecord::Base
     end
   end
   
-  def self.authenticate(login, password, token = nil)
-    result = nil
+  def self.assert( login, password )
     if password.blank?
-      result = "no password given with login: #{login}"
+      "no password given with login: #{login}"
     elsif login.blank?
-      result = "no login given"
+      "no login given"
+    end
+  end
+  
+  def self.get_user( login, password )
+    result = assert( login, password )
+    if result
+      result
     else
       u = User.find_by_login(login) || User.find_by_email(login)
-      if u && u.hashed.nil?
-        result = "user has no password: #{login}"
-      elsif u
-        if Password.new(u.hashed) == password
-          # clear reset password if any
-          if u.hashed2
-            u.hashed2 = nil
-            u.save
-          end
-          result = u
-        else
-          # try reset password
-          if !u.hashed2.blank? && Password.new(u.hashed2) == password
-            # discard old password and promote reset password to be the password
-            u.hashed = u.hashed2
-            u.hashed2 = nil
-            u.save
-            result = u
-          else
-            result = "wrong password for login: #{login}"
-          end
-        end
+      if u.nil?
+        "login not found: #{login}"
+      elsif u.hashed.nil?
+        "user has no password: #{login}"
       else
-        result = "login not found: #{login}"
+        u
       end
     end
+  end
+
+  def self.check_password( user, password )
+    if !user.hashed2.blank? && Password.new( user.hashed2 ) == password
+      user.hashed = user.hashed2
+    end
+    if Password.new( user.hashed ) == password
+      # clear reset password if any
+      if user.hashed2
+        user.hashed2 = nil
+        user.save
+      end
+      user
+    end 
+  end
+
+  def self.authenticate(login, password, token = nil)
+    result = get_user( login, password )
     if result.is_a? User
-      result.applications # setup app objects
-      result.filter_groups(token)
+      result = check_password( result, password )
+      if result
+        result.applications # setup app objects
+        result.filter_groups(token)
+      else
+        result = "wrong password for login: #{login}"
+      end
     end
     result
   end
@@ -168,19 +179,6 @@ class User < ActiveRecord::Base
 
     params[:group_ids] = group_ids
     update_attributes(params) && user_manager.update(self)
-  end
-  
-  private
-
-  def reset_password
-    # only alpha pwd
-    @password = generate_password
-    if self.hashed
-      self.hashed2 = Password.create(@password)
-    else
-      self.hashed = Password.create(@password)
-    end
-    @password
   end
 
   public
