@@ -1,3 +1,4 @@
+require 'region_serializer'
 [ RegionSerializer, DomainSerializer ].each do |clazz|
   clazz.add_context(:update,
                     :only => [:id, :name, :updated_at]
