@@ -1,4 +1,7 @@
 class Region < ActiveRecord::Base
+
+  include ActiveModel::Dirty
+
   belongs_to :modified_by, :class_name => "User"
   validates :modified_by_id, :presence => true
   validates :name, :presence => true, :format => /^[a-zA-Z0-9 \-]+$/, :length => { :maximum => 32 }

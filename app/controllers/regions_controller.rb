@@ -28,9 +28,11 @@ class RegionsController < LocalController
   def update
     @region = Region.optimistic_find( updated_at, params[:id] )
 
-    params[:region][:modified_by] = current_user
-
-    @region.update_attributes( params[:region] )
+    @region.attributes = params[ :region ]
+    if @region.changed?
+      @region.modified_by = current_user 
+      @region.save
+    end
 
     respond_with serializer( @region )
   end

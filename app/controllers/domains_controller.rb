@@ -28,9 +28,11 @@ class DomainsController < LocalController
   def update
     @domain = Domain.optimistic_find( updated_at, params[:id] )
 
-    params[:domain][:modified_by] = current_user
-
-    @domain.update_attributes( params[:domain] )
+    @domain.attributes = params[ :domain ]
+    if @domain.changed?
+      @domain.modified_by = current_user 
+      @domain.save
+    end
 
     respond_with serializer( @domain )
   end
