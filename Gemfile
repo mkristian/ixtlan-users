@@ -13,7 +13,7 @@ platforms :ruby do
 end
 
 platforms :jruby do
-  gem 'activerecord-jdbc-adapter'
+  gem 'activerecord-jdbc-adapter', '~> 1.2'
   gem 'jdbc-sqlite3', :require => false
 end
 
@@ -38,7 +38,7 @@ gem 'bcrypt-ruby'
 gem 'pony', '~> 1.4'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 2.11.0'
+  gem 'rspec-rails', '~> 2.12.0'
   gem 'capybara'
   gem 'resty-generators', '~> 0.7.3', :require => false#, :path => '../../gwt/rails-resty-gwt/resty-generators'
 end
