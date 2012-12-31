@@ -1,15 +1,20 @@
 class UserMailer
 
+  def self.send( user, subject, body )
+    Pony.mail :to => user.email, :subject => subject, :from => ::Configuration.instance.from_email, :body => body
+  end
+  private :send
+
   def self.send_password(user)
-    Pony.mail :to => user.email, :subject => "", :from => ::Configuration.instance.from_email, :body => user.password
+    send( user, "", user.password )
   end
 
   def self.send_reset_password(user)
-    Pony.mail :to => user.email, :subject => "reset access", :from => ::Configuration.instance.from_email, :body => reset_password_body( user )
+    send( user, "reset access", reset_password_body( user ) )
   end
 
   def self.send_new_user(user)
-    Pony.mail :to => user.email, :subject => "access", :from => ::Configuration.instance.from_email, :body => new_user_body( user ) 
+    send( user, "access", new_user_body( user ) )
   end
 
   private
