@@ -8,13 +8,6 @@ class SessionsController < LocalController
 
   prepend_after_filter :reset_session, :only => :destroy
 
-  private
-
-  def login_and_password
-    auth = params[:authentication] || params
-    [ auth[:login] || auth[:email], auth[:password] ]
-  end
-
   protected
 
   # TODO do not know why skip_before_filter does not work with heroku

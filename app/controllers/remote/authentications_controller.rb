@@ -1,14 +1,5 @@
 class Remote::AuthenticationsController < Remote::ApplicationController
 
-  private
-
-  def login_and_password
-    auth = params[:authentication] || params
-    [ auth[:login] || auth[:email], auth[:password] ]
-  end
-
-  public
-
   def create
     args = login_and_password + [ x_service_token ]
     @authentication = User.authenticate( *args )
