@@ -60,7 +60,7 @@ GEM
     ixtlan-guard (0.9.0)
       virtus (~> 0.5)
     ixtlan-optimistic (0.2.0)
-    ixtlan-remote (0.1.1)
+    ixtlan-remote (0.1.2)
       rest-client (~> 1.6.3)
     ixtlan-session-timeout (0.4.0)
     jdbc-sqlite3 (3.7.2)
