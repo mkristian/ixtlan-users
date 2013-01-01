@@ -154,7 +154,9 @@ describe User do
         u.modified_by = User.first
         u.deep_save.should == true
         u = u.reload
-        u.groups.should == [@g1, @g2]
+        u.groups.member?(@g1).should be_true
+        u.groups.member?(@g2).should be_true
+        u.groups.size.should == 2
         u.deep_update_attributes({:groups => [{:id => @g1.id}, 
                                               {:id => @root.id}],
                                    :at_token => nil}, 
@@ -164,7 +166,9 @@ describe User do
         u.deep_update_attributes({:groups => [{:group => {:id => @g1.id}}, 
                                               {:group => {:id => @root.id}}]}, 
                                  subject).should == true
-        u.reload.groups.should == [@g1, @root]        
+        u.reload.groups.member?(@g1).should be_true
+        u.groups.member?(@root).should be_true
+        u.groups.size.should == 2
       end
 
       it 'should have all groups without given IP' do
