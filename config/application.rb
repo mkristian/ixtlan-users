@@ -19,7 +19,7 @@
 #
 ENV['TZ'] = 'UTC'
 if defined? JRUBY_VERSION
-  org.joda.time.DateTimeZone.setDefault(org.joda.time.DateTimeZone.forID('UTC'))
+  org.joda.time.DateTimeZone.setDefault(org.joda.time.DateTimeZone.forID('UTC')) rescue nil
 end
 require File.expand_path('../boot', __FILE__)
 
