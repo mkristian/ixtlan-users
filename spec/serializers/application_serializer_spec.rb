@@ -22,7 +22,7 @@ describe ApplicationSerializer do
       application['updated_at'].should_not be_nil
       application['modified_by'].should_not be_nil
       groups = application['groups']
-      groups.should have(1).items
+      groups.should have(2).items
       groups.each do |group|
         group.should have(5).items
         group['id'].should_not be_nil

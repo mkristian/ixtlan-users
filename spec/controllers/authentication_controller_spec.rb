@@ -4,8 +4,16 @@ describe Remote::AuthenticationsController do
 
   describe "create authentication" do
 
+    subject do
+      g = Group.where( :application_id => 3,
+                       :name => 'root' )[0]
+      u = User.find_by_login( 'root' )
+      u.groups << g
+      u
+    end
+
     before do
-      @pwd = User.find_by_login('root').reset_password_and_save
+      @pwd = subject.reset_password_and_save
     end
 
     it "should return ok" do
@@ -14,6 +22,7 @@ describe Remote::AuthenticationsController do
       post :create, :format => :json, :authentication => {:login => "root", :password => @pwd }
       response.status.should == 201
       body = JSON.parse(response.body)
+      # puts body.to_yaml
       body.should have(1).items
       user = body["user"]
       user.should have(5).items

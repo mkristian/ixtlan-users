@@ -51,6 +51,14 @@ class Application < ActiveRecord::Base
     end
   end
 
+  after_create do |app|
+    unless [Application.THIS, Application.ALL].member? app
+      app.group_create( app.modified_by, :name => 'root' )
+#    app.group_create( app.modified_by, :name => 'user-admin' )
+      app.group_create( app.modified_by, :name => 'translator' )
+    end
+  end
+
   def to_s
     "Application(#{name})"
   end
@@ -64,17 +72,17 @@ class Application < ActiveRecord::Base
 
   def group_update( current_user, updated_at, id, attributes )
     g = Group.optimistic_find( updated_at, id )
-    if g.application.id != id
-      raise "application and group.application mismatch"
+    if g.application.id != self.id
+      raise "application(#{self.id}) and group.application(#{g.application.id}) mismatch"
     end
-    g.update_attrbutes( attributes.merge( :modified_by => current_user ) )
+    g.update_attributes( attributes.merge( :modified_by => current_user ) )
     g
   end
 
   def group_delete( updated_at, id )
     g = Group.optimistic_find( updated_at, id )
-    if g.application.id != id
-      raise "application and group.application mismatch"
+    if g.application.id != self.id
+      raise "application(#{self.id}) and group.application(#{g.application.id}) mismatch"
     end
     g.destroy
     g

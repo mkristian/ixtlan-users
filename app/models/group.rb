@@ -3,7 +3,7 @@ class Group < ActiveRecord::Base
   belongs_to :modified_by, :class_name => "User"
   validates :application_id, :presence => true
   validates :modified_by_id, :presence => true
-  validates :name, :presence => true, :format => /^[a-zA-Z0-9_\-]+$/, :length => {:maximum => 32 }
+  validates :name, :presence => true, :format => /^[a-zA-Z0-9_\-]+$/, :length => { :maximum => 32 }
   validates :description, :length => { :maximum => 255 }#, :format => /^[[:print:]]+$/, :allow_nil => true
 
   attr_accessor :applications, :regions, :locales, :domains
