@@ -30,7 +30,7 @@ gem "ixtlan-audit", '~> 0.3'#, :path => '../../ixtlan/ixtlan-audit'
 gem 'ixtlan-remote', '~> 0.1'#, :path => '../../ixtlan/ixtlan-remote'
 gem "ixtlan-babel", '~> 0.2'#, :path => '../../ixtlan/ixtlan-babel'
 gem "ixtlan-gettext", '~> 0.1', :require => false#, :path => '../../ixtlan/ixtlan-gettext'
-gem "ixtlan-optimistic", '~> 0.2.0'#, :path => '../../ixtlan/ixtlan-optimistic'
+gem "ixtlan-optimistic", '~> 0.2.1'#, :path => '../../ixtlan/ixtlan-optimistic'
 
 gem 'enforce-ssl'
 gem 'slf4r', '~> 0.4.2'
