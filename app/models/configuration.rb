@@ -4,16 +4,4 @@ class Configuration < ActiveRecord::Base
   def self.instance
     self.first || self.new
   end
-
-  def self.single_options
-    {
-      :except => [:modified_by_id],
-      :include => {
-        :modified_by => {
-          :only => [:id, :login, :name]
-        }
-      }
-    }
-  end
-
 end

@@ -13,34 +13,4 @@ class Region < ActiveRecord::Base
       Region.all
     end
   end
-
-  def self.options
-    {
-      :except => [:created_at, :modified_by_id]
-    }
-  end
-
-  def self.single_options
-    {
-      :except => [:modified_by_id],
-      :include => {
-        :modified_by => {
-          :only => [:id, :login, :name]
-        }
-      }
-    }
-  end
-
-  def self.update_options
-    {
-      :only => [:id, :name, :updated_at]
-    }
-  end
-
-  unless respond_to? :old_as_json
-    alias :old_as_json :as_json
-    def as_json(options = nil)
-      old_as_json(options || self.class.options)
-    end
-  end
 end

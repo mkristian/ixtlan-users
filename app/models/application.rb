@@ -28,35 +28,6 @@ class Application < ActiveRecord::Base
       end
   end
 
-  # def self.options
-  #   {
-  #     :except => [:created_at, :modified_by_id]
-  #   }
-  # end
-  
-  # def self.update_options
-  #   {
-  #     :only => [:id, :name, :url, :updated_at], :root => 'application'
-  #   }
-  # end
-
-  # def self.reduced_options
-  #   {
-  #     :except => [:created_at, :updated_at, :modified_by_id]
-  #   }
-  # end
-
-  # def self.single_options
-  #   {
-  #     :except => [:modified_by_id],
-  #     :include => {
-  #       :modified_by => {
-  #         :only => [:id, :login, :name]
-  #       }
-  #     }
-  #   }
-  # end
-
   def self.filtered_all(current_user, *args)
     if current_user.root?
       self.all(*args)
@@ -79,23 +50,6 @@ class Application < ActiveRecord::Base
       Application.all(:conditions => ["url NOT NULL and updated_at > ?", from])
     end
   end
-
-  # unless respond_to? :old_as_json
-  #   alias :old_as_json :as_json
-  #   def as_json(options = nil)
-  #     old_as_json(options || self.class.reduced_options)
-  #   end
-  # end
-
-  # unless respond_to? :old_to_xml
-  #   alias :old_to_xml :to_xml
-  #   def to_xml(options = nil)
-  #     #hacky di hack
-  #     groups = (options[:include]||{}).delete(:groups)
-  #     old_to_xml(options || self.class.reduced_options)
-  #     options[:include][:groups]= groups if groups
-  #   end
-  # end
 
   def to_s
     "Application(#{name})"
