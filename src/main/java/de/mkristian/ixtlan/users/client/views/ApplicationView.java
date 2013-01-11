@@ -10,13 +10,17 @@ import de.mkristian.ixtlan.users.client.presenters.ApplicationPresenter;
 @ImplementedBy(ApplicationViewImpl.class)
 public interface ApplicationView extends CRUDView<Application, ApplicationPresenter> {
 
-    void resetGroup(Iterable<Group> groups);
-//
-//    boolean isRemotePermissionDirty();
+    void resetGroup( Iterable<Group> groups );
 
-    void edit(Group group);
+    void edit( Group group );
 
-    void reset(Group model);
+    void reset( Group model );
 
-    void show(Group group);
+    void show( Group group );
+    
+    boolean isGroupDirty();
+
+    void newGroup( Group model );
+
+    void resetNewRow();
 }

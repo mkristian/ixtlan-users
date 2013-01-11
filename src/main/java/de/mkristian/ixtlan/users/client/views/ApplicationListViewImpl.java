@@ -31,7 +31,7 @@ public class ApplicationListViewImpl extends CRUDListViewImpl<Application>
     @Inject
     public ApplicationListViewImpl( Guard guard,
                 PlaceController places ) {
-        super( "Regions", guard, places );
+        super( "Applications", guard, places );
         initWidget( BINDER.createAndBindUi( this ) );
     }
 
@@ -40,6 +40,11 @@ public class ApplicationListViewImpl extends CRUDListViewImpl<Application>
         return ApplicationPlace.NAME;
     }
 
+    @Override
+    protected Place newPlace() {
+        return new ApplicationPlace( RestfulActionEnum.NEW );
+    }
+    
     @Override
     protected Place place( Application model, RestfulAction action ) {
         return new ApplicationPlace( model, action );
@@ -51,10 +56,12 @@ public class ApplicationListViewImpl extends CRUDListViewImpl<Application>
         list.setText(0, 1, "Name");
         list.getRowFormatter().addStyleName(0, "gwt-rails-model-list-header");
         int row = 1;
+      //  if (models != null)
         for(Application model: models){
             setRow(row, model);
             row++;
         }
+        
     }
 
     private void setRow(int row, Application model) {

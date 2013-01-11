@@ -17,11 +17,8 @@ import de.mkristian.gwt.rails.places.RestfulActionEnum;
 import de.mkristian.gwt.rails.session.Guard;
 import de.mkristian.gwt.rails.views.CRUDViewImpl;
 import de.mkristian.ixtlan.users.client.editors.DomainEditor;
-import de.mkristian.ixtlan.users.client.editors.RegionEditor;
 import de.mkristian.ixtlan.users.client.models.Domain;
-import de.mkristian.ixtlan.users.client.models.Region;
 import de.mkristian.ixtlan.users.client.places.DomainPlace;
-import de.mkristian.ixtlan.users.client.places.RegionPlace;
 import de.mkristian.ixtlan.users.client.presenters.DomainPresenter;
 
 @Singleton
@@ -33,12 +30,12 @@ public class DomainViewImpl extends CRUDViewImpl<Domain, DomainPresenter>
     
     static private Binder BINDER = GWT.create( Binder.class );
 
-    static interface EditorDriver extends SimpleBeanEditorDriver<Region, RegionEditor> {}
+    static interface EditorDriver extends SimpleBeanEditorDriver<Domain, DomainEditor> {}
 
     @SuppressWarnings("unchecked")
     @Inject
     public DomainViewImpl( Guard guard, PlaceController places ) {
-        super( "Regions", 
+        super( "Domains", 
                 guard, 
                 places, 
                 new DomainEditor(),
@@ -48,7 +45,7 @@ public class DomainViewImpl extends CRUDViewImpl<Domain, DomainPresenter>
     
     @Override
     protected String placeName() {
-        return RegionPlace.NAME;
+        return DomainPlace.NAME;
     }
     
     @Override

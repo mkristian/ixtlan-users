@@ -19,7 +19,12 @@ class ApplicationSerializer < Ixtlan::Babel::Serializer
                   :only => [:id, :login, :name]
                 },
                 :groups => {
-                  :only => [:id, :name, :has_regions, :has_locales, :has_domains]
+                  :only => [:id, :name, :has_regions, :has_locales, :has_domains, :created_at, :updated_at],
+                  :include => {
+                    :modified_by => {
+                      :only => [:id, :login, :name]
+                    }
+                  }
                 }
               }
              )

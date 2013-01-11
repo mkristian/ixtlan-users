@@ -12,7 +12,6 @@ import org.fusesource.restygwt.client.Json.Style;
 
 import de.mkristian.gwt.rails.models.HasToDisplay;
 import de.mkristian.gwt.rails.models.Identifiable;
-import de.mkristian.ixtlan.gwt.locales.Locale;
 
 @Json(style = Style.RAILS)
 public class Group implements HasToDisplay, Identifiable {
@@ -29,8 +28,6 @@ public class Group implements HasToDisplay, Identifiable {
   private final User modifiedBy;
 
   private String name;
-
-  private String description;
 
   @Json(name = "application_id")
   private int applicationId;
@@ -120,14 +117,6 @@ public class Group implements HasToDisplay, Identifiable {
 
   public void setName(String value){
     name = value;
-  }
-
-  public String getDescription(){
-    return description == null ? "" : description;
-  }
-
-  public void setDescription(String value){
-    description = value;
   }
 
   public Application getApplication(){
@@ -230,7 +219,6 @@ public class Group implements HasToDisplay, Identifiable {
   public Group minimalClone() {
       Group clone = new Group(id, null, updatedAt, null, applicationId, applicationIds, regionIds);
       clone.setName(this.name);
-      clone.setDescription(this.description);
       clone.setHasRegions(this.hasRegions);
       clone.setHasLocales(this.hasLocales);
       clone.setHasDomains(this.hasDomains);

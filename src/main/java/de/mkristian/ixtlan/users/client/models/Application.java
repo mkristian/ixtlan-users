@@ -36,26 +36,32 @@ public class Application implements HasToDisplay, Identifiable,
   @Json(name = "allowed_ip")
   private String allowedIp;
 
-  @Json(name = "authenticationToken")
+  @Json(name = "authentication_token")
   private String authenticationToken;
+
+ // @Json(name = "group_ids")
+//  private final List<Integer> groupIds;
+  private List<Group> groups;
   
   public Application(){
-      this(0, null, null, null);
+      this(0, null, null, null, null);
   }
 
   public Application(int id) {
-      this(id, null, null, null);
+      this(id, null, null, null, null);
   }
   
   @JsonCreator
   public Application(@JsonProperty("id") int id, 
           @JsonProperty("createdAt") Date createdAt, 
           @JsonProperty("updatedAt") Date updatedAt,
-          @JsonProperty("modifiedBy") User modifiedBy){
+          @JsonProperty("modifiedBy") User modifiedBy,
+          @JsonProperty("groups") List<Group> groups) {
     this.id = id;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
+    this.groups = groups == null ? new ArrayList<Group>() : groups;
   }
 
   public int getId(){
@@ -119,13 +125,10 @@ public class Application implements HasToDisplay, Identifiable,
     return name;
   }
 
-  List<Group> l;
   public List<Group> getGroups() {
-      if (l == null){
-      l = new ArrayList<Group>();
-      l.add(new Group(2));
-      l.add(new Group(3));
-      }
-    return l;
+    return this.groups;
+  }
+  public void setGroups(List<Group> groups) {
+      this.groups = groups == null ? new ArrayList<Group>() : groups;
   }
 }

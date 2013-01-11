@@ -12,8 +12,9 @@ public class UsersPlaceHistoryMapper extends SessionRestfulPlaceHistoryMapper {
     @Inject
     public UsersPlaceHistoryMapper( HasSession session ){
         super( session );
-        register("ats", new de.mkristian.ixtlan.users.client.places.AtPlaceTokenizer());
-        register("regions", new de.mkristian.ixtlan.users.client.places.RegionPlaceTokenizer());
+        //register("ats", new de.mkristian.ixtlan.users.client.places.AtPlaceTokenizer());
+        register("domains", new de.mkristian.ixtlan.users.client.places.DomainPlaceTokenizer());
+        //register("regions", new de.mkristian.ixtlan.users.client.places.RegionPlaceTokenizer());
         register("audits", new de.mkristian.ixtlan.users.client.places.AuditPlaceTokenizer());
         register("errors", new de.mkristian.ixtlan.users.client.places.ErrorPlaceTokenizer());
         register("applications", new de.mkristian.ixtlan.users.client.places.ApplicationPlaceTokenizer());

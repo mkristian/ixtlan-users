@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.DateLabel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.NumberLabel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -37,8 +36,6 @@ public class GroupEditor extends Composite implements Editor<Group>{
     CheckBox hasRegions = new CheckBox();
     CheckBox hasLocales = new CheckBox();
     CheckBox hasDomains = new CheckBox();
-
-    @UiField TextArea description;
     
     public GroupEditor() {
         initWidget(BINDER.createAndBindUi(this));
@@ -48,13 +45,13 @@ public class GroupEditor extends Composite implements Editor<Group>{
         table.setWidget( 0, 2, hasLocales );
         table.setWidget( 0, 3, hasDomains );
     }
-
     
     public void setEnabled(boolean enabled) {
         this.id.setVisible( false );
         this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
         this.name.setEnabled(enabled);
-        this.description.setEnabled(enabled);
         this.hasRegions.setEnabled(enabled);
+        this.hasLocales.setEnabled(enabled);
+        this.hasDomains.setEnabled(enabled);
     }
 }

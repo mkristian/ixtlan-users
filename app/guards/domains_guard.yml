@@ -1,0 +1,10 @@
+domains:
+  defaults: [] 
+  index: ['*']
+#  index: []
+#  show: []
+#  new: []
+#  create: []
+#  edit: []
+#  update: []
+#  destroy: []

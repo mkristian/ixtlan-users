@@ -8,17 +8,20 @@ Users::Application.routes.draw do
   post '/authentications', :controller => 'remote/authentications', :action => :create
   post '/authentications/reset_password', :controller => 'remote/authentications', :action => :reset_password
 
+  resources :domains
+
   resources :regions
 
   resources :audits
 
   resources :errors
 
+  get '/groups', :controller => 'groups', :action => :index
+  post '/applications/:id/groups', :controller => 'applications', :action => :group_create
+  put '/groups/:id', :controller => 'applications', :action => :group_update
+  delete'/groups/:id', :controller => 'applications', :action => :group_delete
+
   resources :applications
-
-  resources :remote_permissions
-
-  resources :groups
 
   resource :session do
     member do

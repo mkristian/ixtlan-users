@@ -21,8 +21,13 @@
 package de.mkristian.ixtlan.users.client.presenters;
 
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
 
 import de.mkristian.gwt.rails.presenters.CRUDPresenterImpl;
 import de.mkristian.ixtlan.users.client.UsersErrorHandler;
@@ -30,6 +35,7 @@ import de.mkristian.ixtlan.users.client.caches.ApplicationCache;
 import de.mkristian.ixtlan.users.client.caches.ApplicationRemote;
 import de.mkristian.ixtlan.users.client.models.Application;
 import de.mkristian.ixtlan.users.client.models.Group;
+import de.mkristian.ixtlan.users.client.restservices.ApplicationsRestService;
 import de.mkristian.ixtlan.users.client.views.ApplicationListView;
 import de.mkristian.ixtlan.users.client.views.ApplicationView;
 
@@ -37,23 +43,47 @@ import de.mkristian.ixtlan.users.client.views.ApplicationView;
 public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
 
     private Group current;
+    private final ApplicationsRestService service;
     
     @Inject
     public ApplicationPresenter( UsersErrorHandler errors,
             ApplicationView view,
             ApplicationListView listView,
             ApplicationCache cache,
-            ApplicationRemote remote ){
+            ApplicationRemote remote,
+            ApplicationsRestService service){
         super( errors, view, listView, cache, remote );
         view.setPresenter( this );
+        this.service = service;
      }
 
     protected ApplicationView getView(){
         return (ApplicationView) super.getView();
     }
+
+    @Override
+    public boolean isDirty() {
+        return super.isDirty() ||
+                    (current != null && getView().isGroupDirty());
+    }
     
-    public void save( Group group ) {
+    public void save( final Group group ) {
         errors.show("save clicked" + group.getName() + group.hasRegions());
+        this.service.updateGroup(group, new MethodCallback<Group>() {
+            
+            @Override
+            public void onSuccess(Method method, Group response) {
+                List<Group> groups = group.getApplication().getGroups();
+                int i = groups.indexOf( response ); // identity is over id field
+                groups.set( i, response );
+                getRemote().fireUpdate( method, group.getApplication() );
+            }
+            
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                getRemote().fireError( method, exception );
+            }
+        });
     }
 
     public void show( Group group ) {
@@ -68,18 +98,32 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
         if (current != null){
             getView().show( current );
         }
+        getView().resetNewRow();
         getView().edit( model );
         current = model;
     }
 
-    public void delete(Group model) {
+    public void delete( final Group group ) {
         errors.show("delete clicked");
+        this.service.destroyGroup( group, new MethodCallback<Void>() {
+            
+            @Override
+            public void onSuccess( Method method, Void response ) {
+                group.getApplication().getGroups().remove( group );
+                getRemote().fireUpdate( method, group.getApplication() );
+            }
+            
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                getRemote().fireError( method, exception );
+            }
+        });
     }
     
     public void reset( Group model ) {
         assert model != null;
         if( current != null && current.getId() == model.getId() ){
-            getView().reset(model);
+            getView().reset( model );
             current = model;
         }
         else {
@@ -88,9 +132,36 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
     }
 
     public void showCurrent() {
+        doShowCurrent();
+        getView().resetNewRow();
+   }
+
+    private void doShowCurrent() {
         if( current != null ){
             getView().show( current );
             current = null;
         }
-   }
+    }
+
+    public void newGroup( Group model ) {
+        doShowCurrent();
+        getView().newGroup( new Group() );
+    }
+
+    public void create( final Group group ) {
+        errors.show("create clicked");
+        this.service.createGroup( group, new MethodCallback<Group>() {
+            
+            @Override
+            public void onSuccess( Method method, Group response ) {
+                group.getApplication().getGroups().add( group );
+                getRemote().fireUpdate( method, group.getApplication() );
+            }
+            
+            @Override
+            public void onFailure(Method method, Throwable exception) {
+                getRemote().fireError( method, exception );
+            }
+        });
+    }
 }

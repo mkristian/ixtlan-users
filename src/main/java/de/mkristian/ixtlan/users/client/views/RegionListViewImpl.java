@@ -42,6 +42,11 @@ public class RegionListViewImpl extends CRUDListViewImpl<Region>
     }
 
     @Override
+    protected Place newPlace() {
+        return new RegionPlace( RestfulActionEnum.NEW );
+    }
+    
+    @Override
     protected Place place( Region model, RestfulAction action ) {
         return new RegionPlace( model, action );
     }

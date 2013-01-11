@@ -13,7 +13,7 @@ public class RegionPlace extends RestfulPlace<Region, ActivityFactory> {
     public static final String NAME = "regions";
 
     public Activity create(ActivityFactory factory){
-        return factory.create(this);
+        return null;//factory.create(this);
     }
     
     public RegionPlace(RestfulAction restfulAction) {

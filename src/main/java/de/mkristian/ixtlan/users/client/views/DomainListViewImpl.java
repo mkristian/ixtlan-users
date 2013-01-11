@@ -41,6 +41,11 @@ public class DomainListViewImpl extends CRUDListViewImpl<Domain>
     }
 
     @Override
+    protected Place newPlace() {
+        return new DomainPlace( RestfulActionEnum.NEW );
+    }
+    
+    @Override
     protected Place place( Domain model, RestfulAction action ) {
         return new DomainPlace( model, action );
     }

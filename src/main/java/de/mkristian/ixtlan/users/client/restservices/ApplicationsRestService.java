@@ -1,16 +1,22 @@
 package de.mkristian.ixtlan.users.client.restservices;
 
-import de.mkristian.gwt.rails.dispatchers.DefaultDispatcherSingleton;
-import de.mkristian.ixtlan.users.client.models.Application;
-
 import java.util.List;
 
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 import org.fusesource.restygwt.client.Attribute;
 import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.Options;
 import org.fusesource.restygwt.client.RestService;
+
+import de.mkristian.gwt.rails.dispatchers.DefaultDispatcherSingleton;
+import de.mkristian.ixtlan.users.client.models.Application;
+import de.mkristian.ixtlan.users.client.models.Group;
 
 
 @Options(dispatcher = DefaultDispatcherSingleton.class)
@@ -30,5 +36,14 @@ public interface ApplicationsRestService extends RestService {
 
   @DELETE @Path("/applications/{id}")
   void destroy(@PathParam("id") @Attribute("id") Application value, MethodCallback<Void> callback);
+
+  @POST @Path("/applications/{id}/group")
+  void createGroup(@PathParam("id") @Attribute("getApplicationId()") Group value, MethodCallback<Group> callback);
+
+  @PUT @Path("/groups/{id}")
+  void updateGroup(@PathParam("id") @Attribute("getId()") Group value, MethodCallback<Group> callback);
+
+  @DELETE @Path("/groups/{id}")
+  void destroyGroup(@PathParam("id") @Attribute("getId()") Group value, MethodCallback<Void> callback);
 
 }

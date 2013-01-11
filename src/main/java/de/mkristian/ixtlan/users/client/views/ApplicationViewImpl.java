@@ -13,7 +13,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -25,9 +24,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.inject.Singleton;
 
 import de.mkristian.gwt.rails.places.RestfulActionEnum;
@@ -58,21 +57,13 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
 
     private GroupEditor groupEditor = new GroupEditor();
 
+    private final Button create = new Button("Create");
+    
     private final Button save = new Button("Save");
 
     private final Button cancel = new Button("Cancel");
 
     @UiField FlexTable list;
-    
-//    static interface RemotePermissionEditorDriver
-//               extends SimpleBeanEditorDriver<RemotePermission, RemotePermissionEditor> {}
-//
-//    @UiField public Button rpEditButton;
-//    @UiField public Button rpCancelButton;
-//    @UiField public Button rpSaveButton;
-//    @UiField(provided=true) public EnabledEditor<RemotePermission> remotePermissionEditor;
-//
-//    private final SimpleBeanEditorDriver<RemotePermission, Editor<RemotePermission>> editorDriver;
     
     @SuppressWarnings("unchecked")
     @Inject
@@ -82,10 +73,9 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
                 places, 
                 new ApplicationEditor(),
                 (SimpleBeanEditorDriver<Application, Editor<Application>>) GWT.create(EditorDriver.class) );
-//        remotePermissionEditor = new RemotePermissionEditor();
-//        editorDriver = GWT.create( RemotePermissionEditorDriver.class );
         editorDriver.initialize( groupEditor );
         initWidget( BINDER.createAndBindUi( this ) );
+        create.addClickHandler( createClickHandler );
         save.addClickHandler( saveClickHandler );
         cancel.addClickHandler( cancelClickHandler );
     }
@@ -125,15 +115,6 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
         super.edit( model );
         resetGroup( model.getGroups() );
     }
-//
-//    private void setup(Application model, boolean editable) {
-//        editorDriver.edit( model.getRemotePermission() );
-//        groupEditor.setEnabled( editable );
-//        
-//        rpSaveButton.setVisible( editable );
-//        rpCancelButton.setVisible( editable );
-//        rpEditButton.setVisible( ! editable );
-//    }
 
     @Override
     public void show(Application model) {
@@ -148,30 +129,17 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
     }
 
     @Override
-    public boolean isDirty() {
-        return super.isDirty() || editorDriver.isDirty();
+    public boolean isGroupDirty() {
+        return editorDriver.isDirty();
     }
-//
-//    @Override
-//    public boolean isRemotePermissionDirty() {
-//        return editorDriver.isDirty();
-//    }
-//    
-//
-//    @UiHandler("rpCancelButton")
-//    public void onClickRPCancel(ClickEvent e) {
-//        //places.goTo( showPlace( presenter.get() ) );
-//    }
-//
-//    @UiHandler("rpEditButton")
-//    public void onClickRPEdit(ClickEvent e) {
-//        //places.goTo( editPlace( presenter.get() ) );
-//    }
-//
-//    @UiHandler("rpSaveButton")
-//    public void onClickRPSave(ClickEvent e) {
-//        //presenter.save( editorDriver.flush() );
-//    }
+    
+    private final ClickHandler createClickHandler = new ClickHandler() {
+        
+        public void onClick(ClickEvent event) {
+            getPresenter().create( editorDriver.flush() );
+        }
+    };
+
     private final ClickHandler saveClickHandler = new ClickHandler() {
         
         public void onClick(ClickEvent event) {
@@ -192,10 +160,12 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
         public void onClick(ClickEvent event) {
             ModelButton<Group> button = (ModelButton<Group>)event.getSource();
             switch(button.action){
+                case NEW:
+                    getPresenter().newGroup( button.model ); break;
                 case EDIT:
-                    getPresenter().edit(button.model); break;
+                    getPresenter().edit( button.model ); break;
                 case DESTROY:
-                    getPresenter().delete(button.model); break; 
+                    getPresenter().delete( button.model ); break; 
             }
         }
     };
@@ -213,44 +183,55 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
         list.setText( row, 0, "" + model.getId() );
         list.setText( row, 1, model.getName() );
         list.setText( row, 2, model.hasRegions() ? "X" : "_" );
-        list.setText( row, 3, model.hasRegions() ? "X" : "_" );
-        list.setText( row, 4, model.hasRegions() ? "X" : "_" );
+        list.setText( row, 3, model.hasLocales() ? "X" : "_" );
+        list.setText( row, 4, model.hasDomains() ? "X" : "_" );
         list.setWidget( row, 5, newButton( EDIT, model ) );
         list.setWidget( row, 6, newButton( DESTROY, model ) );
     } 
     
     @Override
     public void resetGroup( Iterable<Group> groups ){
-        int row = 1;
         list.removeAllRows();
         list.setText(0, 0, "Id");
         list.setText(0, 1, "Name");
         list.setText(0, 2, "Has Regions");
         list.setText(0, 3, "Has Locales");
         list.setText(0, 4, "Has Domains");
-        
+        resetNewRow();
+
+        int row = 2;
         for(Group t: groups){
             setRow(row, t);
             row ++;
         }
+    }
+    
+    @Override
+    public void resetNewRow() {
+        list.setText( 1, 0, "0" );
+        list.setText( 1, 1, "1" );
+        list.getFlexCellFormatter().setColSpan( 1, 1, 4 );
+        list.setWidget( 1, 2, newButton( NEW, null ) );
+        list.setText( 1, 3, "3" );
+        GWT.log("reset new row");
     }
 
     @Override
     public void show( Group model ){
         int row = id2row.get( model.getId() );
         setRow( row, model );
-        list.getFlexCellFormatter().setColSpan( row, 0, 1 );
+        list.getFlexCellFormatter().setColSpan( row, 1, 1 );
     }
     
     @Override
     public void edit( Group model ){
-        int row = id2row.get( model.getId());
-        list.setWidget(row, 1, groupEditor);
-        list.setWidget(row, 2, save);
-        list.setWidget(row, 3, cancel);
-        list.clearCell(row, 4);
-        list.clearCell(row, 5);
-        list.clearCell(row, 6);
+        int row = id2row.get( model.getId() );
+        list.setWidget( row, 1, groupEditor );
+        list.setWidget( row, 2, save );
+        list.setWidget( row, 3, cancel );
+        list.clearCell( row, 4 );
+        list.clearCell( row, 5 );
+        list.clearCell( row, 6 );
         FlexCellFormatter format = list.getFlexCellFormatter();
         format.setColSpan( row, 1, 4 );
         format.setVerticalAlignment( row, 0, HasAlignment.ALIGN_TOP );
@@ -258,7 +239,22 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
         format.setVerticalAlignment( row, 3, HasAlignment.ALIGN_BOTTOM );
         editorDriver.edit( model );
         // TODO not needed ???
-        //groupEditor.setEnabled( true );
+        groupEditor.setEnabled( true );
+    }
+
+    @Override
+    public void newGroup( Group model ){
+        list.setWidget( 1, 1, groupEditor );
+        list.setWidget( 1, 2, create );
+        list.setWidget( 1, 3, cancel );
+//        FlexCellFormatter format = list.getFlexCellFormatter();
+//        format.setColSpan( 1, 1, 4 );
+//        format.setVerticalAlignment( 1, 0, HasAlignment.ALIGN_TOP );
+//        format.setVerticalAlignment( 1, 2, HasAlignment.ALIGN_BOTTOM );
+//        format.setVerticalAlignment( 1, 3, HasAlignment.ALIGN_BOTTOM );
+        editorDriver.edit( model );
+        // TODO not needed ???
+        groupEditor.setEnabled( true );
     }
 
     @Override

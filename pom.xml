@@ -145,27 +145,12 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
-      <artifactId>ixtlan-generators</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>enforce-ssl</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
       <artifactId>ixtlan-session-timeout</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
-      <artifactId>slf4r</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>bcrypt-ruby</artifactId>
+      <artifactId>ixtlan-guard</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
@@ -180,12 +165,67 @@
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
+      <artifactId>descendants_tracker</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-error-handler</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>slf4r</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-audit</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-remote</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
       <artifactId>rest-client</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>mime-types</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-babel</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-gettext</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>fast_gettext</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>ixtlan-optimistic</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>enforce-ssl</artifactId>
+      <type>gem</type>
+    </dependency>
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>bcrypt-ruby</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
@@ -206,11 +246,6 @@
     <dependency>
       <groupId>rubygems</groupId>
       <artifactId>polyglot</artifactId>
-      <type>gem</type>
-    </dependency>
-    <dependency>
-      <groupId>rubygems</groupId>
-      <artifactId>fast_gettext</artifactId>
       <type>gem</type>
     </dependency>
     <dependency>
@@ -283,102 +318,6 @@
   </dependencies>
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>resty-generators</artifactId>
-        <version>0.7.4</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-generators</artifactId>
-        <version>0.1.7</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-audit</artifactId>
-        <version>0.2.1</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>slf4r</artifactId>
-        <version>0.4.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-babel</artifactId>
-        <version>0.1.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-core</artifactId>
-        <version>0.8.0</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-error-handler</artifactId>
-        <version>0.2.1</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-gettext</artifactId>
-        <version>0.1.0</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>fast_gettext</artifactId>
-        <version>0.6.11</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-remote</artifactId>
-        <version>0.1.0</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>rest-client</artifactId>
-        <version>1.6.7</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>mime-types</artifactId>
-        <version>1.19</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-guard</artifactId>
-        <version>0.9.0</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>virtus</artifactId>
-        <version>0.5.2</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>backports</artifactId>
-        <version>2.6.5</version>
-        <type>gem</type>
-      </dependency>
-      <dependency>
-        <groupId>rubygems</groupId>
-        <artifactId>ixtlan-optimistic</artifactId>
-        <version>0.2.0</version>
-        <type>gem</type>
-      </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>actionpack</artifactId>
@@ -495,6 +434,12 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
+        <artifactId>backports</artifactId>
+        <version>2.6.5</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
         <artifactId>bcrypt-ruby</artifactId>
         <version>3.0.1</version>
         <type>gem</type>
@@ -502,37 +447,49 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>capybara</artifactId>
-        <version>1.1.2</version>
+        <version>2.0.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>mime-types</artifactId>
+        <version>1.19</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>nokogiri</artifactId>
-        <version>1.5.5</version>
+        <version>1.5.6</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>selenium-webdriver</artifactId>
-        <version>2.25.0</version>
+        <version>2.27.2</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>childprocess</artifactId>
-        <version>0.3.5</version>
+        <version>0.3.6</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>ffi</artifactId>
-        <version>1.1.5</version>
+        <version>1.2.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>libwebsocket</artifactId>
-        <version>0.1.5</version>
+        <version>0.1.7.1</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>websocket</artifactId>
+        <version>1.0.6</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -544,13 +501,19 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>xpath</artifactId>
-        <version>0.1.4</version>
+        <version>1.0.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>copyright-header</artifactId>
         <version>1.0.7</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>descendants_tracker</artifactId>
+        <version>0.0.1</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -563,6 +526,78 @@
         <groupId>rubygems</groupId>
         <artifactId>enforce-ssl</artifactId>
         <version>0.2.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>fast_gettext</artifactId>
+        <version>0.7.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-audit</artifactId>
+        <version>0.3.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>slf4r</artifactId>
+        <version>0.4.2</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-babel</artifactId>
+        <version>0.2.1</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-error-handler</artifactId>
+        <version>0.3.1</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-generators</artifactId>
+        <version>0.1.7</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-gettext</artifactId>
+        <version>0.1.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-remote</artifactId>
+        <version>0.1.4</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>rest-client</artifactId>
+        <version>1.6.7</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-guard</artifactId>
+        <version>0.9.0</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>virtus</artifactId>
+        <version>0.5.4</version>
+        <type>gem</type>
+      </dependency>
+      <dependency>
+        <groupId>rubygems</groupId>
+        <artifactId>ixtlan-optimistic</artifactId>
+        <version>0.2.1</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -580,13 +615,13 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>json</artifactId>
-        <version>1.6.1</version>
+        <version>1.7.6</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>mail</artifactId>
-        <version>2.4.4</version>
+        <version>2.5.3</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -628,7 +663,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rake</artifactId>
-        <version>10.0.2</version>
+        <version>10.0.3</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -645,32 +680,32 @@
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
-        <artifactId>rspec</artifactId>
-        <version>2.11.0</version>
+        <artifactId>resty-generators</artifactId>
+        <version>0.7.3</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rspec-core</artifactId>
-        <version>2.11.1</version>
+        <version>2.12.2</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rspec-expectations</artifactId>
-        <version>2.11.2</version>
+        <version>2.12.1</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rspec-mocks</artifactId>
-        <version>2.11.2</version>
+        <version>2.12.1</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rspec-rails</artifactId>
-        <version>2.11.0</version>
+        <version>2.12.0</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -715,25 +750,19 @@
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>rspec-rails</artifactId>
-            <version>[2.11.0,2.11.99999]</version>
-            <type>gem</type>
-          </dependency>
-          <dependency>
-            <groupId>rubygems</groupId>
-            <artifactId>rspec</artifactId>
-            <version>2.11.0</version>
+            <version>[2.12.0,2.12.99999]</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>rspec-core</artifactId>
-            <version>2.11.1</version>
+            <version>2.12.2</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>rspec-expectations</artifactId>
-            <version>2.11.2</version>
+            <version>2.12.1</version>
             <type>gem</type>
           </dependency>
           <dependency>
@@ -745,49 +774,55 @@
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>rspec-mocks</artifactId>
-            <version>2.11.2</version>
+            <version>2.12.1</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>capybara</artifactId>
-            <version>1.1.2</version>
+            <version>2.0.2</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>nokogiri</artifactId>
-            <version>1.5.5</version>
+            <version>1.5.6</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>selenium-webdriver</artifactId>
-            <version>2.25.0</version>
+            <version>2.27.2</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>childprocess</artifactId>
-            <version>0.3.5</version>
+            <version>0.3.6</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>ffi</artifactId>
-            <version>1.1.5</version>
+            <version>1.2.0</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>libwebsocket</artifactId>
-            <version>0.1.5</version>
+            <version>0.1.7.1</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>addressable</artifactId>
             <version>2.3.2</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>websocket</artifactId>
+            <version>1.0.6</version>
             <type>gem</type>
           </dependency>
           <dependency>
@@ -799,13 +834,25 @@
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>xpath</artifactId>
-            <version>0.1.4</version>
+            <version>1.0.0</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>resty-generators</artifactId>
+            <version>[0.7.3,0.7.99999]</version>
+            <type>gem</type>
+          </dependency>
+          <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>ixtlan-generators</artifactId>
+            <version>0.1.7</version>
             <type>gem</type>
           </dependency>
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>copyright-header</artifactId>
-            <version>[1.0.7,1.0.99999]</version>
+            <version>1.0.7</version>
             <type>gem</type>
           </dependency>
         </dependencies>
@@ -956,11 +1003,6 @@
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
-          <artifactId>rspec</artifactId>
-          <type>gem</type>
-        </dependency>
-        <dependency>
-          <groupId>rubygems</groupId>
           <artifactId>rspec-core</artifactId>
           <type>gem</type>
         </dependency>
@@ -982,11 +1024,6 @@
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>capybara</artifactId>
-          <type>gem</type>
-        </dependency>
-        <dependency>
-          <groupId>rubygems</groupId>
-          <artifactId>mime-types</artifactId>
           <type>gem</type>
         </dependency>
         <dependency>
@@ -1021,6 +1058,11 @@
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
+          <artifactId>websocket</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
           <artifactId>rubyzip</artifactId>
           <type>gem</type>
         </dependency>
@@ -1031,8 +1073,18 @@
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
+          <artifactId>resty-generators</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>ixtlan-generators</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
           <artifactId>copyright-header</artifactId>
-          <version>[1.0.7,1.0.99999]</version>
+          <version>1.0.7</version>
           <type>gem</type>
         </dependency>
       </dependencies>
@@ -1069,11 +1121,6 @@
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
-          <artifactId>rspec</artifactId>
-          <type>gem</type>
-        </dependency>
-        <dependency>
-          <groupId>rubygems</groupId>
           <artifactId>rspec-core</artifactId>
           <type>gem</type>
         </dependency>
@@ -1095,11 +1142,6 @@
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>capybara</artifactId>
-          <type>gem</type>
-        </dependency>
-        <dependency>
-          <groupId>rubygems</groupId>
-          <artifactId>mime-types</artifactId>
           <type>gem</type>
         </dependency>
         <dependency>
@@ -1134,12 +1176,27 @@
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
+          <artifactId>websocket</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
           <artifactId>rubyzip</artifactId>
           <type>gem</type>
         </dependency>
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>xpath</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>resty-generators</artifactId>
+          <type>gem</type>
+        </dependency>
+        <dependency>
+          <groupId>rubygems</groupId>
+          <artifactId>ixtlan-generators</artifactId>
           <type>gem</type>
         </dependency>
       </dependencies>

@@ -18,10 +18,6 @@
 
     <g:FlowPanel styleName="gwt-rails-model-fields">
       <g:FlexTable ui:field="table"/>
-      <g:HTMLPanel>
-        <label name="description">Description</label>
-        <g:TextArea ui:field="description"/>
-      </g:HTMLPanel>
     </g:FlowPanel>
 
   </g:FlowPanel>

@@ -1,9 +1,0 @@
-remote_permissions:
-  defaults: [app-admin] 
-#  index: []
-#  show: []
-#  new: []
-#  create: []
-#  edit: []
-#  update: []
-#  destroy: []

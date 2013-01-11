@@ -14,7 +14,7 @@ public class AtPlace extends QueryableRestfulPlace<User, ActivityFactory> {
     public static final String NAME = "ats";
 
     public Activity create(ActivityFactory factory){
-        return factory.create(this);
+        return null;//factory.create(this);
     }
 
     public AtPlace( String query ) {

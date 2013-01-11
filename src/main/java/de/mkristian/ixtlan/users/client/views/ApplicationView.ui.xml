@@ -25,10 +25,10 @@
         
     </g:FlowPanel>
 
-    <g:Label>Groups</g:Label>
+    <g:FlowPanel>
+      <g:Label>Groups</g:Label>
 
-    <g:FlowPanel styleName="gwt-rails-model-list">
-      <g:FlexTable ui:field="list"/>
+      <g:FlexTable ui:field="list" styleName="gwt-rails-model-list"/>
     </g:FlowPanel>
   </g:FlowPanel>
 

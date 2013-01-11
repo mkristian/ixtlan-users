@@ -10,11 +10,9 @@ public interface ActivityFactory {
     @Named("audits") Activity create(de.mkristian.ixtlan.users.client.places.AuditPlace place);
     @Named("errors") Activity create(de.mkristian.ixtlan.users.client.places.ErrorPlace place);
     @Named("domains") Activity create(de.mkristian.ixtlan.users.client.places.DomainPlace place);
-    @Named("regions") Activity create(de.mkristian.ixtlan.users.client.places.RegionPlace place);
+//    @Named("regions") Activity create(de.mkristian.ixtlan.users.client.places.RegionPlace place);
     @Named("applications") Activity create(de.mkristian.ixtlan.users.client.places.ApplicationPlace place);
-//  @Named("remote_permissions") Activity create(de.mkristian.ixtlan.users.client.places.RemotePermissionPlace place);
-//  @Named("groups") Activity create(de.mkristian.ixtlan.users.client.places.GroupPlace place);
     @Named("users") Activity create(de.mkristian.ixtlan.users.client.places.UserPlace place);
-    @Named("ats") Activity create(de.mkristian.ixtlan.users.client.places.AtPlace place);
+//    @Named("ats") Activity create(de.mkristian.ixtlan.users.client.places.AtPlace place);
     @Named("login") Activity create(LoginPlace place);
 }

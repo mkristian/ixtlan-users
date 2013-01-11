@@ -23,10 +23,10 @@ public class UsersMenu extends SessionMenu {
         addButton("Configuration", new de.mkristian.ixtlan.users.client.places.ConfigurationPlace(SHOW));
         addButton("Audits", new de.mkristian.ixtlan.users.client.places.AuditPlace(INDEX));
         addButton("Errors", new de.mkristian.ixtlan.users.client.places.ErrorPlace(INDEX));
-        addButton("Domains", new de.mkristian.ixtlan.users.client.places.RegionPlace(INDEX), SHOW);
-        addButton("Regions", new de.mkristian.ixtlan.users.client.places.RegionPlace(INDEX), SHOW);
+        addButton("Domains", new de.mkristian.ixtlan.users.client.places.DomainPlace(INDEX), SHOW);
+        //addButton("Regions", new de.mkristian.ixtlan.users.client.places.RegionPlace(INDEX), SHOW);
         addButton("Applications", new de.mkristian.ixtlan.users.client.places.ApplicationPlace(INDEX), SHOW);
         addButton("Users", new de.mkristian.ixtlan.users.client.places.UserPlace(INDEX), SHOW);
-        addButton("Ats", new de.mkristian.ixtlan.users.client.places.AtPlace(INDEX));
+        //addButton("Ats", new de.mkristian.ixtlan.users.client.places.AtPlace(INDEX));
     }
 }

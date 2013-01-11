@@ -7,6 +7,10 @@
 
     <g:Label ui:field="header"/>
 
+    <g:FlowPanel styleName="gwt-rails-buttons">
+      <g:Button ui:field="newButton">New</g:Button>
+    </g:FlowPanel>
+    
     <g:FlowPanel styleName="gwt-rails-model-list">
       <g:FlexTable ui:field="list"/>
     </g:FlowPanel>

@@ -1,9 +1,5 @@
 class ApplicationsController < LocalController
 
-#  before_filter :authorize_application, :except => [:index, :create]
-
-#  skip_before_filter :authorize, :except => [:index, :create]
-
   guard_filter( {} ) do |groups|
     groups.select do |group|
       group.application == Application.ALL || 
@@ -28,7 +24,7 @@ class ApplicationsController < LocalController
   end
 
   def application
-    aid = params[ :application_id ] || params[ :id ]
+    aid = (params[ :group ] || params)[ :application_id ] || params[ :id ]
     @application ||= Application.find( aid ) if aid
   end
 
