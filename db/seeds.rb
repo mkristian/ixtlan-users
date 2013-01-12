@@ -71,8 +71,8 @@ unless r = Region.find_by_name( 'Europe' )
   r.save
 end
 
-unless d = Domain.find_by_name( 'dummy' )
-  d = Domain.new( :name => 'dummy' )
+unless d = Domain.find_by_name( 'test' )
+  d = Domain.new( :name => 'test' )
   d.modified_by = u
   d.save
 end
