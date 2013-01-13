@@ -321,19 +321,19 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>actionpack</artifactId>
-        <version>3.2.9</version>
+        <version>3.2.11</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>activemodel</artifactId>
-        <version>3.2.9</version>
+        <version>3.2.11</version>
         <type>gem</type>
       </dependency>
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>activesupport</artifactId>
-        <version>3.2.9</version>
+        <version>3.2.11</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -369,7 +369,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rack</artifactId>
-        <version>1.4.1</version>
+        <version>1.4.3</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -405,7 +405,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>activerecord</artifactId>
-        <version>3.2.9</version>
+        <version>3.2.11</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -657,7 +657,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>railties</artifactId>
-        <version>3.2.9</version>
+        <version>3.2.11</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -705,7 +705,7 @@
       <dependency>
         <groupId>rubygems</groupId>
         <artifactId>rspec-rails</artifactId>
-        <version>2.12.0</version>
+        <version>2.12.2</version>
         <type>gem</type>
       </dependency>
       <dependency>
@@ -852,7 +852,7 @@
           <dependency>
             <groupId>rubygems</groupId>
             <artifactId>copyright-header</artifactId>
-            <version>1.0.7</version>
+            <version>[1.0.7,1.0.99999]</version>
             <type>gem</type>
           </dependency>
         </dependencies>
@@ -1084,7 +1084,7 @@
         <dependency>
           <groupId>rubygems</groupId>
           <artifactId>copyright-header</artifactId>
-          <version>1.0.7</version>
+          <version>[1.0.7,1.0.99999]</version>
           <type>gem</type>
         </dependency>
       </dependencies>
