@@ -5,7 +5,7 @@ class CreateGroupsLocalesUsers < ActiveRecord::Migration
       t.integer :locale_id
       t.integer :user_id
     end 
-    add_index :groups_locales_users, [:group_id, :locale_id, :user_id], :unique => true
+    add_index :groups_locales_users, [:group_id, :locale_id, :user_id], :unique => true, :name => :index_groups_locales_users
   end
   def self.down    
     drop_index :groups_locales_users
