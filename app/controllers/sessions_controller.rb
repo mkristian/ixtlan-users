@@ -21,11 +21,11 @@ class SessionsController < LocalController
     user = User.authenticate( *login_and_password )
     if user.is_a? User
       current_user( user )
-      @session = serializer( Session.new( 'user' => user,
-                                          'idle_session_timeout' => Users::Application.config.idle_session_timeout,
-                                          'permissions' => guard.permissions( user.groups) ) )
+      @session = Session.new( 'user' => user,
+                              'idle_session_timeout' => Users::Application.config.idle_session_timeout,
+                              'permissions' => guard.permissions( user.groups) ) )
       
-      respond_with @session
+      respond_with serializer( @session )
     else
       @session = user.to_s
       head :unauthorized
