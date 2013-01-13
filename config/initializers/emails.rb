@@ -1,3 +1,5 @@
+# see also ../environment/developement.rb ../environment/test.rb
+
 if ENV['SENDGRID_USERNAME']
   Pony.options = {
     :via         => :smtp,
