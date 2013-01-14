@@ -4,9 +4,9 @@ class ProfileController < LocalController
 
   # GET /profile
   def show
-    @profile = serializer( current_user ).use( :profile )
+    @profile = current_user
 
-    respond_with @profile
+    respond_with serializer( @profile ).use( :profile )
   end
 
   # PUT /profile
