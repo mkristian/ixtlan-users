@@ -44,6 +44,8 @@ class ApplicationsController < LocalController
 
   # POST /applications
   def create
+    # TODO IMPORTANT nput filters
+    params[:application].delete(:groups)
     @application = Application.new( params[:application] )
     @application.modified_by = current_user
 
