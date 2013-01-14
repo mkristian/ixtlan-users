@@ -95,19 +95,18 @@ unless ENV['email'] || ENV['login']
   end
 end
 
+begin
+  require 'configuration'
+rescue LoadError
+end
+
 if defined? ::Configuration
   c = ::Configuration.instance
   if c.new_record?
     c.from_email = 'noreply@example.com'
-    if defined? Ixtlan::Errors
-      c.errors_keep_dumps = 30
-    end
-    if defined? Ixtlan::Audit
-      c.audits_keep_logs = 90
-    end
-    if defined? Ixtlan::Sessions
-      c.idle_session_timeout = 15
-    end
+    c.errors_keep_dumps = 30
+    c.audits_keep_logs = 90
+    c.idle_session_timeout = 15
     c.modified_by = u
     c.save
   end
