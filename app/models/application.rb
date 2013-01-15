@@ -45,9 +45,9 @@ class Application < ActiveRecord::Base
 
   def self.all_changed_after(from)
     if from.blank?
-      Application.all(:conditions => ["url NOT NULL"])
+      Application.all(:conditions => ["url IS NOT NULL"])
     else
-      Application.all(:conditions => ["url NOT NULL and updated_at > ?", from])
+      Application.all(:conditions => ["url IS NOT NULL and updated_at > ?", from])
     end
   end
 
