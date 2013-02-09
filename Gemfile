@@ -17,9 +17,6 @@ platforms :jruby do
   gem 'jdbc-sqlite3', :require => false
 end
 
-#gem 'resty-generators', '~> 0.7.3'#, :path => '../../rails-resty-gwt/resty-generators'
-#gem 'ixtlan-generators', '~> 0.1.5'#, :path => '../../ixtlan/ixtlan-generators'
-
 gem "ixtlan-session-timeout", '~> 0.4.0'
 gem "ixtlan-guard", '~> 0.9'#,:path => '../../ixtlan/ixtlan-guard'
 # TODO use cache headers from ixtlan-core
