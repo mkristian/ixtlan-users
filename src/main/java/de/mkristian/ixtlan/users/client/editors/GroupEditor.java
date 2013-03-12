@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DateLabel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.NumberLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,7 +26,7 @@ public class GroupEditor extends Composite implements Editor<Group>{
     
     @Ignore @UiField FlowPanel signature;
 
-    NumberLabel<Integer> id = new NumberLabel<Integer>();
+    @UiField NumberLabel<Integer> id = new NumberLabel<Integer>();
     @UiField DateLabel createdAt;
     @UiField DateLabel updatedAt;
     @UiField UserLabel<User> modifiedBy;
@@ -41,17 +42,22 @@ public class GroupEditor extends Composite implements Editor<Group>{
         initWidget(BINDER.createAndBindUi(this));
         this.id.setVisible( false );
         table.setWidget( 0, 0, name );
-        table.setWidget( 0, 1, hasRegions );
-        table.setWidget( 0, 2, hasLocales );
-        table.setWidget( 0, 3, hasDomains );
+        table.setText( 1, 0, "has regions" );
+        table.setWidget( 1, 1, hasRegions );
+        table.setText( 1, 2, "has locales" );
+        table.setWidget( 1, 3, hasLocales );
+        table.setText( 1, 4, "has domains" );
+        table.setWidget( 1, 5, hasDomains );
+        table.getFlexCellFormatter().setColSpan( 0, 0, 5 );
+        table.getFlexCellFormatter().setVerticalAlignment(1, 0, HasAlignment.ALIGN_TOP );
+        table.getFlexCellFormatter().setVerticalAlignment(1, 1, HasAlignment.ALIGN_TOP );
+        table.getFlexCellFormatter().setVerticalAlignment(1, 2, HasAlignment.ALIGN_TOP );
+        table.getFlexCellFormatter().setVerticalAlignment(1, 3, HasAlignment.ALIGN_TOP );
+        table.getFlexCellFormatter().setVerticalAlignment(1, 4, HasAlignment.ALIGN_TOP );
+        table.getFlexCellFormatter().setVerticalAlignment(1, 5, HasAlignment.ALIGN_TOP );
     }
-    
-    public void setEnabled(boolean enabled) {
-        this.id.setVisible( false );
-        this.signature.setVisible(id.getValue() != null && id.getValue() > 0);
-        this.name.setEnabled(enabled);
-        this.hasRegions.setEnabled(enabled);
-        this.hasLocales.setEnabled(enabled);
-        this.hasDomains.setEnabled(enabled);
+
+    public void setIsNew( boolean isNew ) {
+        this.signature.setVisible( ! isNew );
     }
 }

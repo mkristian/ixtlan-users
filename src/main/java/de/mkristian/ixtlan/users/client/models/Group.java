@@ -64,6 +64,11 @@ public class Group implements HasToDisplay, Identifiable {
       this(0, null, null, null, 0, null, null);
   }
 
+  public Group( Application application ){
+      this();
+      setApplication( application );
+  }
+
   public Group(int id){
       this(id, null, null, null, 0, null, null);
     }
@@ -94,7 +99,16 @@ public class Group implements HasToDisplay, Identifiable {
     //this.domainIds = regionIds == null ? new ArrayList<Integer>() : regionIds;
     this.hasDomains = regionIds != null;
   }
-
+//
+//  public Group minimalClone(){
+//      Group g = new Group( getId() );
+//      g.setHasDomains( getHasDomains() );
+//      g.setHasLocales( getHasLocales() );
+//      g.setHasRegions( getHasRegions() );
+//      g.setName( getName() );
+//      return g;
+//  }
+  
   public int getId(){
     return id;
   }

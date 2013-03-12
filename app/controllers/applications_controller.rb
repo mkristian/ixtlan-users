@@ -9,6 +9,10 @@ class ApplicationsController < LocalController
 
   private
 
+  def group_url( *args )
+    application_url( *args )
+  end
+
   def authorize_application
     #TODO super(params[:id])
     if params[:id]
@@ -83,8 +87,8 @@ class ApplicationsController < LocalController
 
   def group_update
     group = application.group_update( current_user, 
-                                      updated_at,
-                                      param[ :id ], 
+                                      params[ :group ][ :updated_at ],
+                                      params[ :id ], 
                                       params[ :group ] )
 
     # for audit log
@@ -93,9 +97,9 @@ class ApplicationsController < LocalController
     respond_with serializer( group )
   end
 
-  def group_destroy
-    group = application.group_delete( updated_at,
-                                      param[ :id ] )
+  def group_delete
+    group = application.group_delete( params[ :group ][ :updated_at ],
+                                      params[ :id ] )
 
     # for audit log
     @application = group

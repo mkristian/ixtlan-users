@@ -113,19 +113,22 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
     @Override
     public void edit( Application model ) {
         super.edit( model );
-        resetGroup( model.getGroups() );
+        resetGroups( model );
+        this.header.setText( "Applications" + " - " + model.getName() );
     }
 
     @Override
     public void show(Application model) {
         super.show(model);
-        resetGroup( model.getGroups() );
+        resetGroups( model );
+        this.header.setText( "Applications" + " - " + model.getName() );
     }
 
     @Override
     public void reset(Application model) {
-        super.reset(model);
-        resetGroup( model.getGroups() );
+        super.reset( model );
+        resetGroups( model );
+        this.header.setText( "Applications" + " - " + model.getName() );
     }
 
     @Override
@@ -190,29 +193,30 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
     } 
     
     @Override
-    public void resetGroup( Iterable<Group> groups ){
+    public void resetGroups( Application application ){
         list.removeAllRows();
         list.setText(0, 0, "Id");
         list.setText(0, 1, "Name");
         list.setText(0, 2, "Has Regions");
         list.setText(0, 3, "Has Locales");
         list.setText(0, 4, "Has Domains");
-        resetNewRow();
+        list.getRowFormatter().addStyleName(0, "users-group-header");
+        resetNewRow( application );
 
         int row = 2;
-        for(Group t: groups){
+        for(Group t: application.getGroups() ){
             setRow(row, t);
             row ++;
         }
     }
     
     @Override
-    public void resetNewRow() {
-        list.setText( 1, 0, "0" );
-        list.setText( 1, 1, "1" );
+    public void resetNewRow( Application application ) {
+        list.setText( 1, 0, "" );
+        list.setText( 1, 1, "" );
         list.getFlexCellFormatter().setColSpan( 1, 1, 4 );
-        list.setWidget( 1, 2, newButton( NEW, null ) );
-        list.setText( 1, 3, "3" );
+        list.setWidget( 1, 2, newButton( NEW, new Group( application ) ) );
+        list.setText( 1, 3, "" );
         GWT.log("reset new row");
     }
 
@@ -220,26 +224,26 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
     public void show( Group model ){
         int row = id2row.get( model.getId() );
         setRow( row, model );
-        list.getFlexCellFormatter().setColSpan( row, 1, 1 );
+        list.getFlexCellFormatter().setColSpan( row, 0, 1 );
     }
     
     @Override
     public void edit( Group model ){
         int row = id2row.get( model.getId() );
-        list.setWidget( row, 1, groupEditor );
-        list.setWidget( row, 2, save );
-        list.setWidget( row, 3, cancel );
+        list.setWidget( row, 0, groupEditor );
+        list.setWidget( row, 1, save );
+        list.setWidget( row, 2, cancel );
+        list.clearCell( row, 3 );
         list.clearCell( row, 4 );
         list.clearCell( row, 5 );
         list.clearCell( row, 6 );
         FlexCellFormatter format = list.getFlexCellFormatter();
-        format.setColSpan( row, 1, 4 );
+        format.setColSpan( row, 0, 5 );
         format.setVerticalAlignment( row, 0, HasAlignment.ALIGN_TOP );
-        format.setVerticalAlignment( row, 2, HasAlignment.ALIGN_BOTTOM );
-        format.setVerticalAlignment( row, 3, HasAlignment.ALIGN_BOTTOM );
+        format.setVerticalAlignment( row, 1, HasAlignment.ALIGN_TOP );
+        format.setVerticalAlignment( row, 2, HasAlignment.ALIGN_TOP );
         editorDriver.edit( model );
-        // TODO not needed ???
-        groupEditor.setEnabled( true );
+        groupEditor.setIsNew( false );
     }
 
     @Override
@@ -253,8 +257,7 @@ public class ApplicationViewImpl extends CRUDViewImpl<Application, ApplicationPr
 //        format.setVerticalAlignment( 1, 2, HasAlignment.ALIGN_BOTTOM );
 //        format.setVerticalAlignment( 1, 3, HasAlignment.ALIGN_BOTTOM );
         editorDriver.edit( model );
-        // TODO not needed ???
-        groupEditor.setEnabled( true );
+        groupEditor.setIsNew( true );
     }
 
     @Override

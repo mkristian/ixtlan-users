@@ -11,6 +11,14 @@
     <g:FlowPanel styleName="gwt-rails-buttons">
       <g:Button ui:field="listButton">List All</g:Button>
       <g:Button ui:field="newButton">New</g:Button>
+    </g:FlowPanel>
+
+    <g:TabLayoutPanel barUnit="EM" barHeight="2" width="100%"
+                        height="20em">
+      <g:tab>
+        <g:header>Details</g:header>
+        <g:FlowPanel>
+    <g:FlowPanel styleName="gwt-rails-buttons">
       <g:Button ui:field="editButton">Edit</g:Button>
       <g:Button ui:field="reloadButton">Reload</g:Button>
     </g:FlowPanel>
@@ -23,13 +31,19 @@
       <g:Button ui:field="deleteButton">Delete</g:Button>
       <g:Button ui:field="cancelButton">Cancel</g:Button>
         
-    </g:FlowPanel>
-
-    <g:FlowPanel>
-      <g:Label>Groups</g:Label>
-
-      <g:FlexTable ui:field="list" styleName="gwt-rails-model-list"/>
-    </g:FlowPanel>
+    </g:FlowPanel></g:FlowPanel>
+      </g:tab>
+      <g:tab>
+        <g:header>Groups</g:header>
+        <g:FlexTable ui:field="list" styleName="gwt-rails-model-list"/>
+      </g:tab>
+      <g:tab>
+        <g:header>Users</g:header>
+                            <g:HTML>
+                                <h2>TODO users</h2>
+                            </g:HTML>
+      </g:tab>
+    </g:TabLayoutPanel>
   </g:FlowPanel>
 
 </ui:UiBinder>

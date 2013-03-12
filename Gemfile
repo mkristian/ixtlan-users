@@ -23,7 +23,7 @@ gem "ixtlan-guard", '~> 0.9'#,:path => '../../ixtlan/ixtlan-guard'
 #gem "ixtlan-core", '~> 0.8.0',:path => '../../ixtlan/ixtlan-core'
 gem "ixtlan-error-handler", '~> 0.3'#, :path => '../../ixtlan/ixtlan-error-handler'
 gem "ixtlan-audit", '~> 0.3'#, :path => '../../ixtlan/ixtlan-audit'
-
+gem 'ixtlan-user-management', '~> 0.1'#, :path => '../../ixtlan/ixtlan-remote'
 gem 'ixtlan-remote', '~> 0.1'#, :path => '../../ixtlan/ixtlan-remote'
 gem "ixtlan-babel", '~> 0.2'#, :path => '../../ixtlan/ixtlan-babel'
 gem "ixtlan-gettext", '~> 0.1', :require => false#, :path => '../../ixtlan/ixtlan-gettext'

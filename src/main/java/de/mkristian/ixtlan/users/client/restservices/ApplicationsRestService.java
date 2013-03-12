@@ -37,7 +37,7 @@ public interface ApplicationsRestService extends RestService {
   @DELETE @Path("/applications/{id}")
   void destroy(@PathParam("id") @Attribute("id") Application value, MethodCallback<Void> callback);
 
-  @POST @Path("/applications/{id}/group")
+  @POST @Path("/applications/{id}/groups")
   void createGroup(@PathParam("id") @Attribute("getApplicationId()") Group value, MethodCallback<Group> callback);
 
   @PUT @Path("/groups/{id}")

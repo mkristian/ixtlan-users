@@ -29,6 +29,7 @@ import javax.inject.Singleton;
 import org.fusesource.restygwt.client.Method;
 import org.fusesource.restygwt.client.MethodCallback;
 
+import de.mkristian.gwt.rails.RemoteNotifier;
 import de.mkristian.gwt.rails.presenters.CRUDPresenterImpl;
 import de.mkristian.ixtlan.users.client.UsersErrorHandler;
 import de.mkristian.ixtlan.users.client.caches.ApplicationCache;
@@ -44,6 +45,7 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
 
     private Group current;
     private final ApplicationsRestService service;
+    private final RemoteNotifier notifier;
     
     @Inject
     public ApplicationPresenter( UsersErrorHandler errors,
@@ -51,12 +53,14 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
             ApplicationListView listView,
             ApplicationCache cache,
             ApplicationRemote remote,
-            ApplicationsRestService service){
+            ApplicationsRestService service,
+            RemoteNotifier notifier ){
         super( errors, view, listView, cache, remote );
         view.setPresenter( this );
         this.service = service;
+        this.notifier = notifier;
      }
-
+    
     protected ApplicationView getView(){
         return (ApplicationView) super.getView();
     }
@@ -68,14 +72,15 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
     }
     
     public void save( final Group group ) {
-        errors.show("save clicked" + group.getName() + group.hasRegions());
-        this.service.updateGroup(group, new MethodCallback<Group>() {
+        this.notifier.saving();
+        this.service.updateGroup(group.minimalClone(), new MethodCallback<Group>() {
             
             @Override
             public void onSuccess(Method method, Group response) {
                 List<Group> groups = group.getApplication().getGroups();
                 int i = groups.indexOf( response ); // identity is over id field
                 groups.set( i, response );
+                getView().edit(response);
                 getRemote().fireUpdate( method, group.getApplication() );
             }
             
@@ -94,22 +99,24 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
         getView().show( group );
     }
 
-    public void edit( Group model ) {
+    public void edit( Group group ) {
+        assert group != null;
         if (current != null){
             getView().show( current );
         }
-        getView().resetNewRow();
-        getView().edit( model );
-        current = model;
+        getView().resetNewRow( group.getApplication() );
+        getView().edit( group );
+        current = group;
     }
 
     public void delete( final Group group ) {
-        errors.show("delete clicked");
-        this.service.destroyGroup( group, new MethodCallback<Void>() {
+        this.notifier.deleting();
+        this.service.destroyGroup( group.minimalClone(), new MethodCallback<Void>() {
             
             @Override
             public void onSuccess( Method method, Void response ) {
                 group.getApplication().getGroups().remove( group );
+                getView().reset( group.getApplication() );
                 getRemote().fireUpdate( method, group.getApplication() );
             }
             
@@ -133,7 +140,7 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
 
     public void showCurrent() {
         doShowCurrent();
-        getView().resetNewRow();
+        //getView().resetNewRow(miss);
    }
 
     private void doShowCurrent() {
@@ -145,16 +152,17 @@ public class ApplicationPresenter extends CRUDPresenterImpl<Application> {
 
     public void newGroup( Group model ) {
         doShowCurrent();
-        getView().newGroup( new Group() );
+        getView().newGroup( model );
     }
 
     public void create( final Group group ) {
-        errors.show("create clicked");
-        this.service.createGroup( group, new MethodCallback<Group>() {
+        this.notifier.saving();
+        this.service.createGroup( group.minimalClone(), new MethodCallback<Group>() {
             
             @Override
             public void onSuccess( Method method, Group response ) {
                 group.getApplication().getGroups().add( group );
+                getView().reset( group.getApplication() );
                 getRemote().fireUpdate( method, group.getApplication() );
             }
             

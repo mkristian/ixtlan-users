@@ -10,7 +10,7 @@ import de.mkristian.ixtlan.users.client.presenters.ApplicationPresenter;
 @ImplementedBy(ApplicationViewImpl.class)
 public interface ApplicationView extends CRUDView<Application, ApplicationPresenter> {
 
-    void resetGroup( Iterable<Group> groups );
+    void resetGroups( Application application );
 
     void edit( Group group );
 
@@ -22,5 +22,5 @@ public interface ApplicationView extends CRUDView<Application, ApplicationPresen
 
     void newGroup( Group model );
 
-    void resetNewRow();
+    void resetNewRow(Application application);
 }

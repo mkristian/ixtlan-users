@@ -61,7 +61,7 @@ public class Application implements HasToDisplay, Identifiable,
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.modifiedBy = modifiedBy;
-    this.groups = groups == null ? new ArrayList<Group>() : groups;
+    setGroups( groups );
   }
 
   public int getId(){
@@ -130,5 +130,8 @@ public class Application implements HasToDisplay, Identifiable,
   }
   public void setGroups(List<Group> groups) {
       this.groups = groups == null ? new ArrayList<Group>() : groups;
+      for( Group g : this.groups ){
+          g.setApplication( this );
+      }
   }
 }

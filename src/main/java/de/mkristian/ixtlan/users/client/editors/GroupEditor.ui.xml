@@ -8,6 +8,8 @@
   <g:FlowPanel>
 
     <g:FlowPanel ui:field="signature" styleName="gwt-rails-model-signature">
+      <g:Label>id: </g:Label>
+      <g:NumberLabel ui:field="id" />
       <g:Label>created at: </g:Label>
       <g:DateLabel ui:field="createdAt" predefinedFormat="DATE_TIME_MEDIUM"/>
       <g:Label>updated at: </g:Label>

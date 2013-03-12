@@ -283,3 +283,37 @@ body {
 .translations-with-original-without-default .translations-default {  
     display: none;
 }
+
+.gwt-TabLayoutPanelTab:hover {
+    background-color: white;
+}
+
+.gwt-TabLayoutPanelTab-selected, .gwt-TabLayoutPanelTab, .gwt-TabLayoutPanelTab-selected:hover{
+    border-left: 1px solid darkblue;
+    border-top: 1px solid darkblue;
+    border-right: 1px solid darkblue;
+    border-radius: 0.3em 0.3em 0em 0em;
+    background-color: white;
+    padding: .2em;
+    margin-left: .5em;   
+    background-color: #ddf;
+    color: #115;
+    font-weight: bold;
+    padding: 0.2em 0.8em;
+    font-size: 0.8em;
+    cursor: default;
+}
+
+.gwt-TabLayoutPanelTab-selected, .gwt-TabLayoutPanelTab-selected:hover{
+    background-color: #77f;
+}
+
+.users-group-header{
+    background-color: #77f;
+}
+
+table.gwt-TabLayoutPanelContent {
+  margin: 0;
+border-collapse:collapse;
+width: 100%;
+}

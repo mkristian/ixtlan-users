@@ -3,6 +3,6 @@ db/*.sqlite3
 log/*.log
 tmp/
 target/
-.pom.xml
+.*pom.xml
 pwd.txt
 gwt-unitCache/

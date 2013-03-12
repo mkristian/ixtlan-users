@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121220161148) do
+ActiveRecord::Schema.define(:version => 20130110161047) do
 
   create_table "applications", :force => true do |t|
     t.string   "name"
@@ -35,7 +35,8 @@ ActiveRecord::Schema.define(:version => 20121220161148) do
     t.string   "login"
     t.string   "path"
     t.string   "message"
-    t.datetime "created_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.string   "http_method"
   end
 
   create_table "configurations", :force => true do |t|

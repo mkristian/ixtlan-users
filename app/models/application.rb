@@ -64,6 +64,10 @@ class Application < ActiveRecord::Base
   end
 
   def group_create( current_user, attributes )
+    # TODO somethng with those ids or remove them altogether
+    attributes.delete( :id )
+    application_ids = attributes.delete( :application_ids ) || []
+    region_ids = attributes.delete( :region_ids ) || []
     g = groups.new( attributes )
     g.modified_by = current_user
     g.save
@@ -71,6 +75,11 @@ class Application < ActiveRecord::Base
   end
 
   def group_update( current_user, updated_at, id, attributes )
+    # TODO somethng with those ids or remove them altogether
+    attributes.delete( :id )
+    attributes.delete( :created_at )
+    application_ids = attributes.delete( :application_ids ) || []
+    region_ids = attributes.delete( :region_ids ) || []
     g = Group.optimistic_find( updated_at, id )
     if g.application.id != self.id
       raise "application(#{self.id}) and group.application(#{g.application.id}) mismatch"
