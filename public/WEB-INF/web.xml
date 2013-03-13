@@ -20,7 +20,7 @@
   </context-param>
   <context-param>
     <param-name>gem.path</param-name>
-    <param-value>./target/rubygems</param-value>
+    <param-value>./target/rubygems:./target/rubygems-bundler-maven-plugin</param-value>
   </context-param>
   <context-param>
     <param-name>rails.env</param-name>
