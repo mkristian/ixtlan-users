@@ -55,7 +55,7 @@ class Application < ActiveRecord::Base
     unless [Application.THIS, Application.ALL].member? app
       app.group_create( app.modified_by, :name => 'root' )
 #    app.group_create( app.modified_by, :name => 'user-admin' )
-      app.group_create( app.modified_by, :name => 'translator' )
+      app.group_create( app.modified_by, :name => 'translator', :has_locales => true )
     end
   end
 
