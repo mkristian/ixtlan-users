@@ -70,7 +70,6 @@ class UsersController < LocalController
 
     @user.updated_at = Time.now
 
-p params[:user]
     @user.deep_update_attributes(params[:user], current_user)
 
     respond_with serializer( @user )
