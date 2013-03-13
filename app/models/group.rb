@@ -33,21 +33,24 @@ class Group < ActiveRecord::Base
   private :load_associations
 
   def regions(user = nil)
-    if has_regions
+    if has_regions && user
       @regions = load_associations( GroupsRegionsUser, :region, user )
     end
+    @regions
   end
 
   def locales(user = nil)
-    if has_locales
+    if has_locales && user
       @locales = load_associations( GroupsLocalesUser, :locale, user )
     end
+    @locales
   end
 
   def domains(user = nil)
-    if has_domains
+    if has_domains && user
       @domains = load_associations( DomainsGroupsUser, :domain, user )
     end
+    @domains
   end
 
   def applications(user = nil)
