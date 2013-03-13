@@ -54,7 +54,7 @@ class UserSerializer < Ixtlan::Babel::Serializer
                       :only => [:id, :name]
                     }
                   },
-                  :methods => [:applications, :regions]
+                  :methods => [:applications, :domains, :locales, :regions]
                 }
               })
   
@@ -82,24 +82,8 @@ class UserSerializer < Ixtlan::Babel::Serializer
   end
   private :setup_associations
 
-  def to_json(options = nil)
-    opts = filter.options.dup
-    opts.merge!(options) if options
-    setup_associations(opts) unless collection?
+  def setup_filter(options = nil)
     super
-  end
-
-  def to_xml(options = nil)
-    opts = filter.options.dup
-    opts.merge!(options) if options
-    setup_associations(opts)
-    super(opts)
-  end
-
-  def to_yaml(options = nil)
-    opts = filter.options.dup
-    opts.merge!(options) if options
-    setup_associations(opts)
-    super(opts)
+    setup_associations( filter.options ) unless collection?
   end
 end
