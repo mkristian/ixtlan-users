@@ -77,7 +77,12 @@ class UserSerializer < Ixtlan::Babel::Serializer
               :include => {
                 :groups => {
                   :only => [:id, :name],
-                  :methods => [:domains, :locales, :regions]
+                  :methods => [:domains, :locales, :regions],
+                  :include => {
+                    :application => {
+                      :only => [:id, :name]
+                    }
+                  }
                 },
                 :applications => {
                    :only => [:id, :name, :url]
