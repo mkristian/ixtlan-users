@@ -194,7 +194,7 @@ class User < ActiveRecord::Base
       app_id = app ? app.id : 0
       app_ids =[app_id, Application.ALL.id]
       groups.delete_if do |g|
-        !app_ids.member?(g.application.id)
+        !app_ids.member?(g.application.id) && g.name != 'translator'
       end
     end
   end
