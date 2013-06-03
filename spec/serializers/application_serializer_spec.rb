@@ -10,7 +10,7 @@ describe ApplicationSerializer do
 
     it "use single" do
       body = JSON.parse(subject.to_json)
-      #puts body.to_yaml
+      #      puts body.to_yaml
       application = body['application']
       application.should have(9).items
       application['id'].should_not be_nil
@@ -24,12 +24,15 @@ describe ApplicationSerializer do
       groups = application['groups']
       groups.should have(2).items
       groups.each do |group|
-        group.should have(5).items
+        group.should have(8).items
         group['id'].should_not be_nil
         group['name'].should_not be_nil
-        group['has_regions'].should == false
-        group['has_locales'].should == false
-        group['has_domains'].should == false
+        group['has_regions'].should_not be_nil
+        group['has_locales'].should_not be_nil
+        group['has_domains'].should_not be_nil
+        group['created_at'].should_not be_nil
+        group['updated_at'].should_not be_nil
+        group['modified_by'].should_not be_nil
       end
     end
 

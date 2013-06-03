@@ -69,18 +69,19 @@ describe UserSerializer do
 
     it "use collection" do
       body = JSON.parse(UserSerializer.new( User.all ).to_json)
+      # puts body.to_yaml
       body.should have(3).items
       user = body.each do |item|
         user = item['user']
-        user.should have(6).items
+        user.should have(8).items
         user['id'].should_not be_nil
         user['login'].should_not be_nil
         user['name'].should_not be_nil
         user['email'].should_not be_nil
         user['updated_at'].should_not be_nil
         user.key?('at_token').should == true
-#        user['group_ids'].should_not be_nil
-#        user['application_ids'].should_not be_nil
+        user['group_ids'].should_not be_nil
+        user['application_ids'].should_not be_nil
       end
     end
 

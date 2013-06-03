@@ -31,12 +31,13 @@ describe Remote::AuthenticationsController do
       user['login'].should == 'root'
       user['groups'].should have(1).items
       user['groups'].each do |group|
-        group.should have(5).items
+        group.should have(6).items
         group['id'].should_not be_nil
         group['name'].should == 'root'
         group['regions'].should be_nil
         group['locales'].should be_nil
         group['domains'].should be_nil
+        group['application'].should have(2).items
       end
       user['applications'].should have(2).items
       user['applications'].each do |app|
