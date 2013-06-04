@@ -122,6 +122,44 @@ class User < ActiveRecord::Base
     filtered(find(id), current_user)
   end
 
+  def self._groups( params, application ) 
+    params[ :groups ].select do |g|
+      group = ( Group.where( :id => g[ :id ] ) + Group.where( :name => g[ :name ] ) ).first
+      if group && group.application == application
+        g[ :id ] = group.id
+      end
+    end if params[ :groups ]
+  end
+
+  def self._user( login, email, name, application )
+    u = self.where( "login=? or email=?", login, email ).first
+    if u
+      u.name = name if name
+      u.email = email if email
+      u.groups.delete_if { |g| g.application != application }
+    else
+      u = self.new( :login => login, :email => email, :name => name )
+    end
+    u.modified_by = self.system_user
+    u.save
+    u
+  end
+
+  def self.filtered_setup( params, application, current_user )
+    groups = self._groups( params, application )
+
+    user = self._user( params[ :login ], params[ :email ], 
+                       params[ :name ], application )
+    
+    user.deep_update_attributes( { :groups => groups },
+                                 current_user ) if groups
+    user
+  end
+
+  def self.system_user
+    self.first # assuming first == root or system
+  end
+
   def self.filtered(user, current_user) 
     unless current_user.root?
       # restrict user to AT unless current_user is user_admin
@@ -176,9 +214,9 @@ class User < ActiveRecord::Base
     group_ids = user_manager.group_ids(self, 
                                        :groups => groups, 
                                        :group_ids => group_ids)
-
     params[:group_ids] = group_ids
-    update_attributes(params) && user_manager.update(self)
+    update_attributes(params) 
+    valid? && user_manager.update(self)
   end
 
   public
@@ -220,7 +258,18 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.all_changed_after(from, at_only = false)
+  def self.all_changed_after_for_app( from, app )
+    unless from.blank?
+      User.uniq.joins( :groups => :application ).where( 'application_id = ? and users.updated_at > ?', 
+                                                        app.id, 
+                                                        from )
+    else
+      User.uniq.joins( :groups => :application ).where( 'application_id = ?', 
+                                                        app.id )
+    end
+  end
+
+  def self.all_changed_after( from, at_only = false )
     unless from.blank?
       if at_only
         User.joins(:groups).where('groups.id = ? AND users.updated_at > ?', Group.AT.id, from)
@@ -258,7 +307,11 @@ class User < ActiveRecord::Base
   end
 
   def root?
-    @is_root ||= groups.member? Group.ROOT
+    @is_root ||= ( groups.member?( Group.ROOT ) || system? )
+  end
+
+  def system?
+    @is_system = self.id == self.class.first.id
   end
 
   def app_admin?

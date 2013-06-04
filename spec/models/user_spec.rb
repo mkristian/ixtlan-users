@@ -144,10 +144,80 @@ describe User do
         u.reload.groups.should == [@g1]
       end
 
+      it 'should setup a valid user with groups' do
+        u = User.filtered_setup({ :login => 'user2',
+                                  :name => 'User',
+                                  :email => 'user2@example.com',
+                                  :groups => [{:id => @g1.id},
+                                              {:name => @g2.name}]},
+                                @a2,
+                                subject)
+        u = u.reload
+        u.groups.member?(@g1).should be_false
+        u.groups.member?(@g2).should be_true
+        u.groups.size.should == 1
+        u.name.should == 'User'
+        
+        # just change name + email
+        u = User.filtered_setup({ :login => 'user2',
+                                  :name => 'user',
+                                  :email => 'user2.user@example.com' },
+                                @a2,
+                                subject)
+        u = u.reload
+        u.name.should == 'user'
+        u.email.should == 'user2.user@example.com' 
+        
+        # remove groups
+        u = User.filtered_setup({ :login => 'user2',
+                                  :groups => [] },
+                                @a2,
+                                subject)
+        u = u.reload
+        u.groups.member?(@g1).should be_false
+        u.groups.member?(@g2).should be_false
+        u.groups.size.should == 0
+      end
+
+      it 'should setup a valid user with groups and applications' do
+        u = User.filtered_setup({ :login => 'user2',
+                                  :name => 'User2',
+                                  :email => 'user2@example.com',
+                                  :groups => [{ :name => @g2.name, 
+                                                :application_ids => [ @a2.id ] }]},
+                                @a2,
+                                User.first ) #root user
+        u = u.reload
+        u.groups.member?(@g1).should be_false
+        u.groups.member?(@g2).should be_true
+        u.groups.size.should == 1
+        u.name.should == 'User2'
+        u.email.should == 'user2@example.com'
+        
+        # application associations are restricted to root and app_admin users
+        # so bypass that restriction
+        apps = ApplicationsGroupsUser.where( :user_id => u.id ).collect { |a| a.application }
+        apps.first.should == @a2
+        apps.size.should == 1
+        u = User.filtered_setup({ :login => 'user2',
+                                  :name => 'User2',
+                                  :email => 'user2@example.com',
+                                  :groups => [{ :name => @g2.name, 
+                                                :application_ids => [] }]},
+                                @a2,
+                                User.first ) #root user
+        u = u.reload
+        u.groups.size.should == 1
+        # application associations are restricted to root and app_admin users
+        # so bypass that restriction
+        apps = ApplicationsGroupsUser.where( :user_id => u.id ).collect { |a| a.application }
+        apps.size.should == 0
+      end
+
       it 'should create a valid user with groups' do
-        u = User.filtered_new({ :login => 'user2',
+        u = User.filtered_new({ :login => 'user3',
                                 :name => 'User',
-                                :email => 'user2@example.com',
+                                :email => 'user3@example.com',
                                 :groups => [{:id => @g1.id},
                                             {:id => @g2.id}]}, 
                               subject)

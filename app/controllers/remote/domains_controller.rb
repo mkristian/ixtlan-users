@@ -6,4 +6,10 @@ class Remote::DomainsController < Remote::ApplicationController
     respond_with serializer( @domains ).use( :update )
   end
 
+  # GET /domains/last_changes_of_app
+  def last_changes_of_app
+    @domains = Domain.all_changed_after_for_app( params[ :updated_at ], remote_permission )
+    respond_with serializer( @domains ).use( :update )
+  end
+
 end

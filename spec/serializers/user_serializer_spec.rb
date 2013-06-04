@@ -23,6 +23,19 @@ describe UserSerializer do
       user.key?('at_token').should == true
     end
 
+    it "use setup" do
+      body = JSON.parse( subject.use( :for_app ).to_json )
+      user = body['user']
+      #puts user.to_yaml
+      user.should have(6).items
+      user['id'].should_not be_nil
+      user['name'].should_not be_nil
+      user['login'].should_not be_nil
+      user['email'].should_not be_nil
+      user['groups'].should_not be_nil
+      user['updated_at'].should_not be_nil
+    end
+
     it "use update" do
       body = JSON.parse(subject.use(:update).to_json)
       user = body['user']

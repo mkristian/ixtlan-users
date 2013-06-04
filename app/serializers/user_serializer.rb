@@ -26,6 +26,20 @@ class UserSerializer < Ixtlan::Babel::Serializer
                 }
               })
 
+  add_context(:for_app,
+              :only => [:id, :login, :name, :email, :updated_at],
+              :include=> { 
+                :groups => {
+                  :only => [:id, :name],
+                  :methods => [ :domains ],
+                  :include => {
+                    :domains => { 
+                      :only => [:id, :name]
+                    }
+                  }
+                }
+              })
+
   add_context(:update,
               :only => [:id, :login, :name, :updated_at])
 
@@ -73,10 +87,9 @@ class UserSerializer < Ixtlan::Babel::Serializer
   
   def setup_associations(options = {})
     methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
-  
     [:applications, :application_ids, :domains, :locales, :regions ].each do |m|
 
-      to_model.groups.each { |g| g.send( m, self) } if methods.member? m
+      to_model.groups.each { |g| g.send( m, self ) } if methods.member? m
     end
 
   end
