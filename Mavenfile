@@ -11,7 +11,7 @@ jar('com.google.gwt:gwt-user', '${gwt.version}').scope :provided
 jar('de.mkristian.gwt:rails-gwt', '0.8.0-SNAPSHOT').scope :provided
 jar('org.fusesource.restygwt:restygwt', '1.3').scope :provided
 jar('javax.ws.rs:jsr311-api', '1.1').scope :provided
-jar('com.google.gwt.inject:gin', '1.5.0').scope :provided
+jar('com.google.gwt.inject:gin', '2.0.0').scope :provided
 jar('javax.validation:validation-api', '1.0.0.GA').scope :provided
 jar('javax.validation:validation-api', '1.0.0.GA', 'sources').scope :provided
 
