@@ -258,7 +258,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.all_changed_after_for_app( from, app )
+  def self.all_changed_after_of_app( from, app )
     unless from.blank?
       User.uniq.joins( :groups => :application ).where( 'application_id = ? and users.updated_at > ?', 
                                                         app.id, 

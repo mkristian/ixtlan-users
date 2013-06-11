@@ -8,7 +8,7 @@ class Remote::UsersController < Remote::ApplicationController
 
   # GET /users/last_changes_of_app
   def last_changes_of_app
-    @users = User.all_changed_after_for_app( params[ :updated_at ], remote_permission )
+    @users = User.all_changed_after_of_app( params[ :updated_at ], remote_permission )
     respond_with serializer( @users ).use( :for_app )
   end
 
