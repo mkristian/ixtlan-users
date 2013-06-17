@@ -40,4 +40,4 @@ group :development, :test do
   gem 'resty-generators', '~> 0.7.3', :require => false#, :path => '../../gwt/rails-resty-gwt/resty-generators'
 end
 
-gem 'copyright-header', '~> 1.0.7', :group => :development
+gem 'copyright-header', '~> 1.0.7', :group => :development, :platform => :mri

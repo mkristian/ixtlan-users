@@ -61,7 +61,7 @@ end
 
 # lock down versions
 properties['gwt.version'] = '2.5.1-rc1'
-properties['jruby.version'] = '1.7.3'
+properties['jruby.version'] = '1.7.4'
 properties['jruby.plugins.version'] = '0.29.4'
 # jetty version to run it in standalone jetty via jetty-run
 properties['jetty.version'] = '8.1.9.v20130131'
