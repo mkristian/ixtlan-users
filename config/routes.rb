@@ -29,7 +29,7 @@ Users::Application.routes.draw do
   resource :session do
     member do
       post :reset_password
-      put :ping
+      get :ping
     end
   end
 
