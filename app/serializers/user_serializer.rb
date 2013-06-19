@@ -93,8 +93,13 @@ class UserSerializer < Ixtlan::Babel::Serializer
   def setup_associations(options = {})
     methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
     [:applications, :application_ids, :domains, :locales, :regions ].each do |m|
-
-      to_model.groups.each { |g| g.send( m, self ) } if methods.member? m
+      if collection?
+        each do |i|
+          i.groups.each { |g| g.send( m, i ) } if methods.member? m
+        end
+      else
+        to_model.groups.each { |g| g.send( m, self ) } if methods.member? m
+      end
     end
 
   end
@@ -102,6 +107,6 @@ class UserSerializer < Ixtlan::Babel::Serializer
 
   def setup_filter(options = nil)
     super
-    setup_associations( filter.options ) unless collection?
+    setup_associations( filter.options )
   end
 end
