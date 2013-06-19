@@ -1,8 +1,8 @@
 package de.mkristian.ixtlan.users.client.restservices;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 
 import org.fusesource.restygwt.client.MethodCallback;
@@ -24,6 +24,6 @@ public interface SessionRestService extends RestService {
     @POST @Path("/reset_password")
     void resetPassword(Authentication authentication, MethodCallback<Void> methodCallback);
     
-    @PUT @Path("/ping")
+    @GET @Path("/ping")
     void ping(MethodCallback<Void> callback);
 }
