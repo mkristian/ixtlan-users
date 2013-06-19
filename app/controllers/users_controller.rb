@@ -60,6 +60,7 @@ class UsersController < LocalController
                                           params[:id],
                                           current_user)
 
+    params[:user].delete( :updated_at )
     params[:user][:modified_by] = current_user
 
     #TODO allowed? should be part of guard
