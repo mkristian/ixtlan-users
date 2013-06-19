@@ -28,7 +28,7 @@ module Ixtlan
           group_ids = @groups.collect { |g| (g[:group] || g)[:id].to_i }
           group_ids = new_group_ids(user, :group_ids => group_ids)
           # adjust the groups to the allowed groups
-          @groups.delete_if do |g| 
+          @groups.delete_if do |g|
             !group_ids.member?((g[:group] || g)[:id].to_i)
           end
         else
@@ -40,7 +40,7 @@ module Ixtlan
             { :id => g.is_a?(Fixnum) ? g : g.id }
           end
         end
-        # TODO since we have already @groups as state we could return 
+        # TODO since we have already @groups as state we could return
         # only the groupids
         group_ids
       end
@@ -58,11 +58,11 @@ module Ixtlan
           g.id
         end
       end
-      
+
       def requested_group_ids(params)
         (params[:group_ids] || []).collect { |id| id.to_i }
       end
-      
+
       def all_group_ids
         @all_group_ids ||= Group.where(:application_id => allowed_applications).collect { |g| g.id }
       end
@@ -71,7 +71,7 @@ module Ixtlan
         @apps ||= @current_user.allowed_applications
       end
 
-      def allowed_group_ids(params)    
+      def allowed_group_ids(params)
         if current_user.root?
           # all are allowed
           requested_group_ids(params)
@@ -83,7 +83,7 @@ module Ixtlan
           all_group_ids & requested_group_ids(params)
         end
       end
-      
+
       def new_group_ids(user, params)
         if current_user.root?
           requested_group_ids(params)

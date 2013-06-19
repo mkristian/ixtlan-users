@@ -16,11 +16,11 @@ class Domain < ActiveRecord::Base
 
   def self.all_changed_after_of_app( from, app )
     set = unless from.blank?
-      DomainsGroupsUser.joins( :group, :domain ).where( 'application_id = ? and domains.updated_at > ?', 
-                                                        app.id, 
+      DomainsGroupsUser.joins( :group, :domain ).where( 'application_id = ? and domains.updated_at > ?',
+                                                        app.id,
                                                         from )
     else
-      DomainsGroupsUser.uniq.joins( :group => :application ).where( 'application_id = ?', 
+      DomainsGroupsUser.uniq.joins( :group => :application ).where( 'application_id = ?',
                                                                     app.id )
     end
     set.collect { |d| d.domain }.uniq

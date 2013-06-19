@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
     end
     if !groups.member?(Group.AT) && !at_token.blank?
       errors.add(:groups, 'with given AT token the user must be member of the AT group')
-    end  
+    end
   end
 
   def self.reset_password(login)
@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
       u # can be used for logging
     end
   end
-  
+
   def self.assert( login, password )
     if password.blank?
       "no password given with login: #{login}"
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
       "no login given"
     end
   end
-  
+
   def self.get_user( login, password )
     result = assert( login, password )
     if result
@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
         user.save
       end
       user
-    end 
+    end
   end
 
   def self.authenticate(login, password, token = nil)
@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
       if current_user.groups.member?(Group.AT)
         users.delete_if { |user| !user.groups.member?(Group.AT) }
       elsif current_user.groups.member?(Group.APP_ADMIN)
-        users.delete_if do |user| 
+        users.delete_if do |user|
           g = user.groups.detect { |g| apps.member?(g.application) }
           g.nil?
         end
@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
         end
       end
     end
-    
+
     users
   end
 
@@ -122,7 +122,7 @@ class User < ActiveRecord::Base
     filtered(find(id), current_user)
   end
 
-  def self._groups( params, application ) 
+  def self._groups( params, application )
     params[ :groups ].select do |g|
       group = ( Group.where( :id => g[ :id ] ) + Group.where( :name => g[ :name ] ) ).first
       if group && group.application == application
@@ -148,9 +148,9 @@ class User < ActiveRecord::Base
   def self.filtered_setup( params, application, current_user )
     groups = self._groups( params, application )
 
-    user = self._user( params[ :login ], params[ :email ], 
+    user = self._user( params[ :login ], params[ :email ],
                        params[ :name ], application )
-    
+
     user.deep_update_attributes( { :groups => groups },
                                  current_user ) if groups
     user
@@ -160,7 +160,7 @@ class User < ActiveRecord::Base
     self.first # assuming first == root or system
   end
 
-  def self.filtered(user, current_user) 
+  def self.filtered(user, current_user)
     unless current_user.root?
       # restrict user to AT unless current_user is user_admin
       # TODO maybe that should be part of the guard, i.e. 'all_users' action
@@ -192,9 +192,9 @@ class User < ActiveRecord::Base
     filtered(optimistic_find(updated_at, id), current_user)
   end
 
-  def self.filtered_new(params, current_user)   
+  def self.filtered_new(params, current_user)
     manager = Manager.new(current_user)
-    group_ids = manager.group_ids(nil, 
+    group_ids = manager.group_ids(nil,
                                   :groups => params.delete(:groups),
                                   :group_ids => params.delete(:group_ids))
     params[:group_ids] = group_ids
@@ -202,7 +202,7 @@ class User < ActiveRecord::Base
     user.user_manager(manager) if manager
     user
   end
-  
+
   def deep_save
     save && (user_manager ? user_manager.update(self) : true)
   end
@@ -211,11 +211,11 @@ class User < ActiveRecord::Base
     user_manager = Manager.new(current_user)
     groups = params.delete(:groups)
     group_ids = params.delete(:group_ids)
-    group_ids = user_manager.group_ids(self, 
-                                       :groups => groups, 
+    group_ids = user_manager.group_ids(self,
+                                       :groups => groups,
                                        :group_ids => group_ids)
     params[:group_ids] = group_ids
-    update_attributes(params) 
+    update_attributes(params)
     valid? && user_manager.update(self)
   end
 
@@ -260,11 +260,11 @@ class User < ActiveRecord::Base
 
   def self.all_changed_after_of_app( from, app )
     unless from.blank?
-      User.uniq.joins( :groups => :application ).where( 'application_id = ? and users.updated_at > ?', 
-                                                        app.id, 
+      User.uniq.joins( :groups => :application ).where( 'application_id = ? and users.updated_at > ?',
+                                                        app.id,
                                                         from )
     else
-      User.uniq.joins( :groups => :application ).where( 'application_id = ?', 
+      User.uniq.joins( :groups => :application ).where( 'application_id = ?',
                                                         app.id )
     end
   end
@@ -331,7 +331,7 @@ class User < ActiveRecord::Base
   end
 
   def applications
-    @applications ||= 
+    @applications ||=
       begin
         apps = groups.collect { |g| g.application }.uniq
         apps << Application.ATS if at?

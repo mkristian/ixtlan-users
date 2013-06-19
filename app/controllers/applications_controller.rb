@@ -2,7 +2,7 @@ class ApplicationsController < LocalController
 
   guard_filter( {} ) do |groups|
     groups.select do |group|
-      group.application == Application.ALL || 
+      group.application == Application.ALL ||
         ( application && group.application == application )
     end
   end
@@ -16,7 +16,7 @@ class ApplicationsController < LocalController
   def authorize_application
     #TODO super(params[:id])
     if params[:id]
-      @application =         
+      @application =
         if updated_at
           Application.optimistic_find(updated_at, params[:id])
         else
@@ -56,7 +56,7 @@ class ApplicationsController < LocalController
 #    authorize_app(@application)
 
     @application.save
-    
+
     respond_with serializer( @application )
   end
 
@@ -86,9 +86,9 @@ class ApplicationsController < LocalController
   end
 
   def group_update
-    group = application.group_update( current_user, 
+    group = application.group_update( current_user,
                                       params[ :group ][ :updated_at ],
-                                      params[ :id ], 
+                                      params[ :id ],
                                       params[ :group ] )
 
     # for audit log

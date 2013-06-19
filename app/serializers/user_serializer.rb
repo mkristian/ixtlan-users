@@ -6,34 +6,34 @@ class UserSerializer < Ixtlan::Babel::Serializer
 
   add_context(:session,
               :only => [:id],
-              :include=> { 
+              :include=> {
                 :groups => {
                   :only => [:id],
                   :include => {
-                    :domains => { 
+                    :domains => {
                       :only => [:id, :name]
                     },
-                    :locales => { 
+                    :locales => {
                       :only => [:id, :code]
                     },
-                    :regions => { 
+                    :regions => {
                       :only => [:id, :name]
                     },
                     :application => {
                       :only => [:id, :name]
-                    }                      
+                    }
                   }
                 }
               })
 
   add_context(:for_app,
               :only => [:id, :login, :name, :email, :updated_at],
-              :include=> { 
+              :include=> {
                 :groups => {
                   :only => [:id, :name],
                   :methods => [ :domains ],
                   :include => {
-                    :domains => { 
+                    :domains => {
                       :only => [:id, :name]
                     }
                   }
@@ -43,11 +43,11 @@ class UserSerializer < Ixtlan::Babel::Serializer
   add_context(:update,
               :only => [:id, :login, :name, :updated_at])
 
-  add_context(:at_update, 
-              :only => [:id, :name, :at_token, :updated_at], 
+  add_context(:at_update,
+              :only => [:id, :name, :at_token, :updated_at],
               :root => 'at')
 
-  add_context(:collection, 
+  add_context(:collection,
               :except => [:hashed, :hashed2, :created_at, :modified_by_id],
               :methods => [:group_ids, :application_ids])
 
@@ -56,8 +56,8 @@ class UserSerializer < Ixtlan::Babel::Serializer
               :except => [:hashed, :hashed2, :modified_by_id])
 
   add_context(:single,
-              :except => [:hashed, :hashed2, :modified_by_id], 
-              :include => { 
+              :except => [:hashed, :hashed2, :modified_by_id],
+              :include => {
                 :modified_by => {
                   :only => [:id, :login, :name],
                 },
@@ -71,7 +71,7 @@ class UserSerializer < Ixtlan::Babel::Serializer
                   :methods => [:applications, :domains, :locales, :regions]
                 }
               })
-  
+
   add_context(:authenticate,
               :except => [:hashed, :hashed2, :created_at, :updated_at, :modified_by_id, :at_token, :email],
               :include => {
@@ -89,7 +89,7 @@ class UserSerializer < Ixtlan::Babel::Serializer
                 }
               })
 
-  
+
   def setup_associations(options = {})
     methods = ((((options || {})[:include] || {})[:groups] || {})[:methods] || [])
     [:applications, :application_ids, :domains, :locales, :regions ].each do |m|

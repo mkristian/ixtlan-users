@@ -33,7 +33,7 @@ class GroupsController < LocalController
   #                                            @application )
 
   #   params[:group][:modified_by] = current_user
-    
+
   #   authorize_application_param( params[:group] )
 
   #   @group.update_attributes( params[:group] )
@@ -43,8 +43,8 @@ class GroupsController < LocalController
 
   # # DELETE /groups/1
   # def destroy
-  #   @group = Group.filtered_optimistic_find( updated_at, 
-  #                                            params[:id], 
+  #   @group = Group.filtered_optimistic_find( updated_at,
+  #                                            params[:id],
   #                                            @application )
 
   #   @group.destroy

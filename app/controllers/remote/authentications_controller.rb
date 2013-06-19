@@ -18,7 +18,7 @@ class Remote::AuthenticationsController < Remote::ApplicationController
     @authentication = "login/email: #{username}"
 
     pwd = User.reset_password( username )
-    
+
     if pwd
       render :inline => "password sent", :content_type => :text
     else

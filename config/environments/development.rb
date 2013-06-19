@@ -53,7 +53,7 @@ class MailDump
     def initialize(values)
       @settings = {}
     end
-    
+
     attr_accessor :settings
 
     def deliver!(mail)

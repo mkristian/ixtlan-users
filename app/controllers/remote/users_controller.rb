@@ -13,7 +13,7 @@ class Remote::UsersController < Remote::ApplicationController
   end
 
   def setup
-    @user = User.filtered_setup( params, 
+    @user = User.filtered_setup( params,
                                  remote_permission,
                                  User.system_user )
     respond_with serializer( @user ).use( :for_app )

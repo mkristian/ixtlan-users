@@ -18,7 +18,7 @@ class Application < ActiveRecord::Base
   end
 
   def self.ATS
-    @ats ||= 
+    @ats ||=
       begin
         ats = Application.new
         ats.id = -1

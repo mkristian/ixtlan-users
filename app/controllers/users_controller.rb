@@ -35,7 +35,7 @@ class UsersController < LocalController
   # GET /users/1/at.json
   def at
     @user = User.filtered_find(params[:id], current_user)
-    
+
     respond_with serializer( @user )
   end
 
@@ -56,8 +56,8 @@ class UsersController < LocalController
   # PUT /users/1.json
   def update
     params[:user] ||= params
-    @user = User.filtered_optimistic_find(params[:user][:updated_at], 
-                                          params[:id], 
+    @user = User.filtered_optimistic_find(params[:user][:updated_at],
+                                          params[:id],
                                           current_user)
 
     params[:user][:modified_by] = current_user

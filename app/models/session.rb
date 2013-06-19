@@ -10,7 +10,7 @@ class Session < Ixtlan::UserManagement::Session
     []
   end
 
-  def id 
+  def id
     ''
   end
 end

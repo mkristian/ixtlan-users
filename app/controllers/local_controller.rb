@@ -54,12 +54,12 @@ class LocalController < ApplicationController
 
   protected
 
-  def current_user(user = nil)  
+  def current_user(user = nil)
     if user
       session['user'] = serializer(user).use(:session).to_hash['user']
       @_current_user = user
     else
-      @_current_user ||= 
+      @_current_user ||=
         begin
           data = session['user']
           if data
@@ -73,7 +73,7 @@ class LocalController < ApplicationController
         end
     end
   end
-    
+
   def current_groups
     if current_user
       app_ids = [Application.THIS.id, Application.ALL.id]

@@ -13,14 +13,14 @@ class ConfigurationController < LocalController
 
   # PUT /configuration
   def update
-    @configuration = ::Configuration.optimistic_find( updated_at, 
+    @configuration = ::Configuration.optimistic_find( updated_at,
                                                       ::Configuration.instance.id )
 
     params[:configuration] ||= {}
     params[:configuration][:modified_by] = current_user
 
     @configuration.update_attributes( params[:configuration] )
-      
+
     respond_with serializer( @configuration )
   end
 end

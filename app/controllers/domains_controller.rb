@@ -30,7 +30,7 @@ class DomainsController < LocalController
 
     @domain.attributes = params[ :domain ]
     if @domain.changed?
-      @domain.modified_by = current_user 
+      @domain.modified_by = current_user
       @domain.save
     end
 
@@ -38,7 +38,7 @@ class DomainsController < LocalController
   end
 
   # DELETE /domains/1
-  def destroy 
+  def destroy
     @domain = Domain.optimistic_find( updated_at, params[:id] )
 
     @domain.destroy

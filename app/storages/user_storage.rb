@@ -6,18 +6,18 @@ class UserStorage
       @manager = manager
       super(model)
     end
-  
+
     def save
       super && @manager.update(self)
     end
-    
+
     def update_attributes(params)
       groups = params.delete(:groups)
       group_ids = params.delete(:group_ids)
-      group_ids = @manager.group_ids(self, 
-                                     :groups => groups, 
+      group_ids = @manager.group_ids(self,
+                                     :groups => groups,
                                      :group_ids => group_ids)
-      
+
       params[:group_ids] = group_ids
       super(params) && @manager.update(self)
     end
@@ -26,7 +26,7 @@ class UserStorage
   def initialize(current_user)
     @current_user = current_user
   end
-  
+
   def all
     users = User.includes(:groups)#.joins(:groups).where("groups_users.group_id" => current_user.groups)
 
@@ -38,7 +38,7 @@ class UserStorage
       if @current_user.at?
         users.delete_if { |user| !user.at? }
       elsif @current_user.groups.app_admin?
-        users.delete_if do |user| 
+        users.delete_if do |user|
           g = user.groups.detect { |g| apps.member?(g.application) }
           g.nil?
         end
@@ -52,7 +52,7 @@ class UserStorage
         end
       end
     end
-    
+
     users
   end
 
@@ -65,9 +65,9 @@ class UserStorage
     filtered(User.optimistic_find(updated_at, id))
   end
 
-  def new_user(params)   
+  def new_user(params)
     manager = Manager.new(@current_user)
-    group_ids = manager.group_ids(nil, 
+    group_ids = manager.group_ids(nil,
                                   :groups => params.delete(:groups),
                                   :group_ids => params.delete(:group_ids))
     params[:group_ids] = group_ids
@@ -76,7 +76,7 @@ class UserStorage
 
   private
 
-  def filtered(user) 
+  def filtered(user)
     unless @current_user.root?
       # if current_user is AT restrict user to be AT
       # unless current_user is user_admin

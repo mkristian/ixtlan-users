@@ -1,5 +1,5 @@
 applications:
-  defaults: [] 
+  defaults: []
   index:
     - user-admin
     - app-admin

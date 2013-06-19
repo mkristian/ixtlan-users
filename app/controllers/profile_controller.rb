@@ -1,5 +1,5 @@
 class ProfileController < LocalController
- 
+
 #TODO  cache_headers :private
 
   # GET /profile

@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
- 
+
   respond_to :json
 
   protected
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     auth = params[:authentication] || params
     [ auth[:login] || auth[:email], auth[:password] ]
   end
-  
+
 end
   # old stuff
 #   protect_from_forgery
@@ -56,7 +56,7 @@ end
 #   end
 
 #   def current_user(user = nil)
-#     # TODO just put user_id and user.groups names into session 
+#     # TODO just put user_id and user.groups names into session
 #     session['user'] = user if user
 #     session['user']
 #   end
@@ -67,7 +67,7 @@ end
 
 #   def remote_permission
 #     perm = RemotePermission.find_by_token(x_service_token)
-#     raise "ip #{request.remote_ip} wrong authentication" unless perm 
+#     raise "ip #{request.remote_ip} wrong authentication" unless perm
 #     # if the perm.id == nil then do not check IP - needed when using clusters
 #     raise "ip #{request.remote_ip} not allowed" if (!perm.ip.blank? && request.remote_ip != perm.ip)
 #   end

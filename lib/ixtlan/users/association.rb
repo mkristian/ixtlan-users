@@ -51,14 +51,14 @@ module Ixtlan
           end
 
           current_ids = ids_method(user.id, group.id) & allowed_ids
-          
+
           target_ids = (group_map[group.id] || []) & allowed_ids
 
           # delete associations
           (current_ids - target_ids).each do |id|
             return false unless @model.delete_all(["user_id=? and group_id=? and #{@id_sym}=?", user.id, group.id, id])
           end
-          
+
           # add associations
           (target_ids - current_ids).each do |id|
             return false unless @model.create(:user_id => user.id, :group_id => group.id, @id_sym => id)
