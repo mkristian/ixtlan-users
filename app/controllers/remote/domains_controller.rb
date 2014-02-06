@@ -12,4 +12,11 @@ class Remote::DomainsController < Remote::ApplicationController
     respond_with serializer( @domains ).use( :update )
   end
 
+  def setup
+    @domain = Domain.where( :name => params[ 'name' ] ).first ||  Domain.new( :name => params[ 'name' ] )
+    @domain.modified_by = User.system_user if @domain.new_record?
+    @domain.save
+
+    respond_with serializer( @domain ).use( :update )
+  end
 end

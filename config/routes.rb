@@ -5,7 +5,8 @@ Users::Application.routes.draw do
   get '/regions/last_changes', :controller => 'remote/regions', :action => :last_changes
   get '/users/last_changes', :controller => 'remote/users', :action => :last_changes
   get '/users/last_changes_of_app', :controller => 'remote/users', :action => :last_changes_of_app
-  put '/users/setup', :controller => 'remote/users', :action => :setup
+  post '/users/setup', :controller => 'remote/users', :action => :setup
+  post '/domains/setup', :controller => 'remote/domains', :action => :setup
   get '/domains/last_changes', :controller => 'remote/domains', :action => :last_changes
   get '/domains/last_changes_of_app', :controller => 'remote/domains', :action => :last_changes_of_app
   post '/authentications', :controller => 'remote/authentications', :action => :create

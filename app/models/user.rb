@@ -124,9 +124,11 @@ class User < ActiveRecord::Base
 
   def self._groups( params, application )
     params[ :groups ].select do |g|
-      group = ( Group.where( :id => g[ :id ] ) + Group.where( :name => g[ :name ] ) ).first
-      if group && group.application == application
-        g[ :id ] = group.id
+      groups = ( Group.where( :id => g[ :id ] ) + Group.where( :name => g[ :name ] ) )
+      groups.one? do |group|
+        if group && group.application == application
+          g[ :id ] = group.id
+        end
       end
     end if params[ :groups ]
   end
